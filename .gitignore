@@ -1,0 +1,10 @@
+.gradle/
+.idea/
+build/
+toppingAndroid/.cxx/
+toppingAndroid/build/
+toppingAndroid/doclua.zip
+toppingAndroid/doclua/
+toppingAndroid/docluaJson/
+local.properties
+*.gpg
