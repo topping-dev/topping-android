@@ -8,3 +8,7 @@ toppingAndroid/doclua/
 toppingAndroid/docluaJson/
 local.properties
 *.gpg
+doxygen.exe
+doxyindexer.exe
+doxysearch.cgi.exe
+libclang.dll
