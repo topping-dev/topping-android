@@ -50,7 +50,6 @@ publishing {
         release(MavenPublication) {
             artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
             artifact androidSourcesJar
-            //from components.release
             groupId PUBLISH_GROUP_ID
             artifactId PUBLISH_ARTIFACT_ID
             version PUBLISH_VERSION
@@ -65,13 +64,6 @@ publishing {
                         url = 'https://creativecommons.org/licenses/by-nd/4.0/'
                     }
                 }
-                /*developers {
-                    developer {
-                        id = 'zsmb13'
-                        name = 'Márton Braun'
-                        email = 'braun.marton@autsoft.hu'
-                    }
-                }*/
                 scm {
                     connection = 'scm:git:github.com/topping-dev/topping-android.git'
                     developerConnection = 'scm:git:ssh://github.com/topping-dev/topping-android.git'
