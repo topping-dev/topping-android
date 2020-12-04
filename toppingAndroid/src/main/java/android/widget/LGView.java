@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 import dev.topping.android.LuaTranslator;
 import dev.topping.android.R;
 import dev.topping.android.backend.LuaClass;
@@ -14,9 +17,6 @@ import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
 import dev.topping.android.luagui.LuaViewInflator;
-
-import java.io.Serializable;
-import java.util.ArrayList;
 
 @LuaClass(className = "LGView")
 public class LGView extends Object implements LuaInterface, Serializable

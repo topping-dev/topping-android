@@ -6,7 +6,18 @@ import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
 import android.util.Log;
 
-import dev.topping.android.osspecific.utils.FragmentTracker;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
 import dev.topping.android.LuaColor;
 import dev.topping.android.LuaForm;
 import dev.topping.android.LuaMapCircle;
@@ -21,17 +32,7 @@ import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
 import dev.topping.android.osspecific.CustomMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.GroundOverlayOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolygonOptions;
-
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
+import dev.topping.android.osspecific.utils.FragmentTracker;
 
 /**
  * MapView

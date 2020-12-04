@@ -3,12 +3,12 @@ package dev.topping.android.osspecific;
 import android.content.Context;
 import android.content.res.AssetManager;
 
-import dev.topping.android.ToppingEngine;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import dev.topping.android.ToppingEngine;
 
 public class Defines
 {

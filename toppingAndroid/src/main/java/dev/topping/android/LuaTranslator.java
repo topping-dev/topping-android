@@ -3,7 +3,6 @@ package dev.topping.android;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
-
 import kotlin.reflect.KCallable;
 
 /**

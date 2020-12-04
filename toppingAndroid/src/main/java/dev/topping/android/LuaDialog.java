@@ -5,6 +5,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.text.format.DateFormat;
 
+import java.util.Calendar;
+import java.util.Locale;
+
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
@@ -13,9 +16,6 @@ import dev.topping.android.luagui.LuaContext;
 import dev.topping.android.luagui.LuaRef;
 import dev.topping.android.osspecific.CDatePickerDialog;
 import dev.topping.android.osspecific.CTimePickerDialog;
-
-import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * Lua dialog class.

@@ -10,13 +10,12 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.LGView;
 import android.widget.LinearLayout;
 
+import androidx.fragment.app.Fragment;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
 import dev.topping.android.luagui.LuaViewInflator;
-
-import androidx.fragment.app.Fragment;
 
 /**
  * User interface fragment

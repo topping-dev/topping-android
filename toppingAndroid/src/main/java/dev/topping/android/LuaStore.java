@@ -3,11 +3,12 @@ package dev.topping.android;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.naef.jnlua.Lua;
+import com.naef.jnlua.LuaState;
+
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaGlobalManual;
 import dev.topping.android.backend.LuaInterface;
-import com.naef.jnlua.Lua;
-import com.naef.jnlua.LuaState;
 
 /**
  * General store for storing string and numbers in dictionary

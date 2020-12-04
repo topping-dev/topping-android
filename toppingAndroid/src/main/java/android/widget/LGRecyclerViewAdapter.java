@@ -3,16 +3,15 @@ package android.widget;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.LinkedHashMap;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import dev.topping.android.LuaTranslator;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
-
-import java.util.LinkedHashMap;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 @LuaClass(className = "LGRecyclerViewAdapter")
 public class LGRecyclerViewAdapter extends RecyclerView.Adapter implements LuaInterface

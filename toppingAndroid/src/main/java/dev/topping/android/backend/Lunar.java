@@ -2,10 +2,6 @@ package dev.topping.android.backend;
 
 import android.util.Log;
 
-import dev.topping.android.ToppingEngine;
-import dev.topping.android.LuaJavaFunction;
-import dev.topping.android.LuaNativeObject;
-import dev.topping.android.LuaTranslator;
 import com.naef.jnlua.IDelegate;
 import com.naef.jnlua.JavaObjectFunction;
 import com.naef.jnlua.Lua;
@@ -22,6 +18,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import dev.topping.android.LuaJavaFunction;
+import dev.topping.android.LuaNativeObject;
+import dev.topping.android.LuaTranslator;
+import dev.topping.android.ToppingEngine;
 
 public class Lunar
 {

@@ -1,10 +1,11 @@
 package dev.topping.android;
 
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.LatLng;
+
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Class that is used to create circles on map.

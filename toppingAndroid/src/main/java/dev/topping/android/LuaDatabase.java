@@ -3,13 +3,13 @@ package dev.topping.android;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.io.IOException;
+
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
 import dev.topping.android.osspecific.DatabaseHelper;
-
-import java.io.IOException;
 
 /**
  * Lua database interface for SQLite operations.

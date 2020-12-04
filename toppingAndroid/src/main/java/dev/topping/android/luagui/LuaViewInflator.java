@@ -30,12 +30,6 @@ import android.widget.LGToolbar;
 import android.widget.LGView;
 import android.widget.Toast;
 
-import dev.topping.android.ToppingEngine;
-import dev.topping.android.LuaForm;
-import dev.topping.android.backend.LuaClass;
-import dev.topping.android.backend.LuaFunction;
-import dev.topping.android.backend.LuaInterface;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -44,6 +38,12 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Stack;
+
+import dev.topping.android.LuaForm;
+import dev.topping.android.ToppingEngine;
+import dev.topping.android.backend.LuaClass;
+import dev.topping.android.backend.LuaFunction;
+import dev.topping.android.backend.LuaInterface;
 
 @LuaClass(className = "LuaViewInflator")
 public class LuaViewInflator implements LuaInterface

@@ -5,7 +5,7 @@ project.afterEvaluate {
     }
 }
 
-gradle.taskGraph.afterTask { Task task, TaskState state ->
+gradle.taskGraph.afterTask { task, state ->
     if(task.path.contains("generateDebugResources")
     || task.path.contains("generateReleaseResources"))
     {
@@ -25,14 +25,18 @@ task unzipParser(type: Copy) {
 
 preBuild.dependsOn unzipParser
 
-gradle.taskGraph.afterTask { Task task, TaskState state ->
+gradle.taskGraph.afterTask {
+
+}
+
+gradle.taskGraph.afterTask { task, state ->
     if(task.path.contains("process") && task.path.contains("Resources"))
     {
         println "Generating LR"
         def outputType = "debug"
         if(task.path.contains("Release"))
             outputType = "release"
-        OperatingSystem os = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.currentOperatingSystem
+        def os = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.currentOperatingSystem
         String[] args = null
         if(os.toFamilyName().equalsIgnoreCase("windows"))
             args = ["cmd", "/c", "java -jar ${projectDir}/parser.jar 1 ${buildDir}/intermediates/compile_and_runtime_not_namespaced_r_class_jar/" + outputType + "/R.jar ${projectDir}/doclua/"]

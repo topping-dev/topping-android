@@ -9,13 +9,13 @@ import android.nfc.NfcAdapter.CreateNdefMessageCallback;
 import android.nfc.NfcEvent;
 import android.os.Build;
 
-import dev.topping.android.backend.LuaFunction;
-import dev.topping.android.backend.LuaInterface;
-import dev.topping.android.luagui.LuaContext;
-
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+
+import dev.topping.android.backend.LuaFunction;
+import dev.topping.android.backend.LuaInterface;
+import dev.topping.android.luagui.LuaContext;
 
 public class LuaNFC implements LuaInterface, CreateNdefMessageCallback
 {

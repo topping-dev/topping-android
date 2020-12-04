@@ -2,9 +2,7 @@ package android.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import dev.topping.android.LuaTranslator;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;

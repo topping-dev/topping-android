@@ -2,10 +2,6 @@ package dev.topping.android.luagui;
 
 import android.content.Context;
 
-import dev.topping.android.ToppingEngine;
-import dev.topping.android.backend.LuaClass;
-import dev.topping.android.backend.LuaFunction;
-import dev.topping.android.backend.LuaInterface;
 import com.naef.jnlua.IDelegate;
 import com.naef.jnlua.LuaState;
 
@@ -21,6 +17,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import dalvik.system.DexFile;
+import dev.topping.android.ToppingEngine;
+import dev.topping.android.backend.LuaClass;
+import dev.topping.android.backend.LuaFunction;
+import dev.topping.android.backend.LuaInterface;
 
 import static com.naef.jnlua.Lua.LUA_ENVIRONINDEX;
 import static com.naef.jnlua.Lua.LUA_GLOBALSINDEX;

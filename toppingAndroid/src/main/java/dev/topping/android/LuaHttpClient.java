@@ -3,11 +3,6 @@ package dev.topping.android;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import dev.topping.android.osspecific.utils.MultipartUtility;
-import dev.topping.android.backend.LuaClass;
-import dev.topping.android.backend.LuaFunction;
-import dev.topping.android.backend.LuaInterface;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -17,6 +12,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+
+import dev.topping.android.backend.LuaClass;
+import dev.topping.android.backend.LuaFunction;
+import dev.topping.android.backend.LuaInterface;
+import dev.topping.android.osspecific.utils.MultipartUtility;
 
 /**
  * Class that handles HTTP POST and GET requests

@@ -6,13 +6,13 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
+import java.util.Calendar;
+import java.util.List;
+
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
-
-import java.util.Calendar;
-import java.util.List;
 
 /**
  * Defines

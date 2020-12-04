@@ -1,13 +1,13 @@
 package dev.topping.android;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaHelper;
 import dev.topping.android.backend.LuaInterface;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Call native functions from lua

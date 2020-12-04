@@ -1,8 +1,11 @@
 package android.widget;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 
+import dev.topping.android.LuaTranslator;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
@@ -93,7 +96,7 @@ public class LGEditText extends LGTextView implements LuaInterface
 			public void onTextChanged(CharSequence s, int start, int before, int count)
 			{
 				if(ltTextChanged != null)
-					ltTextChanged.CallIn(LGTextView.this, s);
+					ltTextChanged.CallIn(LGEditText.this, s);
 			}
 
 			@Override
@@ -101,14 +104,14 @@ public class LGEditText extends LGTextView implements LuaInterface
 										  int after)
 			{
 				if(ltBeforeTextChanged != null)
-					ltBeforeTextChanged.CallIn(LGTextView.this, s);
+					ltBeforeTextChanged.CallIn(LGEditText.this, s);
 			}
 
 			@Override
 			public void afterTextChanged(Editable s)
 			{
 				if(ltAfterTextChanged != null)
-					ltAfterTextChanged.CallIn(LGTextView.this, s);
+					ltAfterTextChanged.CallIn(LGEditText.this, s);
 			}
 		});
 	}

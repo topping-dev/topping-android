@@ -1,12 +1,12 @@
 package dev.topping.android;
 
-import dev.topping.android.backend.LuaClass;
-import dev.topping.android.backend.LuaFunction;
-import dev.topping.android.backend.LuaInterface;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import dev.topping.android.backend.LuaClass;
+import dev.topping.android.backend.LuaFunction;
+import dev.topping.android.backend.LuaInterface;
 
 /**
  * Class that handles JSON Object.

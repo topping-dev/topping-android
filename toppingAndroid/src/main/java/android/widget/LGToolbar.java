@@ -7,16 +7,15 @@ import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.io.InputStream;
+
+import androidx.appcompat.widget.Toolbar;
 import dev.topping.android.LuaStream;
 import dev.topping.android.LuaTranslator;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaRef;
-
-import java.io.InputStream;
-
-import androidx.appcompat.widget.Toolbar;
 
 @LuaClass(className = "LGToolbar")
 public class LGToolbar extends LGView implements LuaInterface

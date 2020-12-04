@@ -3,11 +3,10 @@ package android.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import dev.topping.android.backend.LuaClass;
-import dev.topping.android.backend.LuaFunction;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import dev.topping.android.backend.LuaClass;
+import dev.topping.android.backend.LuaFunction;
 
 @LuaClass(className = "LGRecyclerView")
 public class LGRecyclerView extends LGView

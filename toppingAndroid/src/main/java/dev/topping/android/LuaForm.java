@@ -16,15 +16,6 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.LGView;
 
-import dev.topping.android.osspecific.utils.Common;
-import dev.topping.android.backend.LuaClass;
-import dev.topping.android.backend.LuaFunction;
-import dev.topping.android.backend.LuaInterface;
-import dev.topping.android.backend.LuaStaticVariable;
-import dev.topping.android.luagui.LuaContext;
-import dev.topping.android.luagui.LuaViewInflator;
-import dev.topping.android.osspecific.Defines;
-
 import org.ndeftools.Message;
 import org.ndeftools.Record;
 import org.ndeftools.wellknown.SmartPosterRecord;
@@ -35,6 +26,14 @@ import java.util.HashMap;
 import java.util.List;
 
 import androidx.fragment.app.FragmentActivity;
+import dev.topping.android.backend.LuaClass;
+import dev.topping.android.backend.LuaFunction;
+import dev.topping.android.backend.LuaInterface;
+import dev.topping.android.backend.LuaStaticVariable;
+import dev.topping.android.luagui.LuaContext;
+import dev.topping.android.luagui.LuaViewInflator;
+import dev.topping.android.osspecific.Defines;
+import dev.topping.android.osspecific.utils.Common;
 
 /**
  * User interface form

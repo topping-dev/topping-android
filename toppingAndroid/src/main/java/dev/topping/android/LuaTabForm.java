@@ -7,15 +7,14 @@ import android.view.View;
 import android.widget.LGView;
 import android.widget.TabHost.TabSpec;
 
-import dev.topping.android.osspecific.utils.Common;
+import java.io.InputStream;
+
+import androidx.fragment.app.FragmentTabHost;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
-
-import java.io.InputStream;
-
-import androidx.fragment.app.FragmentTabHost;
+import dev.topping.android.osspecific.utils.Common;
 
 /**
  * This class is used to create tab controls

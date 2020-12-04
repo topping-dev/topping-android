@@ -2,12 +2,12 @@ package dev.topping.android;
 
 import android.util.Log;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
-
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * Lua stream interface.

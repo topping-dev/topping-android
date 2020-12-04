@@ -29,15 +29,6 @@ import android.widget.LGTextView;
 import android.widget.LGToolbar;
 import android.widget.LGView;
 
-import dev.topping.android.backend.LuaObject;
-import dev.topping.android.backend.LuaTasker;
-import dev.topping.android.backend.Lunar;
-import dev.topping.android.luagui.LuaContext;
-import dev.topping.android.luagui.LuaRef;
-import dev.topping.android.luagui.LuaViewInflator;
-import dev.topping.android.osspecific.Defines;
-import dev.topping.android.osspecific.UrlHttpClient;
-
 import com.naef.jnlua.IDelegate;
 import com.naef.jnlua.Lua;
 import com.naef.jnlua.LuaState;
@@ -53,6 +44,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+
+import dev.topping.android.backend.LuaObject;
+import dev.topping.android.backend.LuaTasker;
+import dev.topping.android.backend.Lunar;
+import dev.topping.android.luagui.LuaContext;
+import dev.topping.android.luagui.LuaRef;
+import dev.topping.android.luagui.LuaViewInflator;
+import dev.topping.android.osspecific.Defines;
+import dev.topping.android.osspecific.UrlHttpClient;
 
 public class ToppingEngine
 {

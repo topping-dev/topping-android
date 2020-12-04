@@ -1,9 +1,9 @@
 package dev.topping.android;
 
-import dev.topping.android.backend.LuaFunction;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+
+import dev.topping.android.backend.LuaFunction;
 
 /**
  * Used to define java functions in lua
