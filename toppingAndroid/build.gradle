@@ -92,4 +92,11 @@ ext {
     PUBLISH_VERSION = android.defaultConfig.versionName
 }
 
-apply from: "${rootProject.projectDir}/toppingAndroid/publish-mavencentral.gradle"
+if(System.env.JITPACK != null || System.env.JITPACK == true) {
+    println "Setting for jitpack"
+    apply from: "${rootProject.projectDir}/toppingAndroid/publish-jitpack.gradle"
+}
+else {
+    println "Setting for mavencentral"
+    apply from: "${rootProject.projectDir}/toppingAndroid/publish-mavencentral.gradle"
+}

@@ -1,0 +1,52 @@
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives androidSourcesJar
+}
+
+apply plugin: 'maven-publish'
+
+group = PUBLISH_GROUP_ID
+version = PUBLISH_VERSION
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+            artifact androidSourcesJar
+            groupId PUBLISH_GROUP_ID
+            artifactId PUBLISH_ARTIFACT_ID
+            version PUBLISH_VERSION
+
+            pom {
+                name = PUBLISH_ARTIFACT_ID
+                description = 'ToppingEngine is a library helps you create mobile applications using one type of layout code and one type of backend code.'
+                url = 'https://topping.dev'
+                licenses {
+                    license {
+                        name = 'Creative Commons, Attribution-NoDerivatives 4.0 International'
+                        url = 'https://creativecommons.org/licenses/by-nd/4.0/'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:github.com/topping-dev/topping-android.git'
+                    developerConnection = 'scm:git:ssh://github.com/topping-dev/topping-android.git'
+                    url = 'https://github.com/topping-dev/topping-android/tree/main'
+                }
+                withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+
+                    project.configurations.implementation.allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+}
