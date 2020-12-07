@@ -11,6 +11,12 @@ ait, simply add the following line to your gradle:
 implementation 'dev.topping:topping:0.1.0'
 ```
 
+or
+
+```gradle
+implementation 'com.github.topping-dev:topping-android:v0.1.0'
+```
+
 Details are available at https://topping.dev
 
 ## Author
