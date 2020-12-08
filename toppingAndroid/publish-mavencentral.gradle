@@ -64,6 +64,15 @@ publishing {
                         url = 'https://creativecommons.org/licenses/by-nd/4.0/'
                     }
                 }
+                developers {
+                    developer {
+                        id = 'toppingdev'
+                        name = 'Topping Dev'
+                        email = 'toppingdev@gmail.com'
+                        organization = 'Topping Dev'
+                        organizationUrl = 'https://topping.dev'
+                    }
+                }
                 scm {
                     connection = 'scm:git:github.com/topping-dev/topping-android.git'
                     developerConnection = 'scm:git:ssh://github.com/topping-dev/topping-android.git'

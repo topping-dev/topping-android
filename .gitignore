@@ -12,3 +12,7 @@ doxygen.exe
 doxyindexer.exe
 doxysearch.cgi.exe
 libclang.dll
+toppingAndroid/doxygen.exe
+toppingAndroid/doxyindexer.exe
+toppingAndroid/doxysearch.cgi.exe
+toppingAndroid/libclang.dll
