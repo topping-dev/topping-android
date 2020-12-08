@@ -5,7 +5,7 @@
 ## Installation
 
 Topping Engine is available through Maven Central. To install
-ait, simply add the following line to your gradle:
+it, simply add the following line to your gradle:
 
 ```gradle
 implementation 'dev.topping:topping:0.1.0'
