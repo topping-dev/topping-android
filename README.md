@@ -1,6 +1,6 @@
 # ToppingEngine
 
-[![](https://img.shields.io/maven-central/v/dev.topping/toppingandroid)](https://img.shields.io/maven-central/v/dev.topping/topping-android) [![](https://jitpack.io/v/topping-dev/topping-android.svg)](https://jitpack.io/#topping-dev/topping-android)
+[![](https://img.shields.io/maven-central/v/dev.topping/toppingandroid)](https://img.shields.io/maven-central/v/dev.topping/toppingandroid) [![](https://jitpack.io/v/topping-dev/topping-android.svg)](https://jitpack.io/#topping-dev/topping-android)
 
 ## Installation
 
