@@ -55,8 +55,8 @@ public class LuaThread implements LuaInterface
      * @param lt +fun(thread: LuaThread):void
      * @return LuaThread
      */
-    @LuaFunction(manual = false, methodName = "NewThread", arguments = { LuaTranslator.class }, self = LuaThread.class)
-    public static LuaThread NewThread(LuaTranslator lt)
+    @LuaFunction(manual = false, methodName = "New", arguments = { LuaTranslator.class }, self = LuaThread.class)
+    public static LuaThread New(LuaTranslator lt)
     {
         LuaThread thread = new LuaThread();
         thread.lt = lt;

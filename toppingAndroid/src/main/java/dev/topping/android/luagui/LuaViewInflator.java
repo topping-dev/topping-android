@@ -201,7 +201,7 @@ public class LuaViewInflator implements LuaInterface
 				break;
 			case XmlPullParser.END_TAG:
 				data.pop();
-				if(lgStack.size() > 0 && lgStack.peek().getClass().getSimpleName().equalsIgnoreCase(parse.getName()))
+				if(lgStack.size() > 0 && lgStack.peek().internalName.equalsIgnoreCase(parse.getName()))
 				{
 					lgStack.peek().SetLoaded(LuaForm.OnFormEvent(lgStack.peek(), LuaForm.FORM_EVENT_CREATE, lc));
 					lgStack.pop();
@@ -362,6 +362,7 @@ public class LuaViewInflator implements LuaInterface
 		if (lgresult == null)
 			return null;
 
+		lgresult.internalName = name;
 		lgresult.view.setTag(lgresult);
 		lgresult.SetLuaId(luaId);
 

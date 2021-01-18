@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,6 +17,7 @@ import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
+import dev.topping.android.luagui.LuaRef;
 import dev.topping.android.luagui.LuaViewInflator;
 
 @LuaClass(className = "LGView")
@@ -30,6 +32,7 @@ public class LGView extends Object implements LuaInterface, Serializable
 	public LuaContext lc;
 	public String luaId = null;
 	public ArrayList<LGView> subviews = new ArrayList<LGView>();
+	public String internalName = "";
 
 	/**
 	 * Creates LGView Object From Lua.
@@ -236,14 +239,17 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 * Set background ref
 	 * @param backgroundRef
 	 */
-	@LuaFunction(manual = false, methodName = "SetBackgroundRef", arguments = { String.class })
-	public void SetBackgroundRef(String backgroundRef)
+	@LuaFunction(manual = false, methodName = "SetBackgroundRef", arguments = { LuaRef.class })
+	public void SetBackgroundRef(LuaRef backgroundRef)
 	{
-		int backVal = LuaViewInflator.parseColor(lc, backgroundRef);
-		if(backVal != Integer.MAX_VALUE)
-			view.setBackgroundColor(backVal);
-		else
-			view.setBackgroundResource(lc.GetContext().getResources().getIdentifier(backgroundRef, (String)null, lc.GetContext().getPackageName()));
+		TypedValue value = new TypedValue();
+		view.getContext().getResources().getValue(backgroundRef.getRef(), value, true); // will throw if resId doesn't exist
+
+		if (value.type >= TypedValue.TYPE_FIRST_COLOR_INT && value.type <= TypedValue.TYPE_LAST_COLOR_INT) {
+			view.setBackgroundColor(view.getResources().getColor(backgroundRef.getRef()));
+		} else if (value.type == TypedValue.TYPE_REFERENCE) {
+			view.setBackgroundResource(backgroundRef.getRef());
+		}
 	}
 
 	/**
