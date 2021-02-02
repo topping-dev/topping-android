@@ -31,7 +31,7 @@ public class LGView extends Object implements LuaInterface, Serializable
 	public View view;
 	public LuaContext lc;
 	public String luaId = null;
-	public ArrayList<LGView> subviews = new ArrayList<LGView>();
+	protected ArrayList<LGView> subviews = new ArrayList<LGView>();
 	public String internalName = "";
 
 	/**
@@ -317,5 +317,13 @@ public class LGView extends Object implements LuaInterface, Serializable
 	public void SetLoaded(boolean loaded)
 	{
 		this.loaded = loaded;
+	}
+
+	/**
+	 * (Ignore)
+	 */
+	public void AddSubview(LGView view)
+	{
+		this.subviews.add(view);
 	}
 }

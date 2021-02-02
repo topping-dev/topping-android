@@ -175,7 +175,7 @@ public class LuaViewInflator implements LuaInterface
 				if(lgStack.size() > 0)
 				{
 					LGView vParent = lgStack.peek();
-					vParent.subviews.add(v);
+					vParent.AddSubview(v);
 					((ViewGroup)vParent.view).addView(v.view);
 				}
 				else

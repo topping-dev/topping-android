@@ -15,6 +15,7 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.LGView;
+import android.widget.LGViewGroup;
 
 import org.ndeftools.Message;
 import org.ndeftools.Record;
@@ -212,7 +213,7 @@ public class LuaForm extends FragmentActivity implements LuaInterface
 	}
 
 	/**
-	 * Gets the view of fragment.
+	 * Gets the view of form.
 	 * @return LGView
 	 */
 	@LuaFunction(manual = false, methodName = "GetViewById", arguments = { String.class })
@@ -220,6 +221,18 @@ public class LuaForm extends FragmentActivity implements LuaInterface
 	{
 		//return MainActivity.GeneralGetViewById(lId);
 		return this.view.GetViewById(lId);
+	}
+
+	/**
+	 * Gets the view bindings
+	 * @return HashMap
+	 */
+	@LuaFunction(manual = false, methodName = "GetBindings", arguments = { })
+	public HashMap<String, LGView> GetBindings()
+	{
+		if(view instanceof LGViewGroup)
+			return ((LGViewGroup)view).GetBindings();
+		return null;
 	}
 
 	/**

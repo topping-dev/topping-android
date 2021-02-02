@@ -100,6 +100,12 @@ public class LGToolbar extends LGView implements LuaInterface
         ((Toolbar)view).setTitle(text);
     }
 
+    @LuaFunction(manual = false, methodName = "SetTitleRef", arguments = { LuaRef.class })
+    public void SetTitleRef(LuaRef ref)
+    {
+        ((Toolbar)view).setTitle(ref.getRef());
+    }
+
     @LuaFunction(manual = false, methodName = "SetTitleTextColor", arguments = { String.class })
     public void SetTitleTextColor(String color)
     {
@@ -107,10 +113,16 @@ public class LGToolbar extends LGView implements LuaInterface
         ((Toolbar)view).setTitleTextColor(colorInt);
     }
 
-    @LuaFunction(manual = false, methodName = "SetTitleTextApperance", arguments = { Integer.class })
-    public void SetTitleTextApperance(int ref)
+    @LuaFunction(manual = false, methodName = "SetTitleTextColorRef", arguments = { LuaRef.class })
+    public void SetTitleTextColorRef(LuaRef ref)
     {
-        ((Toolbar)view).setTitleTextAppearance(lc.GetContext(), ref);
+        ((Toolbar)view).setTitleTextColor(view.getResources().getColor(ref.getRef()));
+    }
+
+    @LuaFunction(manual = false, methodName = "SetTitleTextApperance", arguments = { LuaRef.class })
+    public void SetTitleTextApperance(LuaRef ref)
+    {
+        ((Toolbar)view).setTitleTextAppearance(lc.GetContext(), ref.getRef());
     }
 
     @LuaFunction(manual = false, methodName = "GetSubtitle")
@@ -125,11 +137,23 @@ public class LGToolbar extends LGView implements LuaInterface
         ((Toolbar)view).setSubtitle(text);
     }
 
+    @LuaFunction(manual = false, methodName = "SetSubtitleRef", arguments = { LuaRef.class })
+    public void SetSubtitle(LuaRef ref)
+    {
+        ((Toolbar)view).setSubtitle(ref.getRef());
+    }
+
     @LuaFunction(manual = false, methodName = "SetSubtitleTextColor", arguments = { String.class })
     public void SetSubtitleTextColor(String color)
     {
         int colorInt = Color.parseColor(color);
         ((Toolbar)view).setSubtitleTextColor(colorInt);
+    }
+
+    @LuaFunction(manual = false, methodName = "SetSubtitleTextColorRef", arguments = { LuaRef.class })
+    public void SetSubtitleTextColorRef(LuaRef ref)
+    {
+        ((Toolbar)view).setSubtitleTextColor(view.getResources().getColor(ref.getRef()));
     }
 
     @LuaFunction(manual = false, methodName = "SetSubtitleTextApperance", arguments = { LuaRef.class })

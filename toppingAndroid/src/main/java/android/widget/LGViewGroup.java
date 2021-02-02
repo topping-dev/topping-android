@@ -3,6 +3,8 @@ package android.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import java.util.HashMap;
+
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
@@ -11,6 +13,8 @@ import dev.topping.android.luagui.LuaContext;
 @LuaClass(className = "LGViewGroup")
 public class LGViewGroup extends LGView implements LuaInterface
 {
+	HashMap<String, LGView> subviewMap = new HashMap<>();
+
 	/**
 	 * Creates LGViewGroup Object From Lua.
 	 * Do not create this class directly.
@@ -21,6 +25,16 @@ public class LGViewGroup extends LGView implements LuaInterface
 	public static LGViewGroup Create(LuaContext lc)
 	{
 		return new LGViewGroup(lc.GetContext());
+	}
+
+	/**
+	 * Gets view bindings
+	 * @return table
+	 */
+	@LuaFunction(manual = false, methodName = "GetBindings", arguments = { })
+	public HashMap<String, LGView> GetBindings()
+	{
+		return subviewMap;
 	}
 
 	/**
@@ -53,5 +67,17 @@ public class LGViewGroup extends LGView implements LuaInterface
 	public LGViewGroup(Context context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
+	}
+
+	/**
+	 * (Ignore)
+	 */
+	@Override
+	public void AddSubview(LGView view)
+	{
+		super.AddSubview(view);
+
+		if(view.GetId() != null)
+			subviewMap.put(view.GetId(), view);
 	}
 }

@@ -13,6 +13,7 @@ import android.widget.LGButton;
 import android.widget.LGCheckBox;
 import android.widget.LGComboBox;
 import android.widget.LGCompoundButton;
+import android.widget.LGConstraintLayout;
 import android.widget.LGDatePicker;
 import android.widget.LGEditText;
 import android.widget.LGFrameLayout;
@@ -1105,6 +1106,7 @@ public class ToppingEngine
 		tasker.AddToQueue(LGRecyclerView.class);
 		tasker.AddToQueue(LGRecyclerViewAdapter.class);
 		tasker.AddToQueue(LGToolbar.class);
+		tasker.AddToQueue(LGConstraintLayout.class);
 
 		tasker.AddToQueue(LuaThread.class);
 		tasker.AddToQueue(LuaRef.class);
@@ -1199,6 +1201,7 @@ public class ToppingEngine
 		Lunar.Register(L, LGRecyclerView.class, false);
 		Lunar.Register(L, LGRecyclerViewAdapter.class, false);
 		Lunar.Register(L, LGToolbar.class, false);
+		Lunar.Register(L, LGConstraintLayout.class, false);
 
 		Lunar.Register(L, LuaThread.class, false);
 		Lunar.Register(L, LuaRef.class, false);
