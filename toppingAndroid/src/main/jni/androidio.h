@@ -21,6 +21,7 @@
 extern jobject android_java_asset_manager;
 extern JavaVM *jvm;
 
+extern FILE* android_fopensafe(const char *filename, const char *mode);
 extern FILE* android_fopen(const char *filename, const char *mode);
 extern FILE* android_freopen(const char *filename, const char *mode, FILE *stream);
 extern size_t android_fread(void *ptr, size_t size, size_t count, FILE *stream);

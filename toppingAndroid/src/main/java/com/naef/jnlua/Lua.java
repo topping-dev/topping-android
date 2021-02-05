@@ -74,6 +74,19 @@ public class Lua
         }
     }
 
+    public static int luaL_loadstring(LuaState l, String toString, String chunkname)
+    {
+        try
+        {
+            l.load(toString, chunkname);
+            return 0;
+        }
+        catch (Exception e)
+        {
+            return 1;
+        }
+    }
+
     public static String lua_tostring(LuaState l, int i)
     {
         return l.toString(i);
@@ -318,8 +331,7 @@ public class Lua
             @Override
             public int invoke(LuaState luaState)
             {
-                tostring_t.invoke(luaState);
-                return 0;
+                return (int) tostring_t.invoke(luaState);
             }
         });
     }
@@ -346,8 +358,7 @@ public class Lua
             @Override
             public int invoke(LuaState luaState)
             {
-                del.invoke(luaState);
-                return 0;
+                return (int) del.invoke(luaState);
             }
         }, i);
     }
@@ -476,8 +487,7 @@ public class Lua
             @Override
             public int invoke(LuaState luaState)
             {
-                iDelegate.invoke(luaState);
-                return 0;
+                return (int) iDelegate.invoke(luaState);
             }
         });
     }

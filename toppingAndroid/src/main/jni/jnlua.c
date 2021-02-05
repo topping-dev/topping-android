@@ -14,6 +14,7 @@
 #include "lstate.h"
 #include "lobject.h"
 #include "ltable.h"
+#include "socket/luasocket.h"
 
 /* Include uintptr_t */
 #ifdef LUA_WIN
@@ -328,6 +329,13 @@ static int openlib_protected (lua_State *L) {
 		openfunc = luaopen_package;
 		libname = LUA_LOADLIBNAME;
 		break;
+	case 8:
+		lua_getglobal(L, "package");
+		lua_getfield(L, -1, "preload");
+		lua_pushcfunction(L, luaopen_socket_core);
+		lua_setfield(L, -2, "socket.core");
+		lua_pop(L, 2);
+		return 0;
 	default:
 		return 0;
 	} 
@@ -342,7 +350,7 @@ JNIEXPORT void JNICALL Java_com_naef_jnlua_LuaState_lua_1openlib (JNIEnv *env, j
 	JNLUA_ENV(env);
 	L = getluathread(obj);
 	if (checkstack(L, JNLUA_MINSTACK)
-			&& checkarg(lib >= 0 && lib <= 7, "illegal library")) {
+			&& checkarg(lib >= 0 && lib <= 8, "illegal library")) {
 		openlib_lib = lib;
 		lua_pushcfunction(L, openlib_protected);
 		JNLUA_PCALL(L, 0, 0);

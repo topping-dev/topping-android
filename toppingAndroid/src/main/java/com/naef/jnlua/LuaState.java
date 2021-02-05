@@ -321,6 +321,13 @@ public class LuaState {
 		{
 			LuaError err = (LuaError) obj;
 			Log.e("LuaEngine", err.toString());
+			if(err.getLuaStackTrace() != null)
+			{
+				for (LuaStackTraceElement lste : err.getLuaStackTrace())
+				{
+					Log.e("LuaEngine", "    " + lste.toString());
+				}
+			}
 			return new JavaFunction()
 			{
 				@Override
@@ -518,7 +525,7 @@ public class LuaState {
 			throw new NullPointerException();
 		}
 		check();
-		lua_load(inputStream, "=" + chunkName);
+		lua_load(inputStream, chunkName);
 	}
 
 	/**
@@ -2456,7 +2463,12 @@ public class LuaState {
 		/**
 		 * The package library.
 		 */
-		PACKAGE;
+		PACKAGE,
+
+		/**
+		 * The socket library.
+		 */
+		SOCKET;
 
 		// -- Methods
 		/**

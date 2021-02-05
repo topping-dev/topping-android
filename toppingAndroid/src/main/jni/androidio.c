@@ -1,7 +1,3 @@
-//
-// Created by Edo on 24.09.2020.
-//
-
 #include "androidio.h"
 #include <stdlib.h>
 #include <string.h>
@@ -49,12 +45,29 @@ static int android_closeun(void* cookie) {
     return 0;
 }
 
+extern FILE* android_fopensafe(const char *filename, const char *mode)
+{
+    if(mode[0] == 'w') return NULL;
+
+    JNIEnv *env;
+    (*jvm)->AttachCurrentThread(jvm, &env, 0);
+    AAssetManager* manager = AAssetManager_fromJava(env, android_java_asset_manager);
+
+    AAsset* asset = AAssetManager_open(manager, filename, AASSET_MODE_RANDOM);
+    if(!asset)
+    {
+        return NULL;
+    }
+
+    return asset;
+
+    //return funopen(asset, android_read, android_write, android_seek, android_close);
+}
+
 extern FILE* android_fopen(const char *filename, const char *mode)
 {
     if(mode[0] == 'w') return NULL;
-    LOGE("%s", filename);
     char *fSafe = substring(filename, 3, strlen(filename));
-    LOGE("%s", fSafe);
 
     JNIEnv *env;
     (*jvm)->AttachCurrentThread(jvm, &env, 0);
@@ -64,7 +77,26 @@ extern FILE* android_fopen(const char *filename, const char *mode)
     free(fSafe);
     if(!asset)
     {
-        return NULL;
+        char cpydest[2048];
+#ifdef __arm__
+        strcat(cpydest, "armeabi-v7a/");
+        strcat(cpydest, filename);
+#elif __aarch64__
+        strcat(cpydest, "arm64-v8a/");
+        strcat(cpydest, filename);
+#elif __i386__
+        strcat(cpydest, "x86/");
+        strcat(cpydest, filename);
+#elif __x86_64__
+        strcat(cpydest, "x86_64/");
+        strcat(cpydest, filename);
+#endif
+        LOGD("fopen trying %s", cpydest);
+        FILE* ret = android_fopensafe(cpydest, mode);
+        if(ret != NULL)
+            LOGD("fopen found");
+        memset(cpydest, 0, 2048);
+        return ret;
     }
 
     return asset;
@@ -83,7 +115,6 @@ extern FILE* android_freopen(const char *filename, const char *mode, FILE *strea
 extern size_t android_fread(void *ptr, size_t size, size_t count, FILE *stream)
 {
     size_t r = AAsset_read((AAsset*)stream, ptr, count);
-    LOGE("%s", ptr);
     return r;
 }
 

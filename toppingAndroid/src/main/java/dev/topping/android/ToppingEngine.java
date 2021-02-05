@@ -166,7 +166,7 @@ public class ToppingEngine
 		{
 			Log.e("LuaEngine.java", e.getMessage());
 		}
-		if(Lua.luaL_loadstring(L, buffer.toString()) != 0)
+		if(Lua.luaL_loadstring(L, buffer.toString(), "defines.lua") != 0)
 		//if(Lua.luaL_loadbuffer(L, buffer.toString(), s) != 0)
 		//if(Lua.LloadFile(s) != 0)
 		{
@@ -388,7 +388,7 @@ public class ToppingEngine
 					is.close();
 
 					//if(Lua.luaL_loadstring(L, buffer.toString()) != 0)
-					if(Lua.luaL_loadstring(L, buffer.toString()) != 0)
+					if(Lua.luaL_loadstring(L, buffer.toString(), s) != 0)
 					{
 						Report(L);
 					}
@@ -736,7 +736,7 @@ public class ToppingEngine
 				buffer.flush();
 				is.close();
 
-				if(Lua.luaL_loadstring(L, buffer.toString()) != 0)
+				if(Lua.luaL_loadstring(L, buffer.toString(), s) != 0)
 				//if(Lua.luaL_loadbuffer(L, buffer.toString(), s) != 0)
 				//if(Lua.LloadFile(s) != 0)
 				{
