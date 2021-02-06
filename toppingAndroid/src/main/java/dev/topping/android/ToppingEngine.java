@@ -1321,10 +1321,20 @@ public class ToppingEngine
 			{
 				((ToppingEngine) ToppingEngine.getInstance()).PushTable((HashMap<Object, Object>)retval);
 			}
+			else if(retName.compareTo("java.util.ArrayList") == 0)
+			{
+				HashMap<Object, Object> map = new HashMap<>();
+				ArrayList<Object> lst = (ArrayList<Object>) retval;
+				for(int i = 0; i < lst.size(); i++)
+				{
+					map.put(i, lst.get(i));
+				}
+				((ToppingEngine) ToppingEngine.getInstance()).PushTable(map);
+			}
 			else
 			{
 				ToppingEngine l = (ToppingEngine) ToppingEngine.getInstance();
-				Lunar.push(l.GetLuaState(), retval, false, false);
+				Lunar.push(l.GetLuaState(), retval, false, true);
 			}
 
 			Lua.lua_setfield(L, -2, String.valueOf(entry.getKey()));
