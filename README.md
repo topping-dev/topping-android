@@ -8,13 +8,13 @@ Topping Engine is available through Maven Central. To install
 it, simply add the following line to your gradle:
 
 ```gradle
-implementation 'dev.topping:toppingandroid:0.1.1'
+implementation 'dev.topping:toppingandroid:0.1.x'
 ```
 
 or
 
 ```gradle
-implementation 'com.github.topping-dev:topping-android:v0.1.1'
+implementation 'com.github.topping-dev:topping-android:v0.1.x'
 ```
 
 Details are available at https://topping.dev
