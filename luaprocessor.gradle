@@ -39,9 +39,9 @@ gradle.taskGraph.afterTask { task, state ->
         def os = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.currentOperatingSystem
         String[] args = null
         if(os.toFamilyName().equalsIgnoreCase("windows"))
-            args = ["cmd", "/c", "java -jar ${projectDir}/parser.jar 1 ${buildDir}/intermediates/compile_and_runtime_not_namespaced_r_class_jar/" + outputType + "/R.jar ${projectDir}/doclua/"]
+            args = ["cmd", "/c", "java -jar ${projectDir}/parser.jar 1 ${buildDir}/intermediates/compile_and_runtime_not_namespaced_r_class_jar/" + outputType + "/R.jar ${projectDir}/doclua/ " + applicationId + ".R"]
         else
-            args = ["sh", "-c", "java -jar ${projectDir}/parser.jar 1 ${buildDir}/intermediates/compile_and_runtime_not_namespaced_r_class_jar/" + outputType + "/R.jar ${projectDir}/doclua/"]
+            args = ["sh", "-c", "java -jar ${projectDir}/parser.jar 1 ${buildDir}/intermediates/compile_and_runtime_not_namespaced_r_class_jar/" + outputType + "/R.jar ${projectDir}/doclua/ " + applicationId + ".R"]
         def proc = args.execute()
         proc.in.eachLine {line -> println line}
         //proc.err.eachLine {line -> println 'ERROR: ' + line}
