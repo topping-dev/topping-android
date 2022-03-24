@@ -23,13 +23,13 @@ public class LGConstraintLayout extends LGViewGroup implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGConstraintLayout.class)
 	public static LGConstraintLayout Create(LuaContext lc)
 	{
-		return new LGConstraintLayout(lc.GetContext());
+		return new LGConstraintLayout(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGConstraintLayout(Context context)
+	public LGConstraintLayout(LuaContext context)
 	{
 		super(context);
 	}
@@ -37,7 +37,7 @@ public class LGConstraintLayout extends LGViewGroup implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGConstraintLayout(Context context, String luaId)
+	public LGConstraintLayout(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -45,7 +45,7 @@ public class LGConstraintLayout extends LGViewGroup implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGConstraintLayout(Context context, AttributeSet attrs)
+	public LGConstraintLayout(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -55,7 +55,9 @@ public class LGConstraintLayout extends LGViewGroup implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = new ConstraintLayout(context);
+		view = lc.GetLayoutInflater().createView(context, "ConstraintLayout");
+		if(view == null)
+			view = new ConstraintLayout(context);
 	}
 
 	/**
@@ -63,6 +65,8 @@ public class LGConstraintLayout extends LGViewGroup implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new ConstraintLayout(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "ConstraintLayout", attrs);
+		if(view == null)
+			view = new ConstraintLayout(context, attrs);
 	}
 }

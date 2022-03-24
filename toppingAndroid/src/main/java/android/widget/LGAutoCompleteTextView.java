@@ -23,13 +23,13 @@ public class LGAutoCompleteTextView extends LGEditText implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGAutoCompleteTextView.class)
 	public static LGAutoCompleteTextView Create(LuaContext lc)
 	{
-		return new LGAutoCompleteTextView(lc.GetContext());
+		return new LGAutoCompleteTextView(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGAutoCompleteTextView(Context context)
+	public LGAutoCompleteTextView(LuaContext context)
 	{
 		super(context);
 	}
@@ -37,7 +37,7 @@ public class LGAutoCompleteTextView extends LGEditText implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGAutoCompleteTextView(Context context, String luaId)
+	public LGAutoCompleteTextView(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -45,7 +45,7 @@ public class LGAutoCompleteTextView extends LGEditText implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGAutoCompleteTextView(Context context, AttributeSet attrs)
+	public LGAutoCompleteTextView(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -53,7 +53,7 @@ public class LGAutoCompleteTextView extends LGEditText implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGAutoCompleteTextView(Context context, AttributeSet attrs, int defStyle)
+	public LGAutoCompleteTextView(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}
@@ -63,7 +63,9 @@ public class LGAutoCompleteTextView extends LGEditText implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = new AutoCompleteTextView(context);
+		view = lc.GetLayoutInflater().createView(context, "AutoCompleteTextView");
+		if(view == null)
+			view = new AutoCompleteTextView(context);
 	}
 
 	/**
@@ -71,7 +73,9 @@ public class LGAutoCompleteTextView extends LGEditText implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new AutoCompleteTextView(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "AutoCompleteTextView", attrs);
+		if(view == null)
+			view = new AutoCompleteTextView(context, attrs);
 	}
 
 	/**
@@ -79,6 +83,29 @@ public class LGAutoCompleteTextView extends LGEditText implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = new AutoCompleteTextView(context, attrs, defStyle);
+		view = lc.GetLayoutInflater().createView(context, "AutoCompleteTextView", attrs);
+		if(view == null)
+			view = new AutoCompleteTextView(context, attrs, defStyle);
+	}
+
+	/**
+	 * Gets the LGRecyclerViewAdapter of recyclerview
+	 * @return LGRecyclerViewAdapter
+	 */
+	@LuaFunction(manual = false, methodName = "GetAdapter", arguments = { })
+	public LGAdapterView GetAdapter()
+	{
+		return (LGAdapterView) ((AutoCompleteTextView)view).getAdapter();
+	}
+
+	/**
+	 * Sets the LGRecyclerViewAdapter of listview
+	 * @param adapter
+	 */
+	@LuaFunction(manual = false, methodName = "SetAdapter", arguments = { LGAdapterView.class })
+	public void SetAdapter(LGAdapterView adapter)
+	{
+		((AutoCompleteTextView)view).setAdapter(adapter);
+		adapter.parent = this;
 	}
 }

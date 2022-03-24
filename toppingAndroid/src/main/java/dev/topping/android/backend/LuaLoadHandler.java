@@ -15,7 +15,7 @@ public abstract class LuaLoadHandler extends Handler
 	public static final int FINISH_MESSAGE = 3;
 	
 	private Activity ctx;
-	private ProgressDialog mDialog;
+	//private ProgressDialog mDialog;
 	
 	public LuaLoadHandler(Activity ctx, Looper looper)
 	{
@@ -36,14 +36,14 @@ public abstract class LuaLoadHandler extends Handler
 					@Override
 					public void run()
 					{
-						mDialog = new ProgressDialog(ctx);
+						/*mDialog = new ProgressDialog(ctx);
 						mDialog.setIndeterminate(false);
 						mDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 						mDialog.setMax(100);
 				        mDialog.setMessage("Please wait...");
 				        mDialog.setCancelable(false);
 				        ToppingEngine.getInstance().loadDialog = mDialog;
-				        mDialog.show();
+				        mDialog.show();*/
 					}
 				});
 		        sendEmptyMessage(LOAD_MESSAGE);
@@ -60,7 +60,7 @@ public abstract class LuaLoadHandler extends Handler
 					@Override
 					public void run()
 					{
-						mDialog.dismiss();
+						//mDialog.dismiss();
 						OnFinished();
 					}
 				});

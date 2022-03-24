@@ -2,6 +2,8 @@ package dev.topping.android.luagui;
 
 import android.content.Context;
 
+import androidx.appcompat.app.CustomLayoutInflater;
+
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
@@ -10,6 +12,7 @@ import dev.topping.android.backend.LuaInterface;
 public class LuaContext implements LuaInterface
 {
 	private Context context;
+	private final CustomLayoutInflater layoutInflater = new CustomLayoutInflater();
 	
 	/**
 	 * Creates LuaContext Object From Lua.
@@ -23,12 +26,24 @@ public class LuaContext implements LuaInterface
 		return lc;
 	}
 
+	/**
+	 * (Ignore)
+	 */
 	public Context GetContext() { return context; }
 	
 	/**
 	 * (Ignore)
 	 */
-	public void SetContext(Object val) { context = (Context) val; }
+	public void SetContext(Object val) {
+		context = (Context) val;
+	}
+
+	/**
+	 * (Ignore)
+	 */
+	public CustomLayoutInflater GetLayoutInflater() {
+		return layoutInflater;
+	}
 
 	/**
 	 * (Ignore)

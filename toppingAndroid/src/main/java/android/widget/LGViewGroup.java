@@ -24,7 +24,7 @@ public class LGViewGroup extends LGView implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGViewGroup.class)
 	public static LGViewGroup Create(LuaContext lc)
 	{
-		return new LGViewGroup(lc.GetContext());
+		return new LGViewGroup(lc);
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class LGViewGroup extends LGView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGViewGroup(Context context)
+	public LGViewGroup(LuaContext context)
 	{
 		super(context);
 	}
@@ -48,7 +48,7 @@ public class LGViewGroup extends LGView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGViewGroup(Context context, String luaId)
+	public LGViewGroup(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -56,7 +56,7 @@ public class LGViewGroup extends LGView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGViewGroup(Context context, AttributeSet attrs)
+	public LGViewGroup(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -64,7 +64,7 @@ public class LGViewGroup extends LGView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGViewGroup(Context context, AttributeSet attrs, int defStyle)
+	public LGViewGroup(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}

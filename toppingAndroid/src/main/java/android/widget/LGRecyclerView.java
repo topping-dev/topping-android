@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
+import dev.topping.android.luagui.LuaContext;
 
 @LuaClass(className = "LGRecyclerView")
 public class LGRecyclerView extends LGView
@@ -14,9 +15,20 @@ public class LGRecyclerView extends LGView
     private LinearLayoutManager mLayoutManager;
 
     /**
+     * Creates LGRecyclerView Object From Lua.
+     * @param lc
+     * @return LGRecyclerView
+     */
+    @LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGRecyclerView.class)
+    public static LGRecyclerView Create(LuaContext lc)
+    {
+        return new LGRecyclerView(lc);
+    }
+
+    /**
      * (Ignore)
      */
-    public LGRecyclerView(Context context)
+    public LGRecyclerView(LuaContext context)
     {
         super(context);
     }
@@ -24,7 +36,7 @@ public class LGRecyclerView extends LGView
     /**
      * (Ignore)
      */
-    public LGRecyclerView(Context context, String luaId)
+    public LGRecyclerView(LuaContext context, String luaId)
     {
         super(context, luaId);
     }
@@ -32,7 +44,7 @@ public class LGRecyclerView extends LGView
     /**
      * (Ignore)
      */
-    public LGRecyclerView(Context context, AttributeSet attrs)
+    public LGRecyclerView(LuaContext context, AttributeSet attrs)
     {
         super(context, attrs);
     }
@@ -40,7 +52,7 @@ public class LGRecyclerView extends LGView
     /**
      * (Ignore)
      */
-    public LGRecyclerView(Context context, AttributeSet attrs, int defStyle)
+    public LGRecyclerView(LuaContext context, AttributeSet attrs, int defStyle)
     {
         super(context, attrs, defStyle);
     }
@@ -50,19 +62,25 @@ public class LGRecyclerView extends LGView
      */
     public void Setup(Context context)
     {
-        view = new RecyclerView(context);
+        view = lc.GetLayoutInflater().createView(context, "RecyclerView");
+        if(view == null)
+            view = new RecyclerView(context);
     }
 
     @Override
     public void Setup(Context context, AttributeSet attrs)
     {
-        view = new RecyclerView(context, attrs);
+        view = lc.GetLayoutInflater().createView(context, "RecyclerView", attrs);
+        if(view == null)
+            view = new RecyclerView(context, attrs);
     }
 
     @Override
     public void Setup(Context context, AttributeSet attrs, int defStyle)
     {
-        view = new RecyclerView(context, attrs, defStyle);
+        view = lc.GetLayoutInflater().createView(context, "RecyclerView", attrs);
+        if(view == null)
+            view = new RecyclerView(context, attrs, defStyle);
     }
 
     @Override

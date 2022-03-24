@@ -1,8 +1,19 @@
 package dev.topping.android;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+
+import androidx.core.content.ContextCompat;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
+import dev.topping.android.luagui.LuaRef;
 import dev.topping.android.osspecific.Defines;
 
 /**
@@ -105,6 +116,35 @@ public class LuaResource implements LuaInterface
 				return ls;
 			}
 		}
+	}
+
+	/**
+	 * This function gets resource based on defines.lua config
+	 * @param ref LuaRef resource reference
+	 * @return LuaStream of resource
+	 */
+	@LuaFunction(manual = false, methodName = "GetResourceRef", self = LuaResource.class, arguments = { LuaRef.class })
+	public static LuaStream GetResourceRef(LuaRef ref)
+	{
+		LuaStream ls = new LuaStream();
+		Context context = ToppingEngine.getInstance().GetContext();
+		String resourceTypeName = context.getResources().getResourceTypeName(ref.getRef());
+		if(resourceTypeName.equals("drawable"))
+		{
+			Drawable value = ContextCompat.getDrawable(context, ref.getRef());
+			if(value instanceof BitmapDrawable)
+			{
+				BitmapDrawable bitDw = ((BitmapDrawable) value);
+				Bitmap bitmap = bitDw.getBitmap();
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+				byte[] imageInByte = stream.toByteArray();
+				System.out.println("........length......" + imageInByte);
+				ByteArrayInputStream bis = new ByteArrayInputStream(imageInByte);
+				ls.SetStream(bis);
+			}
+		}
+		return ls;
 	}
 
 	/**

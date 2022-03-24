@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import dev.topping.android.LuaTranslator;
 import dev.topping.android.backend.LuaClass;
@@ -33,13 +35,13 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGComboBox.class)
 	public static LGComboBox Create(LuaContext lc)
 	{
-		return new LGComboBox(lc.GetContext());
+		return new LGComboBox(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGComboBox(Context context)
+	public LGComboBox(LuaContext context)
 	{
 		super(context);
 	}
@@ -47,7 +49,7 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGComboBox(Context context, String luaId)
+	public LGComboBox(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -55,7 +57,7 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGComboBox(Context context, AttributeSet attrs)
+	public LGComboBox(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -63,7 +65,7 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGComboBox(Context context, AttributeSet attrs, int defStyle)
+	public LGComboBox(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}
@@ -73,7 +75,9 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = new Spinner(context);
+		view = lc.GetLayoutInflater().createView(context, "Spinner");
+		if(view == null)
+			view = new Spinner(context);
 	}
 
 	/**
@@ -81,7 +85,9 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new Spinner(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "Spinner", attrs);
+		if(view == null)
+			view = new Spinner(context, attrs);
 	}
 
 	/**
@@ -89,7 +95,9 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = new Spinner(context, attrs, defStyle);
+		view = lc.GetLayoutInflater().createView(context, "Spinner", attrs);
+		if(view == null)
+			view = new Spinner(context, attrs, defStyle);
 	}
 
 	/**
@@ -109,21 +117,30 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	 * @param id of combobox
 	 * @param tag
 	 */
-	@LuaFunction(manual = false, methodName = "AddComboItem", arguments = { String.class, Object.class })
-	public void AddComboItem(String id, Object tag)
+	@LuaFunction(manual = false, methodName = "AddItem", arguments = { String.class, Object.class })
+	public void AddItem(String id, Object tag)
 	{
 		ComboData cd = new ComboData();
 		cd.name = id;
 		cd.tag = tag;
 		mAdapter.add(cd);
-		Defaults.RunOnUiThread(new Runnable()
+	}
+
+	/**
+	 * Add combo item to combobox
+	 * @param id of combobox
+	 * @param tag
+	 */
+	@LuaFunction(manual = false, methodName = "SetItems", arguments = { Object.class })
+	public void SetItems(Object values)
+	{
+		if(values instanceof HashMap)
 		{
-			@Override
-			public void run()
+			for(Map.Entry<Object, Object> entry : ((HashMap<Object, Object>)values).entrySet())
 			{
-				mAdapter.notifyDataSetChanged();
+				AddItem((String) entry.getKey(), entry.getValue());
 			}
-		});
+		}
 	}
 
 	/**

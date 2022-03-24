@@ -22,13 +22,13 @@ public class LGRadioButton extends LGCompoundButton implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGRadioButton.class)
 	public static LGRadioButton Create(LuaContext lc)
 	{
-		return new LGRadioButton(lc.GetContext());
+		return new LGRadioButton(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGRadioButton(Context context)
+	public LGRadioButton(LuaContext context)
 	{
 		super(context);
 	}
@@ -36,7 +36,7 @@ public class LGRadioButton extends LGCompoundButton implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGRadioButton(Context context, String luaId)
+	public LGRadioButton(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -44,7 +44,7 @@ public class LGRadioButton extends LGCompoundButton implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGRadioButton(Context context, AttributeSet attrs)
+	public LGRadioButton(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -52,7 +52,7 @@ public class LGRadioButton extends LGCompoundButton implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGRadioButton(Context context, AttributeSet attrs, int defStyle)
+	public LGRadioButton(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}
@@ -62,7 +62,9 @@ public class LGRadioButton extends LGCompoundButton implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = new RadioButton(context);
+		view = lc.GetLayoutInflater().createView(context, "RadioButton");
+		if(view == null)
+			view = new RadioButton(context);
 	}
 
 	/**
@@ -70,7 +72,9 @@ public class LGRadioButton extends LGCompoundButton implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new RadioButton(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "RadioButton", attrs);
+		if(view == null)
+			view = new RadioButton(context, attrs);
 	}
 
 	/**
@@ -78,6 +82,8 @@ public class LGRadioButton extends LGCompoundButton implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = new RadioButton(context, attrs, defStyle);
+		view = lc.GetLayoutInflater().createView(context, "RadioButton", attrs);
+		if(view == null)
+			view = new RadioButton(context, attrs, defStyle);
 	}
 }

@@ -24,13 +24,13 @@ public class LGCheckBox extends LGCompoundButton implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGCheckBox.class)
 	public static LGCheckBox Create(LuaContext lc)
 	{
-		return new LGCheckBox(lc.GetContext());
+		return new LGCheckBox(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGCheckBox(Context context)
+	public LGCheckBox(LuaContext context)
 	{
 		super(context);
 	}
@@ -38,7 +38,7 @@ public class LGCheckBox extends LGCompoundButton implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGCheckBox(Context context, String luaId)
+	public LGCheckBox(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -46,7 +46,7 @@ public class LGCheckBox extends LGCompoundButton implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGCheckBox(Context context, AttributeSet attrs)
+	public LGCheckBox(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -54,7 +54,7 @@ public class LGCheckBox extends LGCompoundButton implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGCheckBox(Context context, AttributeSet attrs, int defStyle)
+	public LGCheckBox(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}
@@ -64,7 +64,9 @@ public class LGCheckBox extends LGCompoundButton implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = new CheckBox(context);
+		view = lc.GetLayoutInflater().createView(context, "CheckBox");
+		if(view == null)
+			view = new CheckBox(context);
 	}
 
 	/**
@@ -72,7 +74,9 @@ public class LGCheckBox extends LGCompoundButton implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new CheckBox(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "CheckBox", attrs);
+		if(view == null)
+			view = new CheckBox(context, attrs);
 	}
 
 	/**
@@ -80,7 +84,9 @@ public class LGCheckBox extends LGCompoundButton implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = new CheckBox(context, attrs, defStyle);
+		view = lc.GetLayoutInflater().createView(context, "CheckBox", attrs);
+		if(view == null)
+			view = new CheckBox(context, attrs, defStyle);
 	}
 
 	/**

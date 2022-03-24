@@ -22,13 +22,13 @@ public class LGHorizontalScrollView extends LGFrameLayout implements LuaInterfac
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGHorizontalScrollView.class)
 	public static LGHorizontalScrollView Create(LuaContext lc)
 	{
-		return new LGHorizontalScrollView(lc.GetContext());
+		return new LGHorizontalScrollView(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGHorizontalScrollView(Context context)
+	public LGHorizontalScrollView(LuaContext context)
 	{
 		super(context);
 	}
@@ -36,7 +36,7 @@ public class LGHorizontalScrollView extends LGFrameLayout implements LuaInterfac
 	/**
 	 * (Ignore)
 	 */
-	public LGHorizontalScrollView(Context context, String luaId)
+	public LGHorizontalScrollView(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -44,7 +44,7 @@ public class LGHorizontalScrollView extends LGFrameLayout implements LuaInterfac
 	/**
 	 * (Ignore)
 	 */
-	public LGHorizontalScrollView(Context context, AttributeSet attrs)
+	public LGHorizontalScrollView(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -52,7 +52,7 @@ public class LGHorizontalScrollView extends LGFrameLayout implements LuaInterfac
 	/**
 	 * (Ignore)
 	 */
-	public LGHorizontalScrollView(Context context, AttributeSet attrs, int defStyle)
+	public LGHorizontalScrollView(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}
@@ -62,7 +62,9 @@ public class LGHorizontalScrollView extends LGFrameLayout implements LuaInterfac
 	 */
 	public void Setup(Context context)
 	{
-		view = new HorizontalScrollView(context);
+		view = lc.GetLayoutInflater().createView(context, "HorizontalScrollView");
+		if(view == null)
+			view = new HorizontalScrollView(context);
 	}
 
 	/**
@@ -70,7 +72,9 @@ public class LGHorizontalScrollView extends LGFrameLayout implements LuaInterfac
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new HorizontalScrollView(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "HorizontalScrollView", attrs);
+		if(view == null)
+			view = new HorizontalScrollView(context, attrs);
 	}
 
 	/**
@@ -78,6 +82,8 @@ public class LGHorizontalScrollView extends LGFrameLayout implements LuaInterfac
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = new HorizontalScrollView(context, attrs, defStyle);
+		view = lc.GetLayoutInflater().createView(context, "HorizontalScrollView", attrs);
+		if(view == null)
+			view = new HorizontalScrollView(context, attrs, defStyle);
 	}
 }

@@ -22,13 +22,13 @@ public class LGCompoundButton extends LGButton implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGCompoundButton.class)
 	public static LGCompoundButton Create(LuaContext lc)
 	{
-		return new LGCompoundButton(lc.GetContext());
+		return new LGCompoundButton(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGCompoundButton(Context context)
+	public LGCompoundButton(LuaContext context)
 	{
 		super(context);
 	}
@@ -36,7 +36,7 @@ public class LGCompoundButton extends LGButton implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGCompoundButton(Context context, String luaId)
+	public LGCompoundButton(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -44,7 +44,7 @@ public class LGCompoundButton extends LGButton implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGCompoundButton(Context context, AttributeSet attrs)
+	public LGCompoundButton(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -52,7 +52,7 @@ public class LGCompoundButton extends LGButton implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGCompoundButton(Context context, AttributeSet attrs, int defStyle)
+	public LGCompoundButton(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}

@@ -21,6 +21,7 @@ import dev.topping.android.ToppingEngine;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
+import dev.topping.android.osspecific.ClassCache;
 
 import static com.naef.jnlua.Lua.LUA_ENVIRONINDEX;
 import static com.naef.jnlua.Lua.LUA_GLOBALSINDEX;
@@ -249,7 +250,7 @@ public class LuaRef implements LuaInterface
                 {
                     try
                     {
-                        rClass = Class.forName(s);
+                        rClass = ClassCache.forName(s);
                         break;
                     }
                     catch (ClassNotFoundException e)

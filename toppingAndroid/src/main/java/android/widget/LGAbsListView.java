@@ -25,13 +25,13 @@ public class LGAbsListView extends LGViewGroup implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGAbsListView.class)
 	public static LGAbsListView Create(LuaContext lc)
 	{
-		return new LGAbsListView(lc.GetContext());
+		return new LGAbsListView(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGAbsListView(Context context)
+	public LGAbsListView(LuaContext context)
 	{
 		super(context);
 	}
@@ -39,7 +39,7 @@ public class LGAbsListView extends LGViewGroup implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGAbsListView(Context context, String luaId)
+	public LGAbsListView(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -47,7 +47,7 @@ public class LGAbsListView extends LGViewGroup implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGAbsListView(Context context, AttributeSet attrs)
+	public LGAbsListView(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -55,7 +55,7 @@ public class LGAbsListView extends LGViewGroup implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGAbsListView(Context context, AttributeSet attrs, int defStyle)
+	public LGAbsListView(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}

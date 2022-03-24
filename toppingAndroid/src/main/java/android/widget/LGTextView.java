@@ -3,6 +3,7 @@ package android.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import dev.topping.android.LuaResource;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
@@ -21,7 +22,7 @@ public class LGTextView extends LGView implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGTextView.class)
 	public static LGTextView Create(LuaContext lc)
 	{
-		LGTextView tv = new LGTextView(lc.GetContext());
+		LGTextView tv = new LGTextView(lc);
 		tv.view.setTag(tv);
 		return tv;
 	}
@@ -29,7 +30,7 @@ public class LGTextView extends LGView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGTextView(Context context)
+	public LGTextView(LuaContext context)
 	{
 		super(context);
 	}
@@ -37,7 +38,7 @@ public class LGTextView extends LGView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGTextView(Context context, String luaId)
+	public LGTextView(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -45,7 +46,7 @@ public class LGTextView extends LGView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGTextView(Context context, AttributeSet attrs)
+	public LGTextView(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -53,7 +54,7 @@ public class LGTextView extends LGView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGTextView(Context context, AttributeSet attrs, int defStyle)
+	public LGTextView(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs);
 	}
@@ -63,7 +64,9 @@ public class LGTextView extends LGView implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = new TextView(context);
+		view = lc.GetLayoutInflater().createView(context, "TextView");
+		if(view == null)
+			view = new TextView(context);
 	}
 
 	/**
@@ -71,7 +74,9 @@ public class LGTextView extends LGView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new TextView(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "TextView", attrs);
+		if(view == null)
+			view = new TextView(context, attrs);
 	}
 
 	/**
@@ -79,7 +84,9 @@ public class LGTextView extends LGView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = new TextView(context, attrs, defStyle);
+		view = lc.GetLayoutInflater().createView(context, "TextView", attrs);
+		if(view == null)
+			view = new TextView(context, attrs, defStyle);
 	}
 
 	/**
@@ -94,7 +101,7 @@ public class LGTextView extends LGView implements LuaInterface
 
 	/**
 	 * Sets the text from ref
-	 * @param refVal
+	 * @param ref
 	 */
 	@LuaFunction(manual = false, methodName = "SetTextRef", arguments = { LuaRef.class })
 	public void SetTextRef(LuaRef ref) {
@@ -119,5 +126,15 @@ public class LGTextView extends LGView implements LuaInterface
 	public void SetTextColor(String color)
 	{
 		((TextView)view).setTextColor(LuaViewInflator.parseColor(lc, color));
+	}
+
+	/**
+	 * Sets the text color
+	 * @param colorRef
+	 */
+	@LuaFunction(manual = false, methodName = "SetTextColorRef", arguments = { String.class })
+	public void SetTextColorRef(LuaRef colorRef)
+	{
+		((TextView)view).setTextColor(lc.GetContext().getResources().getColor(colorRef.getRef()));
 	}
 }

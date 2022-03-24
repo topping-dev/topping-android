@@ -32,13 +32,13 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGDatePicker.class)
 	public static LGDatePicker Create(LuaContext lc)
 	{
-		return new LGDatePicker(lc.GetContext());
+		return new LGDatePicker(lc);
 	}
 	
 	/**
 	 * (Ignore)
 	 */
-	public LGDatePicker(Context context)
+	public LGDatePicker(LuaContext context)
 	{
 		super(context);
 	}
@@ -46,7 +46,7 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGDatePicker(Context context, String luaId)
+	public LGDatePicker(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -54,7 +54,7 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGDatePicker(Context context, AttributeSet attrs)
+	public LGDatePicker(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -62,7 +62,7 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGDatePicker(Context context, AttributeSet attrs, int defStyle)
+	public LGDatePicker(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}
@@ -72,7 +72,9 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = new DatePicker(context);
+		view = lc.GetLayoutInflater().createView(context, "DatePicker");
+		if(view == null)
+			view = new DatePicker(context);
 	}
 
 	/**
@@ -80,7 +82,9 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new DatePicker(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "DatePicker", attrs);
+		if(view == null)
+			view = new DatePicker(context, attrs);
 	}
 
 	/**
@@ -88,7 +92,9 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = new DatePicker(context, attrs, defStyle);
+		view = lc.GetLayoutInflater().createView(context, "DatePicker", attrs);
+		if(view == null)
+			view = new DatePicker(context, attrs, defStyle);
 	}
 
 	/**

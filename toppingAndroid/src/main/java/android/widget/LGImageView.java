@@ -26,7 +26,7 @@ public class LGImageView extends LGView implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class, String.class }, self = LGImageView.class)
 	public static LGImageView Create(LuaContext lc, String luaId)
 	{
-		LGImageView iv = new LGImageView(lc.GetContext());
+		LGImageView iv = new LGImageView(lc);
 		iv.luaId = luaId;
 		iv.view.setTag(iv);
 		return iv;
@@ -35,7 +35,7 @@ public class LGImageView extends LGView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGImageView(Context context)
+	public LGImageView(LuaContext context)
 	{
 		super(context);
 	}
@@ -43,7 +43,7 @@ public class LGImageView extends LGView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGImageView(Context context, String luaId)
+	public LGImageView(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -51,7 +51,7 @@ public class LGImageView extends LGView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGImageView(Context context, AttributeSet attrs)
+	public LGImageView(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -59,7 +59,7 @@ public class LGImageView extends LGView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGImageView(Context context, AttributeSet attrs, int defStyle)
+	public LGImageView(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs);
 	}
@@ -69,7 +69,9 @@ public class LGImageView extends LGView implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = new ImageView(context);
+		view = lc.GetLayoutInflater().createView(context, "ImageView");
+		if(view == null)
+			view = new ImageView(context);
 	}
 
 	/**
@@ -77,7 +79,9 @@ public class LGImageView extends LGView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new ImageView(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "ImageView", attrs);
+		if(view == null)
+			view = new ImageView(context, attrs);
 	}
 
 	/**
@@ -85,7 +89,9 @@ public class LGImageView extends LGView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = new ImageView(context, attrs, defStyle);
+		view = lc.GetLayoutInflater().createView(context, "ImageView", attrs);
+		if(view == null)
+			view = new ImageView(context, attrs, defStyle);
 	}
 
 	/**

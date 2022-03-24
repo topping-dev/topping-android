@@ -2,6 +2,10 @@ package android.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
+
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.LayoutInflaterCompat;
 
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
@@ -22,13 +26,13 @@ public class LGButton extends LGTextView implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGButton.class)
 	public static LGButton Create(LuaContext lc)
 	{
-		return new LGButton(lc.GetContext());
+		return new LGButton(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGButton(Context context)
+	public LGButton(LuaContext context)
 	{
 		super(context);
 	}
@@ -36,7 +40,7 @@ public class LGButton extends LGTextView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGButton(Context context, String luaId)
+	public LGButton(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -44,7 +48,7 @@ public class LGButton extends LGTextView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGButton(Context context, AttributeSet attrs)
+	public LGButton(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -52,7 +56,7 @@ public class LGButton extends LGTextView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGButton(Context context, AttributeSet attrs, int defStyle)
+	public LGButton(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}
@@ -62,7 +66,9 @@ public class LGButton extends LGTextView implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = new Button(context);
+		view = lc.GetLayoutInflater().createView(context, "Button");
+		if(view == null)
+			view = new Button(context);
 	}
 
 	/**
@@ -70,7 +76,9 @@ public class LGButton extends LGTextView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new Button(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "Button", attrs);
+		if(view == null)
+			view = new Button(context, attrs);
 	}
 
 	/**
@@ -78,6 +86,8 @@ public class LGButton extends LGTextView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = new Button(context, attrs, defStyle);
+		view = lc.GetLayoutInflater().createView(context, "Button", attrs);
+		if(view == null)
+			view = new Button(context, attrs, defStyle);
 	}
 }

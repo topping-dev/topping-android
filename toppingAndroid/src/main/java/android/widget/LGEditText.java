@@ -29,13 +29,13 @@ public class LGEditText extends LGTextView implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGEditText.class)
 	public static LGEditText Create(LuaContext lc)
 	{
-		return new LGEditText(lc.GetContext());
+		return new LGEditText(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGEditText(Context context)
+	public LGEditText(LuaContext context)
 	{
 		super(context);
 	}
@@ -43,7 +43,7 @@ public class LGEditText extends LGTextView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGEditText(Context context, String luaId)
+	public LGEditText(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -51,7 +51,7 @@ public class LGEditText extends LGTextView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGEditText(Context context, AttributeSet attrs)
+	public LGEditText(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -59,7 +59,7 @@ public class LGEditText extends LGTextView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGEditText(Context context, AttributeSet attrs, int defStyle)
+	public LGEditText(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}
@@ -69,7 +69,9 @@ public class LGEditText extends LGTextView implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = new EditText(context);
+		view = lc.GetLayoutInflater().createView(context, "EditText");
+		if(view == null)
+			view = new EditText(context);
 	}
 
 	/**
@@ -77,7 +79,9 @@ public class LGEditText extends LGTextView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new EditText(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "EditText", attrs);
+		if(view == null)
+			view = new EditText(context, attrs);
 	}
 
 	/**
@@ -85,7 +89,9 @@ public class LGEditText extends LGTextView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = new EditText(context, attrs, defStyle);
+		view = lc.GetLayoutInflater().createView(context, "EditText", attrs);
+		if(view == null)
+			view = new EditText(context, attrs, defStyle);
 	}
 	
 	private void InitEvents()

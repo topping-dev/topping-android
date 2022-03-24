@@ -19,13 +19,13 @@ public class LGScrollView extends LGFrameLayout implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGScrollView.class)
 	public static LGScrollView Create(LuaContext lc)
 	{
-		return new LGScrollView(lc.GetContext());
+		return new LGScrollView(lc);
 	}
 	
 	/**
 	 * (Ignore)
 	 */	
-	public LGScrollView(Context context)
+	public LGScrollView(LuaContext context)
 	{
 		super(context);
 	}
@@ -33,7 +33,7 @@ public class LGScrollView extends LGFrameLayout implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGScrollView(Context context, String luaId)
+	public LGScrollView(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -41,7 +41,7 @@ public class LGScrollView extends LGFrameLayout implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGScrollView(Context context, AttributeSet attrs)
+	public LGScrollView(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -49,7 +49,7 @@ public class LGScrollView extends LGFrameLayout implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-    public LGScrollView(Context context, AttributeSet attrs, int defStyle)
+    public LGScrollView(LuaContext context, AttributeSet attrs, int defStyle)
     {
     	super(context, attrs, defStyle);
     }
@@ -59,7 +59,9 @@ public class LGScrollView extends LGFrameLayout implements LuaInterface
 	 */
     public void Setup(Context context)
     {
-    	view = new ScrollView(context);
+		view = lc.GetLayoutInflater().createView(context, "ScrollView");
+		if(view == null)
+			view = new ScrollView(context);
     }
 	
 	/**
@@ -67,7 +69,9 @@ public class LGScrollView extends LGFrameLayout implements LuaInterface
 	 */
     public void Setup(Context context, AttributeSet attrs)
     {
-    	view = new ScrollView(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "ScrollView", attrs);
+		if(view == null)
+			view = new ScrollView(context, attrs);
     }
 	
 	/**
@@ -75,6 +79,8 @@ public class LGScrollView extends LGFrameLayout implements LuaInterface
 	 */
     public void Setup(Context context, AttributeSet attrs, int defStyle)
     {
-    	view = new ScrollView(context, attrs, defStyle);
+		view = lc.GetLayoutInflater().createView(context, "ScrollView", attrs);
+		if(view == null)
+			view = new ScrollView(context, attrs, defStyle);
     }
 }

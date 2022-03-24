@@ -42,50 +42,54 @@ public class LGView extends Object implements LuaInterface, Serializable
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGView.class)
 	public static LGView Create(LuaContext lc)
 	{
-		return new LGView(lc.GetContext());
+		return new LGView(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGView(Context context)
+	public LGView(LuaContext context)
 	{
-		//super(context);
-		Setup(context);
-		AfterSetup(context);
+		this.lc = context;
+		BeforeSetup(context.GetContext());
+		Setup(context.GetContext());
+		AfterSetup(context.GetContext());
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGView(Context context, String luaId)
+	public LGView(LuaContext context, String luaId)
 	{
-		//super(context);
+		this.lc = context;
 		this.luaId = luaId;
-		Setup(context);
-		AfterSetup(context);
+		BeforeSetup(context.GetContext());
+		Setup(context.GetContext());
+		AfterSetup(context.GetContext());
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGView(Context context, AttributeSet attrs)
+	public LGView(LuaContext context, AttributeSet attrs)
 	{
-		//super(context, attrs);
+		this.lc = context;
 		this.attrs = attrs;
-		Setup(context, attrs);
-		AfterSetup(context);
+		BeforeSetup(context.GetContext());
+		Setup(context.GetContext(), attrs);
+		AfterSetup(context.GetContext());
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGView(Context context, AttributeSet attrs, int defStyle)
+	public LGView(LuaContext context, AttributeSet attrs, int defStyle)
 	{
-		//super(context, attrs);
+		this.lc = context;
 		this.attrs = attrs;
-		Setup(context, attrs);
-		AfterSetup(context);
+		BeforeSetup(context.GetContext());
+		Setup(context.GetContext(), attrs);
+		AfterSetup(context.GetContext());
 	}
 
 	/**
@@ -93,7 +97,9 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 */
 	public void Setup(Context context)
 	{
-		view = new View(context);
+		view = lc.GetLayoutInflater().createView(context, "View");
+		if(view == null)
+			view = new View(context);
 	}
 
 	/**
@@ -101,7 +107,9 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new View(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "View", attrs);
+		if(view == null)
+			view = new View(context, attrs);
 	}
 
 	/**
@@ -109,7 +117,16 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = new View(context, attrs, defStyle);
+		view = lc.GetLayoutInflater().createView(context, "View", attrs);
+		if(view == null)
+			view = new View(context, attrs, defStyle);
+	}
+
+	/**
+	 * (Ignore)
+	 */
+	public void BeforeSetup(Context context)
+	{
 	}
 
 	/**
@@ -117,7 +134,6 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 */
 	public void AfterSetup(Context context)
 	{
-		lc = LuaContext.CreateLuaContext(context);
 	}
 
 
@@ -286,11 +302,14 @@ public class LGView extends Object implements LuaInterface, Serializable
 		String customId = (String) view.getTag(-1);
 		if(customId == null)
 		{
-			//TODO:Check this
 			TypedArray a = view.getContext().obtainStyledAttributes(attrs, R.styleable.lua, 0, 0);
-			String str = a.getString(R.styleable.lua_id);
+			customId = a.getString(R.styleable.lua_id);
 			a.recycle();
-			return str;
+		}
+		if(customId == null)
+		{
+			if (view.getId() != View.NO_ID)
+				customId = view.getResources().getResourceEntryName(view.getId());
 		}
 		return customId;
 	}

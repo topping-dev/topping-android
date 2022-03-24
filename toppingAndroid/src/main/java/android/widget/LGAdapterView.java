@@ -1,10 +1,14 @@
 package android.widget;
 
 import android.graphics.Color;
+import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -16,18 +20,20 @@ import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.DisplayMetrics;
 import dev.topping.android.luagui.LuaContext;
+import dev.topping.android.luagui.LuaRef;
 
 /**
  * AdapterView
  */
 @LuaClass(className = "LGAdapterView")
-public class LGAdapterView extends BaseAdapter implements SectionIndexer, LuaInterface
+public class LGAdapterView extends BaseAdapter implements Filterable, SpinnerAdapter, SectionIndexer, LuaInterface
 {
 	public Map<String, Adapter> sections = new LinkedHashMap<String,Adapter>();
 	public final ArrayAdapter<String> headers;
 	public ArrayList<String> sectionsValues = new ArrayList<String>();
-	public LinkedHashMap<Integer, Object> values = new LinkedHashMap<Integer, Object>();
+	public ArrayList<Object> values = new ArrayList<>();
 	public final static int TYPE_SECTION_HEADER = 0;
+	public Object parent;
 
 	private LuaContext mLc;
 	private String id;
@@ -36,6 +42,12 @@ public class LGAdapterView extends BaseAdapter implements SectionIndexer, LuaInt
 	private LGView lastSelectedView = null;
 	private int lastPosition = -1;
 	private LuaTranslator ltOnAdapterView;
+
+	private LayoutInflater mInflater;
+	private final Object mLock = new Object();
+	private ArrayList<Object> mOriginalValues = new ArrayList<>();
+	private ArrayFilter mFilter;
+	private int mDropDownResource = android.R.layout.simple_dropdown_item_1line;
 
 	/**
 	 * Creates LGAdapterView Object From Lua.
@@ -53,7 +65,6 @@ public class LGAdapterView extends BaseAdapter implements SectionIndexer, LuaInt
 	 */
 	public LGAdapterView(LuaContext lc, String id)
 	{
-		//mInflater = (LayoutInflater)lc.GetContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mLc = lc;
 		this.id = id;
 		this.headers = null;
@@ -98,7 +109,7 @@ public class LGAdapterView extends BaseAdapter implements SectionIndexer, LuaInt
 			}
 		}
 		else
-			return (Object) values.values().toArray()[position];
+			return (Object) values.get(position);
 		return null;
 	}
 
@@ -137,24 +148,31 @@ public class LGAdapterView extends BaseAdapter implements SectionIndexer, LuaInt
 		else
 		{
 			View v = convertView;
-			if(v != null && v instanceof ViewGroup)
+			if(v instanceof ViewGroup)
 				((ViewGroup)v).removeAllViews();
 
-			LGView vF = (LGView) ltOnAdapterView.CallIn(par, position, getItem(position), v, mLc);
-			v = vF.view;
+			LGView vF;
+			if(ltOnAdapterView != null) {
+				vF = (LGView) ltOnAdapterView.CallIn(par, position, getItem(position), v, mLc);
+				int rot = mLc.GetContext().getResources().getConfiguration().orientation;
+				if(DisplayMetrics.isTablet && rot == Surface.ROTATION_90 && position == lastPosition)
+				{
+					if(lastSelectedView == null)
+						lastSelectedView  = vF;
+					v.setBackgroundColor(par.GetSelectedCellColor());
+				}
+				else
+					v.setBackgroundColor(Color.TRANSPARENT);
 
-			int rot = mLc.GetContext().getResources().getConfiguration().orientation;
-			if(DisplayMetrics.isTablet && rot == Surface.ROTATION_90 && position == lastPosition)
-			{
-				if(lastSelectedView == null)
-					lastSelectedView  = vF;
-				v.setBackgroundColor(par.GetSelectedCellColor());
+				LayoutParams lps = vF.view.getLayoutParams();
+				v.setLayoutParams(new AbsListView.LayoutParams(lps.width, lps.height));
 			}
 			else
-				v.setBackgroundColor(Color.TRANSPARENT);
-
-			LayoutParams lps = vF.view.getLayoutParams();
-			v.setLayoutParams(new AbsListView.LayoutParams(lps.width, lps.height));
+			{
+				vF = LGView.Create(mLc);
+				vF.view = getDropDownView(position, convertView, parent);
+			}
+			v = vF.view;
 			//v.view.setLayoutParams(new LinearLayout.LayoutParams(lps.width, lps.height));
 			/*v.addView(v.view);
 			v.PrintDescription("");
@@ -239,6 +257,16 @@ public class LGAdapterView extends BaseAdapter implements SectionIndexer, LuaInt
 	/**
 	 * (Ignore)
 	 */
+	@Override
+	public View getDropDownView(int position, View convertView, ViewGroup parent) {
+		if(mInflater == null)
+			mInflater = LayoutInflater.from(mLc.GetContext());
+		return createViewFromResource(mInflater, position, convertView, parent, mDropDownResource);
+	}
+
+	/**
+	 * (Ignore)
+	 */
 	public void DoExternalClick(int pos, View view)
 	{
 		if(ltItemChanged != null)
@@ -274,25 +302,39 @@ public class LGAdapterView extends BaseAdapter implements SectionIndexer, LuaInt
 
 	/**
 	 * Add Value to adapter
-	 * @param id of value
 	 * @param value
 	 */
-	@LuaFunction(manual = false, methodName = "AddValue", arguments = { Integer.class, Object.class })
-	public void AddValue(Integer id, Object value)
+	@LuaFunction(manual = false, methodName = "AddValue", arguments = { Object.class })
+	public void AddValue(Object value)
 	{
-		values.put(id, value);
-		notifyDataSetChanged();
+		values.add(value);
+		mOriginalValues.add(value);
 	}
 
 	/**
 	 * Remove Value from adapter
-	 * @param id of value
+	 * @param value
 	 */
-	@LuaFunction(manual = false, methodName = "RemoveValue", arguments = { Integer.class })
-	public void RemoveValue(Integer id)
+	@LuaFunction(manual = false, methodName = "RemoveValue", arguments = { Object.class })
+	public void RemoveValue(Object value)
 	{
-		values.remove(id);
-		notifyDataSetChanged();
+		values.remove(value);
+		mOriginalValues.remove(value);
+	}
+
+	/**
+	 * Set Values of adapter
+	 * @param values
+	 */
+	@LuaFunction(manual = false, methodName = "SetValues", arguments = { Object.class })
+	public void SetValues(Object values) {
+		if(values instanceof ArrayList)
+		{
+			for(Object entry : ((ArrayList<Object>)values))
+			{
+				AddValue(entry);
+			}
+		}
 	}
 
 	/**
@@ -302,7 +344,22 @@ public class LGAdapterView extends BaseAdapter implements SectionIndexer, LuaInt
 	public void Clear()
 	{
 		values.clear();
+		mOriginalValues.clear();
+	}
+
+	/**
+	 * Notify data set changed
+	 */
+	@LuaFunction(manual = false, methodName = "Notify")
+	public void Notify()
+	{
 		notifyDataSetChanged();
+	}
+
+	@LuaFunction(manual = false, methodName = "SetDropdownResource", arguments = { LuaRef.class })
+	public void SetDropdownResource(LuaRef ref)
+	{
+		mDropDownResource = ref.getRef();
 	}
 
 	/**
@@ -319,10 +376,123 @@ public class LGAdapterView extends BaseAdapter implements SectionIndexer, LuaInt
 	 * (Ignore)
 	 */
 	@Override
+	public Filter getFilter() {
+		if (mFilter == null) {
+			mFilter = new ArrayFilter();
+		}
+		return mFilter;
+	}
+
+	/**
+	 * (Ignore)
+	 */
+	@Override
 	public String GetId()
 	{
 		if(id == null)
 			return "LGAdapterView";
 		return id;
+	}
+
+	/**
+	 * (Ignore)
+	 */
+	private @NonNull View createViewFromResource(@NonNull LayoutInflater inflater, int position,
+								@Nullable View convertView, @NonNull ViewGroup parent, int resource) {
+		final View view;
+		final TextView text;
+		if (convertView == null) {
+			view = inflater.inflate(resource, parent, false);
+		} else {
+			view = convertView;
+		}
+		text = (TextView) view;
+		final Object item = getItem(position);
+		if (item instanceof CharSequence) {
+			text.setText((CharSequence) item);
+		} else {
+			text.setText(item.toString());
+		}
+		return view;
+	}
+
+	/**
+	 * (Ignore)
+	 */
+	@Override
+	public CharSequence[] getAutofillOptions() {
+		// First check if app developer explicitly set them.
+		final CharSequence[] explicitOptions = super.getAutofillOptions();
+		if (explicitOptions != null) {
+			return explicitOptions;
+		}
+		// Otherwise, only return options that came from static resources.
+		if (values == null || values.isEmpty()) {
+			return null;
+		}
+		final int size = values.size();
+		final CharSequence[] options = new CharSequence[size];
+		values.toArray(options);
+		return options;
+	}
+
+	/**
+	 * (Ignore)
+	 */
+	private class ArrayFilter extends Filter {
+		@Override
+		protected FilterResults performFiltering(CharSequence prefix) {
+			final FilterResults results = new FilterResults();
+			if (mOriginalValues == null) {
+				synchronized (mLock) {
+					mOriginalValues = new ArrayList<>(values);
+				}
+			}
+			if (prefix == null || prefix.length() == 0) {
+				final ArrayList<Object> list;
+				synchronized (mLock) {
+					list = new ArrayList<>(mOriginalValues);
+				}
+				results.values = list;
+				results.count = list.size();
+			} else {
+				final String prefixString = prefix.toString().toLowerCase();
+				final ArrayList<Object> values;
+				synchronized (mLock) {
+					values = new ArrayList<>(mOriginalValues);
+				}
+				final int count = values.size();
+				final ArrayList<Object> newValues = new ArrayList<>();
+				for (int i = 0; i < count; i++) {
+					final Object value = values.get(i);
+					final String valueText = value.toString().toLowerCase();
+					// First match against the whole, non-splitted value
+					if (valueText.startsWith(prefixString)) {
+						newValues.add(value);
+					} else {
+						final String[] words = valueText.split(" ");
+						for (String word : words) {
+							if (word.startsWith(prefixString)) {
+								newValues.add(value);
+								break;
+							}
+						}
+					}
+				}
+				results.values = newValues;
+				results.count = newValues.size();
+			}
+			return results;
+		}
+		@Override
+		protected void publishResults(CharSequence constraint, FilterResults results) {
+			//noinspection unchecked
+			values = (ArrayList<Object>) results.values;
+			if (results.count > 0) {
+				notifyDataSetChanged();
+			} else {
+				notifyDataSetInvalidated();
+			}
+		}
 	}
 }

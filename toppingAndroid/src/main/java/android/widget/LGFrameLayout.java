@@ -22,13 +22,13 @@ public class LGFrameLayout extends LGViewGroup implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGFrameLayout.class)
 	public static LGFrameLayout Create(LuaContext lc)
 	{
-		return new LGFrameLayout(lc.GetContext());
+		return new LGFrameLayout(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGFrameLayout(Context context)
+	public LGFrameLayout(LuaContext context)
 	{
 		super(context);
 	}
@@ -36,7 +36,7 @@ public class LGFrameLayout extends LGViewGroup implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGFrameLayout(Context context, String luaId)
+	public LGFrameLayout(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -44,7 +44,7 @@ public class LGFrameLayout extends LGViewGroup implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGFrameLayout(Context context, AttributeSet attrs)
+	public LGFrameLayout(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -52,7 +52,7 @@ public class LGFrameLayout extends LGViewGroup implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGFrameLayout(Context context, AttributeSet attrs, int defStyle)
+	public LGFrameLayout(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}
@@ -62,7 +62,9 @@ public class LGFrameLayout extends LGViewGroup implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = new FrameLayout(context);
+		view = lc.GetLayoutInflater().createView(context, "FrameLayout");
+		if(view == null)
+			view = new FrameLayout(context);
 	}
 
 	/**
@@ -70,7 +72,9 @@ public class LGFrameLayout extends LGViewGroup implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new FrameLayout(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "FrameLayout", attrs);
+		if(view == null)
+			view = new FrameLayout(context, attrs);
 	}
 
 	/**
@@ -78,6 +82,8 @@ public class LGFrameLayout extends LGViewGroup implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = new FrameLayout(context, attrs, defStyle);
+		view = lc.GetLayoutInflater().createView(context, "FrameLayout", attrs);
+		if(view == null)
+			view = new FrameLayout(context, attrs, defStyle);
 	}
 }

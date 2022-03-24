@@ -23,13 +23,13 @@ public class LGRadioGroup extends LGLinearLayout implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGRadioGroup.class)
 	public static LGRadioGroup Create(LuaContext lc)
 	{
-		return new LGRadioGroup(lc.GetContext());
+		return new LGRadioGroup(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGRadioGroup(Context context)
+	public LGRadioGroup(LuaContext context)
 	{
 		super(context);
 	}
@@ -37,7 +37,7 @@ public class LGRadioGroup extends LGLinearLayout implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGRadioGroup(Context context, String luaId)
+	public LGRadioGroup(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -45,7 +45,7 @@ public class LGRadioGroup extends LGLinearLayout implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGRadioGroup(Context context, AttributeSet attrs)
+	public LGRadioGroup(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -55,7 +55,9 @@ public class LGRadioGroup extends LGLinearLayout implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = new RadioGroup(context);
+		view = lc.GetLayoutInflater().createView(context, "RadioGroup");
+		if(view == null)
+			view = new RadioGroup(context);
 	}
 
 	/**
@@ -63,7 +65,9 @@ public class LGRadioGroup extends LGLinearLayout implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new RadioGroup(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "RadioGroup", attrs);
+		if(view == null)
+			view = new RadioGroup(context, attrs);
 	}
 
 	/**

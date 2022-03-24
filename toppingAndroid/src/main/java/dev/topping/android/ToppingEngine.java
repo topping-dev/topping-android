@@ -19,7 +19,6 @@ import android.widget.LGEditText;
 import android.widget.LGFrameLayout;
 import android.widget.LGLinearLayout;
 import android.widget.LGListView;
-import android.widget.LGMapView;
 import android.widget.LGProgressBar;
 import android.widget.LGRadioButton;
 import android.widget.LGRadioGroup;
@@ -465,7 +464,8 @@ public class ToppingEngine
 								@Override
 								public void run()
 								{
-									loadDialog.setProgress((loadDialog.getMax() * countF) / rtnF.length);
+									if(loadDialog != null)
+										loadDialog.setProgress((loadDialog.getMax() * countF) / rtnF.length);
 								}
 							});
 						}
@@ -574,7 +574,8 @@ public class ToppingEngine
 								@Override
 								public void run()
 								{
-									loadDialog.setProgress((loadDialog.getMax() * countF) / filesF.length);
+									if(loadDialog != null)
+										loadDialog.setProgress((loadDialog.getMax() * countF) / filesF.length);
 								}
 							});
 						}
@@ -1092,7 +1093,6 @@ public class ToppingEngine
 		tasker.AddToQueue(LGFrameLayout.class);
 		tasker.AddToQueue(LGLinearLayout.class);
 		tasker.AddToQueue(LGListView.class);
-		tasker.AddToQueue(LGMapView.class);
 		tasker.AddToQueue(LGProgressBar.class);
 		tasker.AddToQueue(LGRadioButton.class);
 		tasker.AddToQueue(LGRadioGroup.class);
@@ -1115,11 +1115,6 @@ public class ToppingEngine
 		tasker.AddToQueue(LuaDefines.class);
 		tasker.AddToQueue(LuaFragment.class);
 		tasker.AddToQueue(LuaForm.class);
-		tasker.AddToQueue(LuaMapCircle.class);
-		tasker.AddToQueue(LuaMapImage.class);
-		tasker.AddToQueue(LuaMapMarker.class);
-		tasker.AddToQueue(LuaMapPolygon.class);
-		tasker.AddToQueue(LuaMapPolyline.class);
 		tasker.AddToQueue(LuaNativeObject.class);
 		tasker.AddToQueue(LuaObjectStore.class);
 		tasker.AddToQueue(LuaNativeCall.class);
@@ -1187,7 +1182,6 @@ public class ToppingEngine
 		Lunar.Register(L, LGFrameLayout.class, false);
 		Lunar.Register(L, LGLinearLayout.class, false);
 		Lunar.Register(L, LGListView.class, false);
-		Lunar.Register(L, LGMapView.class, false);
 		Lunar.Register(L, LGProgressBar.class, false);
 		Lunar.Register(L, LGRadioButton.class, false);
 		Lunar.Register(L, LGRadioGroup.class, false);
@@ -1210,11 +1204,6 @@ public class ToppingEngine
 		Lunar.Register(L, LuaDefines.class, false);
 		Lunar.Register(L, LuaFragment.class, false);
 		Lunar.Register(L, LuaForm.class, false);
-		Lunar.Register(L, LuaMapCircle.class, false);
-		Lunar.Register(L, LuaMapImage.class, false);
-		Lunar.Register(L, LuaMapMarker.class, false);
-		Lunar.Register(L, LuaMapPolygon.class, false);
-		Lunar.Register(L, LuaMapPolyline.class, false);
 		Lunar.Register(L, LuaNativeObject.class, false);
 		Lunar.Register(L, LuaObjectStore.class, false);
 		Lunar.Register(L, LuaNativeCall.class, false);

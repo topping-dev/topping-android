@@ -26,13 +26,13 @@ public class LGListView extends LGAbsListView implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGListView.class)
 	public static LGListView Create(LuaContext lc)
 	{
-		return new LGListView(lc.GetContext());
+		return new LGListView(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGListView(Context context)
+	public LGListView(LuaContext context)
 	{
 		super(context);
 	}
@@ -40,7 +40,7 @@ public class LGListView extends LGAbsListView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGListView(Context context, String luaId)
+	public LGListView(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -48,7 +48,7 @@ public class LGListView extends LGAbsListView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGListView(Context context, AttributeSet attrs)
+	public LGListView(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -56,7 +56,7 @@ public class LGListView extends LGAbsListView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGListView(Context context, AttributeSet attrs, int defStyle)
+	public LGListView(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}
@@ -93,7 +93,9 @@ public class LGListView extends LGAbsListView implements LuaInterface
 //			view = general;
 //		}
 //		else
-		view = new ListView(context);//ft.ReplaceFragment(R.id.generalDataListViewLinearLayout, gdlf, false);
+		view = lc.GetLayoutInflater().createView(context, "ListView");
+		if(view == null)
+			view = new ListView(context);//ft.ReplaceFragment(R.id.generalDataListViewLinearLayout, gdlf, false);
 
 	}
 
@@ -129,7 +131,9 @@ public class LGListView extends LGAbsListView implements LuaInterface
 //			view = general;
 //		}
 //		else
-		view = new ListView(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "ListView", attrs);
+		if(view == null)
+			view = new ListView(context, attrs);
 	}
 
 	/**
@@ -164,7 +168,9 @@ public class LGListView extends LGAbsListView implements LuaInterface
 //			view = general;
 //		}
 //		else
-		view = new ListView(context, attrs, defStyle);
+		view = lc.GetLayoutInflater().createView(context, "ListView", attrs);
+		if(view == null)
+			view = new ListView(context, attrs, defStyle);
 	}
 
 	/**

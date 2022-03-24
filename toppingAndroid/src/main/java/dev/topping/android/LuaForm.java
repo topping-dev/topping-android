@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
@@ -40,7 +41,7 @@ import dev.topping.android.osspecific.utils.Common;
  * User interface form
  */
 @LuaClass(className = "LuaForm")
-public class LuaForm extends FragmentActivity implements LuaInterface
+public class LuaForm extends AppCompatActivity implements LuaInterface
 {
 	private static LuaForm activeForm = null;
 	protected LuaContext luaContext;

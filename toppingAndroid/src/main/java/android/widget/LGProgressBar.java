@@ -22,13 +22,13 @@ public class LGProgressBar extends LGView implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGProgressBar.class)
 	public static LGProgressBar Create(LuaContext lc)
 	{
-		return new LGProgressBar(lc.GetContext());
+		return new LGProgressBar(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGProgressBar(Context context)
+	public LGProgressBar(LuaContext context)
 	{
 		super(context);
 	}
@@ -36,7 +36,7 @@ public class LGProgressBar extends LGView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGProgressBar(Context context, String luaId)
+	public LGProgressBar(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -44,7 +44,7 @@ public class LGProgressBar extends LGView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGProgressBar(Context context, AttributeSet attrs)
+	public LGProgressBar(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -52,7 +52,7 @@ public class LGProgressBar extends LGView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGProgressBar(Context context, AttributeSet attrs, int defStyle)
+	public LGProgressBar(LuaContext context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 	}
@@ -62,7 +62,9 @@ public class LGProgressBar extends LGView implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = new ProgressBar(context);
+		view = lc.GetLayoutInflater().createView(context, "ProgressBar");
+		if(view == null)
+			view = new ProgressBar(context);
 	}
 
 	/**
@@ -70,7 +72,9 @@ public class LGProgressBar extends LGView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new ProgressBar(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "ProgressBar", attrs);
+		if(view == null)
+			view = new ProgressBar(context, attrs);
 	}
 
 	/**
@@ -78,7 +82,9 @@ public class LGProgressBar extends LGView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = new ProgressBar(context, attrs, defStyle);
+		view = lc.GetLayoutInflater().createView(context, "ProgressBar", attrs);
+		if(view == null)
+			view = new ProgressBar(context, attrs, defStyle);
 	}
 
 	/**

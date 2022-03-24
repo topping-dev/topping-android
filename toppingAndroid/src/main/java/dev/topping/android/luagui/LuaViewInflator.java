@@ -18,7 +18,6 @@ import android.widget.LGHorizontalScrollView;
 import android.widget.LGImageView;
 import android.widget.LGLinearLayout;
 import android.widget.LGListView;
-import android.widget.LGMapView;
 import android.widget.LGProgressBar;
 import android.widget.LGRadioButton;
 import android.widget.LGRadioGroup;
@@ -234,114 +233,99 @@ public class LuaViewInflator implements LuaInterface
 		String luaId = findAttribute(atts, "lua:id");
 		if(name.equals("LinearLayout") ||
 				name.equals("LGLinearLayout")){
-			lgresult = new LGLinearLayout(context, atts);
+			lgresult = new LGLinearLayout(lc, atts);
 		}
 		else if (name.equals("RadioGroup")
 				|| name.equals("LGRadioGroup")) {
-			lgresult = new LGRadioGroup(context, atts);
+			lgresult = new LGRadioGroup(lc, atts);
 		}
-		/*else if (name.equals("TableRow")) {
-			lgresult = new LGTableRow(context, atts);
-		}
-		else if (name.equals("LGTableRow")) {
-			lgresult = new LGTableRow(context, atts);
-		}
-		else if (name.equals("TableLayout")) {
-			lgresult = new LGTableLayout(context, atts);
-		}
-		else if (name.equals("LGTableLayout")) {
-			lgresult = new LGTableLayout(context, atts);
-		}
-		else if (name.equals("AbsoluteLayout")) {
-			result = new LGAbsoluteLayout(context, luaId);
-		}*/
 		else if (name.equals("RelativeLayout")
 				|| name.equals("LGRelativeLayout")) {
-			lgresult = new LGRelativeLayout(context, atts);
+			lgresult = new LGRelativeLayout(lc, atts);
 		}
 		else if (name.equals("ScrollView")
 				|| name.equals("LGScrollView")) {
-			lgresult = new LGScrollView(context, atts);
+			lgresult = new LGScrollView(lc, atts);
 		}
 		else if (name.equals("FrameLayout")
 				|| name.equals("LGFrameLayout")) {
-			lgresult = new LGFrameLayout(context, atts);
+			lgresult = new LGFrameLayout(lc, atts);
 		}
 		else if (name.equals("TextView")
+				|| name.equals("MaterialTextView")
 				|| name.equals("LGTextView")) {
-			lgresult = new LGTextView(context, atts);
+			lgresult = new LGTextView(lc, atts);
 		}
 		else if (name.equals("AutoCompleteTextView")
 				|| name.equals("LGAutoCompleteTextView")) {
-			lgresult = new LGAutoCompleteTextView(context, atts);
+			lgresult = new LGAutoCompleteTextView(lc, atts);
 		}
 		/*else if (name.equals("AnalogClock")) {
 			result = new LGAnalogClock(context, atts);
 		}*/
 		else if (name.equals("Button")
+				|| name.equals("MaterialButton")
 				|| name.equals("LGButton")) {
-			lgresult = new LGButton(context, atts);
+			lgresult = new LGButton(lc, atts);
+		}
+		else if (name.equals("CheckBox")
+				|| name.equals("MaterialCheckbox")
+				|| name.equals("LGCheckBox")) {
+			lgresult = new LGCheckBox(lc, atts);
 		}
 		else if (name.equals("Spinner")
-				|| name.equals("LGCheckBox")) {
-			lgresult = new LGCheckBox(context, atts);
-		}
-		else if (name.equals("ComboBox")
 				|| name.equals("LGComboBox")) {
-			lgresult = new LGComboBox(context, atts);
+			lgresult = new LGComboBox(lc, atts);
 		}
 		else if (name.equals("DatePicker")
+				|| name.equals("MaterialDatePicker")
 				|| name.equals("LGDatePicker")) {
-			lgresult = new LGDatePicker(context, atts);
+			lgresult = new LGDatePicker(lc, atts);
 		}
 		/*else if (name.equals("DigitalClock")) {
 			result = new LGDigitalClock(context, luaId);
 		}*/
 		else if (name.equals("EditText")
 				|| name.equals("LGEditText")) {
-			lgresult = new LGEditText(context, atts);
+			lgresult = new LGEditText(lc, atts);
 		}
 		else if (name.equals("ProgressBar")
 				|| name.equals("LGProgressBar")) {
-			lgresult = new LGProgressBar(context, atts);
+			lgresult = new LGProgressBar(lc, atts);
 		}
 		else if (name.equals("RadioButton")
 				|| name.equals("LGRadioButton")) {
-			lgresult = new LGRadioButton(context, atts);
+			lgresult = new LGRadioButton(lc, atts);
 		}
 		else if (name.equals("ListView")
 				|| name.equals("LGListView")) {
-			lgresult = new LGListView(context, atts);
+			lgresult = new LGListView(lc, atts);
 		}
 		else if (name.equals("ImageView")
 				|| name.equals("LGImageView"))
 		{
-			lgresult = new LGImageView(context, atts);
+			lgresult = new LGImageView(lc, atts);
 		}
 		else if(name.equals("LGHorizontalScrollView")
 				|| name.equals("HorizontalScrollView"))
 		{
-			lgresult = new LGHorizontalScrollView(context, atts);
+			lgresult = new LGHorizontalScrollView(lc, atts);
 		}
 		else if (name.equals("LGView")
 				|| name.equals("View"))
 		{
-			lgresult = new LGView(context, atts);
-		}
-		else if(name.equals("LGMapView")
-				|| name.equals("MapView"))
-		{
-			lgresult = new LGMapView(context, atts);
+			lgresult = new LGView(lc, atts);
 		}
 		else if(name.equals("LGRecyclerView")
 				|| name.equals("androidx.recyclerview.widget.RecyclerView"))
 		{
-			lgresult = new LGRecyclerView(context, atts);
+			lgresult = new LGRecyclerView(lc, atts);
 		}
 		else if(name.equals("LGToolbar")
-				|| name.equals("androidx.appcompat.widget.Toolbar"))
+				|| name.equals("androidx.appcompat.widget.Toolbar")
+				|| name.equals("com.google.android.material.appbar.MaterialToolbar"))
 		{
-			lgresult = new LGToolbar(context, atts);
+			lgresult = new LGToolbar(lc, atts);
 		}
 		else if((pluginView = ContainsPluginView(ToppingEngine.GetViewPlugins(), name)) != null)
 		{

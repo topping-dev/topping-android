@@ -8,6 +8,7 @@ import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaHelper;
 import dev.topping.android.backend.LuaInterface;
+import dev.topping.android.osspecific.ClassCache;
 
 /**
  * Call native functions from lua
@@ -57,7 +58,7 @@ public class LuaNativeCall implements LuaInterface
 		Class self = null;
 		try
 		{
-			self = Class.forName(cls);
+			self = ClassCache.forName(cls);
 		}
 		catch (ClassNotFoundException e)
 		{

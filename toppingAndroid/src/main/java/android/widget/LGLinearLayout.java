@@ -22,13 +22,13 @@ public class LGLinearLayout extends LGViewGroup implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGLinearLayout.class)
 	public static LGLinearLayout Create(LuaContext lc)
 	{
-		return new LGLinearLayout(lc.GetContext());
+		return new LGLinearLayout(lc);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public LGLinearLayout(Context context)
+	public LGLinearLayout(LuaContext context)
 	{
 		super(context);
 	}
@@ -36,7 +36,7 @@ public class LGLinearLayout extends LGViewGroup implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGLinearLayout(Context context, String luaId)
+	public LGLinearLayout(LuaContext context, String luaId)
 	{
 		super(context, luaId);
 	}
@@ -44,7 +44,7 @@ public class LGLinearLayout extends LGViewGroup implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LGLinearLayout(Context context, AttributeSet attrs)
+	public LGLinearLayout(LuaContext context, AttributeSet attrs)
 	{
 		super(context, attrs);
 	}
@@ -54,7 +54,9 @@ public class LGLinearLayout extends LGViewGroup implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = new LinearLayout(context);
+		view = lc.GetLayoutInflater().createView(context, "LinearLayout");
+		if(view == null)
+			view = new LinearLayout(context);
 	}
 
 	/**
@@ -62,6 +64,8 @@ public class LGLinearLayout extends LGViewGroup implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = new LinearLayout(context, attrs);
+		view = lc.GetLayoutInflater().createView(context, "LinearLayout", attrs);
+		if(view == null)
+			view = new LinearLayout(context, attrs);
 	}
 }
