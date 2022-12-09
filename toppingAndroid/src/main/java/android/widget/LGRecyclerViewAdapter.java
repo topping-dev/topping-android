@@ -3,6 +3,7 @@ package android.widget;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import androidx.annotation.NonNull;
@@ -16,7 +17,7 @@ import dev.topping.android.luagui.LuaContext;
 @LuaClass(className = "LGRecyclerViewAdapter")
 public class LGRecyclerViewAdapter extends RecyclerView.Adapter implements LuaInterface
 {
-    public LinkedHashMap<Integer, Object> values = new LinkedHashMap<Integer, Object>();
+    public ArrayList<Object> values = new ArrayList<>();
 
     private LuaContext mLc;
     private String id;
@@ -129,23 +130,22 @@ public class LGRecyclerViewAdapter extends RecyclerView.Adapter implements LuaIn
 
     /**
      * Add Value to adapter
-     * @param id of value
      * @param value
      */
-    @LuaFunction(manual = false, methodName = "AddValue", arguments = { Integer.class, Object.class })
-    public void AddValue(Integer id, Object value)
+    @LuaFunction(manual = false, methodName = "AddValue", arguments = { Object.class })
+    public void AddValue(Object value)
     {
-        values.put(id, value);
+        values.add(value);
     }
 
     /**
      * Remove Value from adapter
-     * @param id of value
+     * @param value
      */
-    @LuaFunction(manual = false, methodName = "RemoveValue", arguments = { Integer.class })
-    public void RemoveValue(Integer id)
+    @LuaFunction(manual = false, methodName = "RemoveValue", arguments = { Object.class })
+    public void RemoveValue(Object value)
     {
-        values.remove(id);
+        values.remove(value);
     }
 
     /**

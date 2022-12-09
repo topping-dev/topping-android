@@ -27,7 +27,7 @@ public class LuaStore implements LuaInterface
 	 */
 	public static void SetString(String key, String value)
 	{
-		Context ctx = LuaForm.GetActiveForm().GetContext().GetContext();
+		Context ctx = LuaForm.Companion.GetActiveForm().GetContext().GetContext();
 		SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, 0);
 	    SharedPreferences.Editor editor = settings.edit();
 	    editor.putString(key, value);
@@ -41,7 +41,7 @@ public class LuaStore implements LuaInterface
 	 */
 	public static void SetNumber(String key, double value)
 	{
-		Context ctx = LuaForm.GetActiveForm().GetContext().GetContext();
+		Context ctx = LuaForm.Companion.GetActiveForm().GetContext().GetContext();
 		SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, 0);
 	    SharedPreferences.Editor editor = settings.edit();
 	    editor.putFloat(key, (float) value);
@@ -55,7 +55,7 @@ public class LuaStore implements LuaInterface
 	 */
 	public static Object Get(String key)
 	{
-		Context ctx = LuaForm.GetActiveForm().GetContext().GetContext();
+		Context ctx = LuaForm.Companion.GetActiveForm().GetContext().GetContext();
 		SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, 0);
 		try
 		{
@@ -74,7 +74,7 @@ public class LuaStore implements LuaInterface
 	 */
 	public static String GetString(String key)
 	{
-		Context ctx = LuaForm.GetActiveForm().GetContext().GetContext();
+		Context ctx = LuaForm.Companion.GetActiveForm().GetContext().GetContext();
 		SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, 0);
 		try
 		{
@@ -93,7 +93,7 @@ public class LuaStore implements LuaInterface
 	 */
 	public static Double GetNumber(String key)
 	{
-		Context ctx = LuaForm.GetActiveForm().GetContext().GetContext();
+		Context ctx = LuaForm.Companion.GetActiveForm().GetContext().GetContext();
 		SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, 0);
 		return Double.valueOf(settings.getFloat(key, -1));
 	}

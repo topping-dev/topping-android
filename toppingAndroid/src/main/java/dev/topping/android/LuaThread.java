@@ -74,7 +74,7 @@ public class LuaThread implements LuaInterface
             @Override
             public void run()
             {
-                lt.CallIn(LuaThread.this);
+                lt.CallInSelf(LuaThread.this);
             }
         });
         thread.start();
@@ -85,7 +85,7 @@ public class LuaThread implements LuaInterface
      * @param milliseconds
      */
     @LuaFunction(manual = false, methodName = "Wait", arguments = { Long.class })
-    public void Wait(int milliseconds)
+    public void Wait(long milliseconds)
     {
         try
         {

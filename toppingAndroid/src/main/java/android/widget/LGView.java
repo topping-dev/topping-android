@@ -8,9 +8,13 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.fragment.NavHostFragment;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import dev.topping.android.LuaNavController;
 import dev.topping.android.LuaTranslator;
 import dev.topping.android.R;
 import dev.topping.android.backend.LuaClass;
@@ -289,6 +293,16 @@ public class LGView extends Object implements LuaInterface, Serializable
 				lt.CallIn(lc);
 			}
 		});
+	}
+
+	/**
+	 * Gets navigation controller of view
+	 * @return LuaNavController
+	 */
+	@LuaFunction(manual = false, methodName = "findNavController")
+	public LuaNavController findNavController()
+	{
+		return new LuaNavController(NavHostFragment.findNavController(FragmentManager.findFragment(view)));
 	}
 
 	/**

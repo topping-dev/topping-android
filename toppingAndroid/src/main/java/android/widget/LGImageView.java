@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import java.io.InputStream;
 
 import dev.topping.android.LuaStream;
+import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
@@ -15,6 +16,7 @@ import dev.topping.android.luagui.LuaRef;
 /**
  * ImageView
  */
+@LuaClass(className = "LGImageView")
 public class LGImageView extends LGView implements LuaInterface
 {
 	/**

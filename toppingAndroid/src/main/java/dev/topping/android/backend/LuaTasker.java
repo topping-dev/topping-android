@@ -85,7 +85,7 @@ public abstract class LuaTasker<T> implements Runnable
 				if(canStart)
 				{
 					final T fValToDoJob = valToDoJob;
-					Thread downloaderThread = new Thread(new Runnable()
+					Thread taskerWorker = new Thread(new Runnable()
 					{
 						@Override
 						public void run()
@@ -97,7 +97,7 @@ public abstract class LuaTasker<T> implements Runnable
 							}
 						}
 					}, "Tasker Worker");
-					downloaderThread.start();
+					taskerWorker.start();
 				}
 				try
 				{

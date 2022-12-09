@@ -10,6 +10,20 @@ import dev.topping.android.backend.LuaInterface;
 public class LuaNativeObject implements LuaInterface
 {
 	/**
+	 * (Ignore)
+	 */
+	public LuaNativeObject() {
+
+	}
+
+	/**
+	 * (Ignore)
+	 */
+	public LuaNativeObject(Object obj) {
+		this.obj = obj;
+	}
+
+	/**
 	 * Object that sent and received.
 	 */
 	public Object obj;

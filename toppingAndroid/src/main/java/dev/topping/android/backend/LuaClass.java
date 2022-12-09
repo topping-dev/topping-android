@@ -9,4 +9,5 @@ import java.lang.annotation.RetentionPolicy;
 public @interface LuaClass
 {
 	String className();
+	boolean isKotlin() default false;
 }

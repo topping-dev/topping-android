@@ -80,8 +80,8 @@ public class LuaNFC implements LuaInterface, CreateNdefMessageCallback
 	public void SetOnTagReadListener(final LuaTranslator lt)
 	{
 		ltTagRead = lt;
-		mPendingIntent = PendingIntent.getActivity(LuaForm.GetActiveForm(), 0, new Intent(LuaForm.GetActiveForm(), getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-		LuaForm.GetActiveForm().SetNfc(GetAdapter(), mPendingIntent);
+		mPendingIntent = PendingIntent.getActivity(LuaForm.Companion.GetActiveForm(), 0, new Intent(LuaForm.Companion.GetActiveForm(), getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+		LuaForm.Companion.GetActiveForm().SetNfc(GetAdapter(), mPendingIntent);
 	}
 
 	@Override

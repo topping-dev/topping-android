@@ -17,6 +17,7 @@ import android.widget.LGConstraintLayout;
 import android.widget.LGDatePicker;
 import android.widget.LGEditText;
 import android.widget.LGFrameLayout;
+import android.widget.LGImageView;
 import android.widget.LGLinearLayout;
 import android.widget.LGListView;
 import android.widget.LGProgressBar;
@@ -40,11 +41,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaObject;
 import dev.topping.android.backend.LuaTasker;
 import dev.topping.android.backend.Lunar;
@@ -53,6 +57,10 @@ import dev.topping.android.luagui.LuaRef;
 import dev.topping.android.luagui.LuaViewInflator;
 import dev.topping.android.osspecific.Defines;
 import dev.topping.android.osspecific.UrlHttpClient;
+import kotlin.reflect.KCallable;
+import kotlin.reflect.KClass;
+import kotlin.reflect.KFunction;
+import kotlin.reflect.KProperty;
 
 public class ToppingEngine
 {
@@ -120,8 +128,40 @@ public class ToppingEngine
 		@Override
 		public void DoJob(Class<?> val)
 		{
-			Lunar.methodMap.put(val, val.getMethods());
-			Lunar.fieldMap.put(val, val.getDeclaredFields());
+			LuaClass lc = val.getAnnotation(LuaClass.class);
+			if(lc != null) {
+				if(lc.isKotlin()) {
+					KClass kclass = kotlin.jvm.JvmClassMappingKt.getKotlinClass(val);
+					if (kclass != null) {
+						Collection<KClass> nestedClasses = kclass.getNestedClasses();
+						if (nestedClasses != null) {
+							for (Iterator i = nestedClasses.iterator(); i.hasNext(); ) {
+								KClass nestedKClass = (KClass) i.next();
+								if (nestedKClass.isCompanion()) {
+									Collection<KCallable> members = nestedKClass.getMembers();
+									if (members != null) {
+										ArrayList<KFunction> functions = new ArrayList<>();
+										ArrayList<KProperty> properties = new ArrayList<>();
+										for (Iterator j = members.iterator(); j.hasNext(); ) {
+											KCallable kallable = (KCallable) j.next();
+											if (kallable instanceof KFunction) {
+												functions.add((KFunction) kallable);
+											} else if (kallable instanceof KProperty) {
+												properties.add((KProperty) kallable);
+											}
+										}
+										Lunar.kotlinCompanionMap.put(val, new Lunar.KotlinCompanionObject(nestedKClass.getObjectInstance(), functions.toArray(new KFunction[0]), properties.toArray(new KProperty[0])));
+									}
+								}
+
+								Log.d("asd", nestedKClass.toString());
+							}
+						}
+					}
+				}
+				Lunar.methodMap.put(val, val.getMethods());
+				Lunar.fieldMap.put(val, val.getDeclaredFields());
+			}
 		}
 	};
 	Thread taskerThread;
@@ -1070,67 +1110,84 @@ public class ToppingEngine
 
 			@Override
 			public Object invoke(Object[] args) {
-				// TODO Auto-generated method stub
 				return null;
 			}
 		});
 
-		tasker.AddToQueue(LuaTranslator.class);
+		Class<?>[] clsArr = {
+			LuaTranslator.class,
+			LuaContext.class,
+			LuaGraphics.class,
+			LuaViewInflator.class,
+			LGAbsListView.class,
+			LGAdapterView.class,
+			LGAutoCompleteTextView.class,
+			LGButton.class,
+			LGCheckBox.class,
+			LGComboBox.class,
+			LGCompoundButton.class,
+			LGDatePicker.class,
+			LGEditText.class,
+			LGFrameLayout.class,
+			LGLinearLayout.class,
+			LGListView.class,
+			LGProgressBar.class,
+			LGRadioButton.class,
+			LGRadioGroup.class,
+			//LGRelativeLayout.class,
+			LGScrollView.class,
+			LGTextView.class,
+			LGView.class,
+			//LGViewGroup.class,
+			LGRecyclerView.class,
+			LGRecyclerViewAdapter.class,
+			LGToolbar.class,
+			LGConstraintLayout.class,
+			LGImageView.class,
+			LuaAppBarConfiguration.class,
+			LuaBuffer.class,
+			LuaColor.class,
+			LuaCoroutineScope.class,
+			LuaDatabase.class,
+			LuaDate.class,
+			LuaDefines.class,
+			LuaDialog.class,
+			LuaDispatchers.class,
+			LuaForm.class,
+			LuaFragment.class,
+			LuaFragmentManager.class,
+			LuaHttpClient.class,
+			LuaJavaFunction.class,
+			LuaJSONArray.class,
+			LuaJSONObject.class,
+			LuaLifecycle.class,
+			LuaLifecycleObserver.class,
+			LuaLifecycleOwner.class,
+			LuaLog.class,
+			LuaMutableLiveData.class,
+			LuaNativeCall.class,
+			LuaNativeObject.class,
+			LuaNavController.class,
+			LuaNavigationUI.class,
+			LuaNavOptions.class,
+			LuaNFC.class,
+			LuaObjectStore.class,
+			LuaPoint.class,
+			LuaRect.class,
+			LuaResource.class,
+			LuaStore.class,
+			LuaStream.class,
+			LuaTabForm.class,
+			LuaThread.class,
+			LuaToast.class,
+			LuaRef.class,
+			LuaViewModel.class,
+			LuaViewModelProvider.class
+		};
 
-		tasker.AddToQueue(LuaContext.class);
-		tasker.AddToQueue(LuaGraphics.class);
-
-		tasker.AddToQueue(LuaViewInflator.class);
-		tasker.AddToQueue(LGAbsListView.class);
-		tasker.AddToQueue(LGAdapterView.class);
-		tasker.AddToQueue(LGAutoCompleteTextView.class);
-		tasker.AddToQueue(LGButton.class);
-		tasker.AddToQueue(LGCheckBox.class);
-		tasker.AddToQueue(LGComboBox.class);
-		tasker.AddToQueue(LGCompoundButton.class);
-		tasker.AddToQueue(LGDatePicker.class);
-		tasker.AddToQueue(LGEditText.class);
-		tasker.AddToQueue(LGFrameLayout.class);
-		tasker.AddToQueue(LGLinearLayout.class);
-		tasker.AddToQueue(LGListView.class);
-		tasker.AddToQueue(LGProgressBar.class);
-		tasker.AddToQueue(LGRadioButton.class);
-		tasker.AddToQueue(LGRadioGroup.class);
-		//tasker.AddToQueue(LGRelativeLayout.class);
-		tasker.AddToQueue(LGScrollView.class);
-		//tasker.AddToQueue(LGTableLayout.class);
-		//tasker.AddToQueue(LGTableRow.class);
-		tasker.AddToQueue(LGTextView.class);
-		tasker.AddToQueue(LGView.class);
-		//tasker.AddToQueue(LGViewGroup.class);
-		tasker.AddToQueue(LGRecyclerView.class);
-		tasker.AddToQueue(LGRecyclerViewAdapter.class);
-		tasker.AddToQueue(LGToolbar.class);
-		tasker.AddToQueue(LGConstraintLayout.class);
-
-		tasker.AddToQueue(LuaThread.class);
-		tasker.AddToQueue(LuaRef.class);
-		tasker.AddToQueue(LuaColor.class);
-		tasker.AddToQueue(LuaDate.class);
-		tasker.AddToQueue(LuaDefines.class);
-		tasker.AddToQueue(LuaFragment.class);
-		tasker.AddToQueue(LuaForm.class);
-		tasker.AddToQueue(LuaNativeObject.class);
-		tasker.AddToQueue(LuaObjectStore.class);
-		tasker.AddToQueue(LuaNativeCall.class);
-		tasker.AddToQueue(LuaDatabase.class);
-		tasker.AddToQueue(LuaHttpClient.class);
-		tasker.AddToQueue(LuaJSONObject.class);
-		tasker.AddToQueue(LuaJSONArray.class);
-		tasker.AddToQueue(LuaDialog.class);
-		tasker.AddToQueue(LuaPoint.class);
-		tasker.AddToQueue(LuaRect.class);
-		tasker.AddToQueue(LuaResource.class);
-		tasker.AddToQueue(LuaTabForm.class);
-		tasker.AddToQueue(LuaToast.class);
-		tasker.AddToQueue(LuaStore.class);
-		tasker.AddToQueue(LuaStream.class);
-		tasker.AddToQueue(LuaLog.class);
+		for(Class<?> cls : clsArr) {
+			tasker.AddToQueue(cls);
+		}
 
 		for(Class<?> cls : plugins)
 			tasker.AddToQueue(cls);
@@ -1144,7 +1201,7 @@ public class ToppingEngine
 			{
 				try
 				{
-					Thread.sleep(10);
+					Thread.sleep(100);
 				}
 				catch(InterruptedException e)
 				{
@@ -1164,65 +1221,12 @@ public class ToppingEngine
 		}
 		/*luaGlobalFunctions::Register(lu);*/
 
-		Lunar.Register(L, LuaTranslator.class, false);
-
-		Lunar.Register(L, LuaContext.class, false);
-		Lunar.Register(L, LuaGraphics.class, false);
-
-		Lunar.Register(L, LuaViewInflator.class, false);
-		Lunar.Register(L, LGAbsListView.class, false);
-		Lunar.Register(L, LGAdapterView.class, false);
-		Lunar.Register(L, LGAutoCompleteTextView.class, false);
-		Lunar.Register(L, LGButton.class, false);
-		Lunar.Register(L, LGCheckBox.class, false);
-		Lunar.Register(L, LGComboBox.class, false);
-		Lunar.Register(L, LGCompoundButton.class, false);
-		Lunar.Register(L, LGDatePicker.class, false);
-		Lunar.Register(L, LGEditText.class, false);
-		Lunar.Register(L, LGFrameLayout.class, false);
-		Lunar.Register(L, LGLinearLayout.class, false);
-		Lunar.Register(L, LGListView.class, false);
-		Lunar.Register(L, LGProgressBar.class, false);
-		Lunar.Register(L, LGRadioButton.class, false);
-		Lunar.Register(L, LGRadioGroup.class, false);
-		//Lunar.Register(L, LGRelativeLayout.class, false);
-		Lunar.Register(L, LGScrollView.class, false);
-		//Lunar.Register(L, LGTableLayout.class, false);
-		//Lunar.Register(L, LGTableRow.class, false);
-		Lunar.Register(L, LGTextView.class, false);
-		Lunar.Register(L, LGView.class, false);
-		//Lunar.Register(L, LGViewGroup.class, false);
-		Lunar.Register(L, LGRecyclerView.class, false);
-		Lunar.Register(L, LGRecyclerViewAdapter.class, false);
-		Lunar.Register(L, LGToolbar.class, false);
-		Lunar.Register(L, LGConstraintLayout.class, false);
-
-		Lunar.Register(L, LuaThread.class, false);
-		Lunar.Register(L, LuaRef.class, false);
-		Lunar.Register(L, LuaColor.class, false);
-		Lunar.Register(L, LuaDate.class, false);
-		Lunar.Register(L, LuaDefines.class, false);
-		Lunar.Register(L, LuaFragment.class, false);
-		Lunar.Register(L, LuaForm.class, false);
-		Lunar.Register(L, LuaNativeObject.class, false);
-		Lunar.Register(L, LuaObjectStore.class, false);
-		Lunar.Register(L, LuaNativeCall.class, false);
-		Lunar.Register(L, LuaDatabase.class, false);
-		Lunar.Register(L, LuaHttpClient.class, false);
-		Lunar.Register(L, LuaJSONObject.class, false);
-		Lunar.Register(L, LuaJSONArray.class, false);
-		Lunar.Register(L, LuaDialog.class, false);
-		Lunar.Register(L, LuaPoint.class, false);
-		Lunar.Register(L, LuaRect.class, false);
-		Lunar.Register(L, LuaResource.class, false);
-		Lunar.Register(L, LuaTabForm.class, false);
-		Lunar.Register(L, LuaToast.class, false);
-		Lunar.Register(L, LuaStore.class, false);
-		Lunar.Register(L, LuaStream.class, false);
-		Lunar.Register(L, LuaLog.class, false);
+		for(Class<?> cls : clsArr) {
+			Lunar.Register(L, cls);
+		}
 
 		for(Class<?> cls : plugins)
-			Lunar.Register(L, cls, false);
+			Lunar.Register(L, cls);
 
 		//set the suspendluathread a coroutine function
 		/*lua_getglobal(lu,"coroutine");
@@ -1241,7 +1245,7 @@ public class ToppingEngine
 		Lua.lua_pushstring(L, "Android");
 		Lua.lua_setglobal(L, "OS_TYPE");
 
-		Lua.lua_pushinteger(L, Build.VERSION.SDK_INT);
+		Lua.lua_pushstring(L, String.valueOf(Build.VERSION.SDK_INT));
 		Lua.lua_setglobal(L, "OS_VERSION");
 
 		String s = GetContext().getResources().getString(R.string.deviceType);
@@ -1280,31 +1284,37 @@ public class ToppingEngine
 	public void PushTable(HashMap<Object, Object> retVal)
 	{
 		Lua.lua_lock(L);
-		boolean created = false;
-		if(!created)
-		{
-			created = true;
-			Lua.lua_createtable(L, 0, retVal.size());
-		}
+		//Lua.lua_createtable(L, 0, retVal.size());
+		Lua.lua_newtable(L);
 		for(Map.Entry<Object, Object> entry : retVal.entrySet())
 		{
+			Lua.lua_pushstring(L, String.valueOf(entry.getKey()));
 			Object retval = entry.getValue();
 			String retName = retval.getClass().getName();
-			if(retName.compareTo("java.lang.Boolean") == 0)
+			if(retName.compareTo("java.lang.Boolean") == 0
+				|| retval.getClass() == boolean.class)
 				((ToppingEngine) ToppingEngine.getInstance()).PushBool((Boolean)retval);
 			else if(retName.compareTo("java.lang.Byte") == 0
+					|| retval.getClass() == byte.class
 					|| retName.compareTo("java.lang.Short") == 0
+					|| retval.getClass() == short.class
 					|| retName.compareTo("java.lang.Integer") == 0
-					|| retName.compareTo("java.lang.Long") == 0)
+					|| retval.getClass() == int.class
+					|| retName.compareTo("java.lang.Long") == 0
+					|| retval.getClass() == long.class)
 				((ToppingEngine) ToppingEngine.getInstance()).PushInt((Integer)retval);
-			else if(retName.compareTo("java.lang.Float") == 0)
+			else if(retName.compareTo("java.lang.Float") == 0
+					|| retval.getClass() == float.class)
 				((ToppingEngine) ToppingEngine.getInstance()).PushFloat((Float)retval);
-			else if(retName.compareTo("java.lang.Double") == 0)
+			else if(retName.compareTo("java.lang.Double") == 0
+					|| retval.getClass() == double.class)
 				((ToppingEngine) ToppingEngine.getInstance()).PushDouble((Double)retval);
 			else if(retName.compareTo("java.lang.Char") == 0
+					|| retval.getClass() == char.class
 					|| retName.compareTo("java.lang.String") == 0)
 				((ToppingEngine) ToppingEngine.getInstance()).PushString((String)retval);
-			else if(retName.compareTo("java.lang.Void") == 0)
+			else if(retName.compareTo("java.lang.Void") == 0
+					|| retval.getClass() == void.class)
 				((ToppingEngine) ToppingEngine.getInstance()).PushInt(0);
 			else if(retName.compareTo("java.util.HashMap") == 0)
 			{
@@ -1326,7 +1336,7 @@ public class ToppingEngine
 				Lunar.push(l.GetLuaState(), retval, false, true);
 			}
 
-			Lua.lua_setfield(L, -2, String.valueOf(entry.getKey()));
+			//Lua.lua_setfield(L, -2, String.valueOf(entry.getKey()));
 			//Lua.lua_pushstring(L, String.valueOf(entry.getKey()));
 			/*
 			 * To put values into the table, we first push the index, then the
@@ -1343,6 +1353,7 @@ public class ToppingEngine
 			 * of the stack, so that after it has been called, the table is at the
 			 * top of the stack.
 			 */
+			Lua.lua_settable(L, -3);
 			//Lua.lua_rawset(L, -3);
 		}
 		//Lua.sethvalue(L, obj, x)

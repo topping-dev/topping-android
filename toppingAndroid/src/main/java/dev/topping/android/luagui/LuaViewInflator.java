@@ -137,7 +137,31 @@ public class LuaViewInflator implements LuaInterface
 			ArrayList<LGView> lgRoot = new ArrayList<LGView>();
 			LGView v = inflate(parse, lgRoot, parent);
 			if(!v.IsLoaded())
-				v.SetLoaded(LuaForm.OnFormEvent(v, LuaForm.FORM_EVENT_CREATE, lc));
+				v.SetLoaded(LuaForm.Companion.OnFormEvent(v, LuaForm.FORM_EVENT_CREATE, lc));
+			return v;
+		}
+		catch (XmlPullParserException ex) { Log.e("LuaViewInflator", ex.getMessage()); }
+		catch (IOException ex) {  }
+		return null;
+	}
+
+	/**
+	 * Parses xml file
+	 * @param id
+	 * @param parent
+	 * @return LGView
+	 */
+	@LuaFunction(manual = false, methodName = "Inflate", arguments = { LuaRef.class, LGView.class })
+	public LGView Inflate(LuaRef id, LGView parent)
+	{
+		XmlPullParser parse;
+		try {
+			parse = ToppingEngine.getInstance().GetContext().getResources().getLayout(id.getRef());
+
+			ArrayList<LGView> lgRoot = new ArrayList<LGView>();
+			LGView v = inflate(parse, lgRoot, parent);
+			if(!v.IsLoaded())
+				v.SetLoaded(LuaForm.Companion.OnFormEvent(v, LuaForm.FORM_EVENT_CREATE, lc));
 			return v;
 		}
 		catch (XmlPullParserException ex) { Log.e("LuaViewInflator", ex.getMessage()); }
@@ -188,7 +212,7 @@ public class LuaViewInflator implements LuaInterface
 				}
 				else
 				{
-					v.SetLoaded(LuaForm.OnFormEvent(v, LuaForm.FORM_EVENT_CREATE, lc));
+					v.SetLoaded(LuaForm.Companion.OnFormEvent(v, LuaForm.FORM_EVENT_CREATE, lc));
 				}
 
 				if (root == null) {
@@ -202,7 +226,7 @@ public class LuaViewInflator implements LuaInterface
 				data.pop();
 				if(lgStack.size() > 0 && lgStack.peek().internalName.equalsIgnoreCase(parse.getName()))
 				{
-					lgStack.peek().SetLoaded(LuaForm.OnFormEvent(lgStack.peek(), LuaForm.FORM_EVENT_CREATE, lc));
+					lgStack.peek().SetLoaded(LuaForm.Companion.OnFormEvent(lgStack.peek(), LuaForm.FORM_EVENT_CREATE, lc));
 					lgStack.pop();
 				}
 			}

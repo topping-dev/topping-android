@@ -1,5 +1,7 @@
 package dev.topping.android.backend;
 
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.naef.jnlua.IDelegate;
@@ -17,12 +19,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import dev.topping.android.LuaJavaFunction;
 import dev.topping.android.LuaNativeObject;
 import dev.topping.android.LuaTranslator;
 import dev.topping.android.ToppingEngine;
+import kotlin.reflect.KFunction;
+import kotlin.reflect.KParameter;
+import kotlin.reflect.KProperty;
+import kotlin.reflect.KProperty1;
 
 public class Lunar
 {
@@ -63,10 +71,26 @@ public class Lunar
 
     }
 
+    public static class KotlinCompanionObject
+	{
+		public KotlinCompanionObject(Object instance, KFunction[] functions, KProperty[] properties) {
+			this.instance = instance;
+			this.functions = functions;
+			this.properties = properties;
+		}
+		Object instance;
+		KFunction[] functions;
+		KProperty[] properties;
+	}
+
     static IDelegate tostring_T = Lua.lua_CFunction.build(Lunar.class, "tostring_T");
     static IDelegate gc_T = Lua.lua_CFunction.build(Lunar.class, "gc_T");
     public static HashMap<Class<?>, Method[]> methodMap = new HashMap<>();
 	public static HashMap<Class<?>, Field[]> fieldMap = new HashMap<>();
+	public static HashMap<Class<?>, KotlinCompanionObject> kotlinCompanionMap = new HashMap<>();
+	public static void Register(LuaState L, Class<?> cls) {
+		Register(L, cls, false);
+	}
     public static void Register(LuaState L, Class<?> cls, boolean loadAll)
     {
         //String name = RemoveChar(cls.getName(), '.');
@@ -188,6 +212,90 @@ public class Lunar
 		else
 		{
 			Log.e("Lunar", "Empty method info for " + name + ", used tasker?");
+		}
+
+		KotlinCompanionObject kotlinCompanionObject = kotlinCompanionMap.get(cls);
+		if(kotlinCompanionObject != null)
+		{
+			for (KFunction kf : kotlinCompanionObject.functions) {
+				if (loadAll) {
+					Lua.lua_pushstring(L, kf.getName());
+					LuaJavaFunction lf = new LuaJavaFunction(false, cls, kf.getName(), kf.getParameters(), kf, kotlinCompanionObject.instance);
+					//Lua.lua_pushlightuserdata(L, lf);
+					//Lua.lua_pushuserdata(L, lf);
+					//if ((kf.getModifiers() & Modifier.STATIC) > 0) {
+						L.pushJavaFunction(new JavaObjectFunction(lf) {
+							@Override
+							public int invoke(LuaState luaState) {
+								return Sthunk(luaState, obj);
+							}
+						});
+					/*} else {
+						L.pushJavaFunction(new JavaObjectFunction(lf) {
+							@Override
+							public int invoke(LuaState luaState) {
+								return thunk(luaState, obj);
+							}
+						});
+					}*/
+					Lua.lua_settable(L, methods);
+				} else {
+					LuaFunction lf = null;
+					for(Annotation a : kf.getAnnotations()) {
+						if (a instanceof LuaFunction) {
+							lf = (LuaFunction) a;
+							break;
+						}
+					}
+					if (lf != null) {
+						Lua.lua_pushstring(L, lf.methodName() != null ? lf.methodName() : kf.getName());
+						//Lua.lua_pushuserdata(L, lf);
+						//Lua.lua_pushlightuserdata(L, new LuaJavaFunction(lf.manual(), lf.self(), lf.methodName(), lf.arguments(), m));
+						LuaJavaFunction ljf = new LuaJavaFunction(lf.manual(), lf.self(), lf.methodName(), lf.arguments(), kf, kotlinCompanionObject.instance);
+						//if ((m.getModifiers() & Modifier.STATIC) > 0) {
+							L.pushJavaFunction(new JavaObjectFunction(ljf) {
+								@Override
+								public int invoke(LuaState luaState) {
+									return Sthunk(luaState, obj);
+								}
+							});
+						/*} else {
+							L.pushJavaFunction(new JavaObjectFunction(ljf) {
+								@Override
+								public int invoke(LuaState luaState) {
+									return thunk(luaState, obj);
+								}
+							});
+						}*/
+						Lua.lua_settable(L, methods);
+					}
+				}
+			}
+			for (KProperty kp : kotlinCompanionObject.properties)
+			{
+				LuaStaticVariable a = null;
+				for(Annotation ann : kp.getAnnotations()) {
+					if (ann instanceof LuaStaticVariable) {
+						a = (LuaStaticVariable) ann;
+						break;
+					}
+				}
+				if(a != null)
+				{
+					Lua.lua_pushstring(L, kp.getName());
+					try
+					{
+						if(kp instanceof KProperty1)
+							ToppingEngine.getInstance().FillVariable(((KProperty1)kp).get(kotlinCompanionObject.instance));
+					}
+					catch (Exception e)
+					{
+						Log.e("Lunar", "Fields exposed to LUA must be public and static " + cls.getSimpleName());
+						continue;
+					}
+					Lua.lua_settable(L, methods);
+				}
+			}
 		}
 
 		Field[] fieldInfos = fieldMap.get(cls);
@@ -510,21 +618,29 @@ public class Lunar
 	            for (Class<?> c : argTypeList)
 	            {
 	            	String name = c.getName();
-	            	if(name.compareTo("java.lang.Boolean") == 0)
+	            	if(name.compareTo("java.lang.Boolean") == 0
+						|| c == boolean.class)
 	            		argList.add((Lua.luaL_checkinteger(L, count)) != 0);
-	            	else if(name.compareTo("java.lang.Byte") == 0)
+	            	else if(name.compareTo("java.lang.Byte") == 0
+							|| c == byte.class)
 	            		argList.add(Lua.luaL_checkinteger(L, count));
-	            	else if(name.compareTo("java.lang.Short") == 0)
+	            	else if(name.compareTo("java.lang.Short") == 0
+							|| c == short.class)
 	            		argList.add((short)(Lua.luaL_checkinteger(L, count)));
-	            	else if(name.compareTo("java.lang.Integer") == 0)
+	            	else if(name.compareTo("java.lang.Integer") == 0
+							|| c == int.class)
 	            		argList.add(Lua.luaL_checkinteger(L, count));
-	            	else if(name.compareTo("java.lang.Long") == 0)
+	            	else if(name.compareTo("java.lang.Long") == 0
+							|| c == long.class)
 	            		argList.add((Long)Lua.luaL_checklong(L, count));
-	            	else if(name.compareTo("java.lang.Float") == 0)
+	            	else if(name.compareTo("java.lang.Float") == 0
+							|| c == float.class)
 	            		argList.add((float) (Lua.luaL_checknumber(L, count)));
-	            	else if(name.compareTo("java.lang.Double") == 0)
+	            	else if(name.compareTo("java.lang.Double") == 0
+							|| c == double.class)
 	            		argList.add((Double)Lua.luaL_checknumber(L, count));
-	            	else if(name.compareTo("java.lang.Char") == 0)
+	            	else if(name.compareTo("java.lang.Char") == 0
+							|| c == char.class)
 	            	{
 	            		String val = Lua.luaL_checkstring(L, count).toString();
 	            		argList.add(val.charAt(0));
@@ -700,21 +816,31 @@ public class Lunar
 	            else
 	            {
 	            	String retName = retval.getClass().getName();
-	            	if(retName.compareTo("java.lang.Boolean") == 0)
+	            	if(retName.compareTo("java.lang.Boolean") == 0
+							|| retval.getClass() == boolean.class)
 	            		((ToppingEngine) ToppingEngine.getInstance()).PushBool((Boolean)retval);
 	            	else if(retName.compareTo("java.lang.Byte") == 0
+							|| retval.getClass() == byte.class
 	            		|| retName.compareTo("java.lang.Short") == 0
+							|| retval.getClass() == short.class
 	            		|| retName.compareTo("java.lang.Integer") == 0
-	            		|| retName.compareTo("java.lang.Long") == 0)
+							|| retval.getClass() == int.class
+	            		|| retName.compareTo("java.lang.Long") == 0
+							|| retval.getClass() == long.class)
 	            		((ToppingEngine) ToppingEngine.getInstance()).PushInt((Integer)retval);
-	            	else if(retName.compareTo("java.lang.Float") == 0)
+	            	else if(retName.compareTo("java.lang.Float") == 0
+							|| retval.getClass() == float.class)
 	            		((ToppingEngine) ToppingEngine.getInstance()).PushFloat((Float)retval);
-	            	else if(retName.compareTo("java.lang.Double") == 0)
+	            	else if(retName.compareTo("java.lang.Double") == 0
+							|| retval.getClass() == double.class)
 	            		((ToppingEngine) ToppingEngine.getInstance()).PushDouble((Double)retval);
 	            	else if(retName.compareTo("java.lang.Char") == 0
-	            		|| retName.compareTo("java.lang.String") == 0)
+							|| retval.getClass() == char.class
+	            			|| retName.compareTo("java.lang.String") == 0)
 	            		((ToppingEngine) ToppingEngine.getInstance()).PushString((String)retval);
-	            	else if(retName.compareTo("java.lang.Void") == 0)
+	            	else if(retName.compareTo("java.lang.Void") == 0
+						|| retval.getClass() == void.class
+						|| retval.getClass() == kotlin.Unit.class)
 	            		((ToppingEngine) ToppingEngine.getInstance()).PushInt(0);
 	            	else if(retName.compareTo("java.util.HashMap") == 0)
 	            	{
@@ -739,6 +865,7 @@ public class Lunar
 //				Log.e("Lunar", "Exception on thunk, " + s);
 //			Log.e("Lunar", e.getMessage());
 //			Tools.LogException(e.L, "Lunar", e);
+			Log.e("Lunar", "Exception on thunk " + e.getMessage());
 			return 1;
 		}
     }
@@ -750,6 +877,7 @@ public class Lunar
 			LuaJavaFunction la = (LuaJavaFunction) lao;
 		    Class<?> selfClass = la.self();
 		    Method m = la.method();
+		    KFunction kf = la.kotlinMethod();
 
 	        if (la.manual())
 	        {
@@ -775,21 +903,29 @@ public class Lunar
 	            for (Class<?> c : argTypeList)
 	            {
 	            	String name = c.getName();
-	            	if(name.compareTo("java.lang.Boolean") == 0)
+	            	if(name.compareTo("java.lang.Boolean") == 0
+						|| c == boolean.class)
 	            		argList.add((Lua.luaL_checkinteger(L, count)) != 0);
-	            	else if(name.compareTo("java.lang.Byte") == 0)
+	            	else if(name.compareTo("java.lang.Byte") == 0
+							|| c == byte.class)
 	            		argList.add(Lua.luaL_checkinteger(L, count));
-	            	else if(name.compareTo("java.lang.Short") == 0)
+	            	else if(name.compareTo("java.lang.Short") == 0
+							|| c == short.class)
 	            		argList.add((short)(Lua.luaL_checkinteger(L, count)));
-	            	else if(name.compareTo("java.lang.Integer") == 0)
+	            	else if(name.compareTo("java.lang.Integer") == 0
+							|| c == int.class)
 	            		argList.add(Lua.luaL_checkinteger(L, count));
-	            	else if(name.compareTo("java.lang.Long") == 0)
+	            	else if(name.compareTo("java.lang.Long") == 0
+							|| c == long.class)
 	            		argList.add((Long)Lua.luaL_checklong(L, count));
-	            	else if(name.compareTo("java.lang.Float") == 0)
+	            	else if(name.compareTo("java.lang.Float") == 0
+							|| c == float.class)
 	            		argList.add(new Float((Lua.luaL_checknumber(L, count))));
-	            	else if(name.compareTo("java.lang.Double") == 0)
+	            	else if(name.compareTo("java.lang.Double") == 0
+							|| c == double.class)
 	            		argList.add((Double)Lua.luaL_checknumber(L, count));
-	            	else if(name.compareTo("java.lang.Character") == 0)
+	            	else if(name.compareTo("java.lang.Character") == 0
+							|| c == char.class)
 	            	{
 	            		String val = Lua.luaL_checkstring(L, count).toString();
 	            		argList.add(val.charAt(0));
@@ -942,11 +1078,30 @@ public class Lunar
 	            Object retval = null;
 				try
 				{
-					retval = m.invoke(null, argList.toArray());
+					if(m != null)
+						retval = m.invoke(null, argList.toArray());
+					else {
+						List<KParameter> paramList = kf.getParameters();
+						HashMap<KParameter, Object> valueMap = new HashMap<>();
+						int index = 0;
+						for(KParameter kParameter : paramList)
+						{
+							if(index == 0)
+								valueMap.put(kParameter, la.kotlinObject());
+							else
+								valueMap.put(kParameter, argList.get(index - 1));
+							index++;
+						}
+						retval = kf.callBy(valueMap);
+					}
+
 				}
 				catch (Exception e)
 				{
-					Log.e("Lunar", "Exception occured at static thunk, " + e.getMessage() + "\n" + m.getName());
+					if(m != null)
+						Log.e("Lunar", "Exception occured at static thunk, " + e.getMessage() + "\n" + m.getName());
+					else
+						Log.e("Lunar", "Exception occured at static thunk, " + e.getMessage() + "\n" + kf.getName());
 				}
 
 
@@ -955,21 +1110,31 @@ public class Lunar
 	            else
 	            {
 	            	String retName = retval.getClass().getName();
-	            	if(retName.compareTo("java.lang.Boolean") == 0)
+	            	if(retName.compareTo("java.lang.Boolean") == 0
+							|| retval.getClass() == boolean.class)
 	            		((ToppingEngine) ToppingEngine.getInstance()).PushBool((Boolean)retval);
 	            	else if(retName.compareTo("java.lang.Byte") == 0
-	            		|| retName.compareTo("java.lang.Short") == 0
-	            		|| retName.compareTo("java.lang.Integer") == 0
-	            		|| retName.compareTo("java.lang.Long") == 0)
+							|| retval.getClass() == byte.class
+	            			|| retName.compareTo("java.lang.Short") == 0
+							|| retval.getClass() == short.class
+	            			|| retName.compareTo("java.lang.Integer") == 0
+							|| retval.getClass() == int.class
+	            			|| retName.compareTo("java.lang.Long") == 0
+							|| retval.getClass() == long.class)
 	            		((ToppingEngine) ToppingEngine.getInstance()).PushInt((Integer)retval);
-	            	else if(retName.compareTo("java.lang.Float") == 0)
+	            	else if(retName.compareTo("java.lang.Float") == 0
+							|| retval.getClass() == float.class)
 	            		((ToppingEngine) ToppingEngine.getInstance()).PushFloat((Float)retval);
-	            	else if(retName.compareTo("java.lang.Double") == 0)
+	            	else if(retName.compareTo("java.lang.Double") == 0
+							|| retval.getClass() == double.class)
 	            		((ToppingEngine) ToppingEngine.getInstance()).PushDouble((Double)retval);
 	            	else if(retName.compareTo("java.lang.Char") == 0
-	            		|| retName.compareTo("java.lang.String") == 0)
+							|| retval.getClass() == char.class
+	            			|| retName.compareTo("java.lang.String") == 0)
 	            		((ToppingEngine) ToppingEngine.getInstance()).PushString((String)retval);
-	            	else if(retName.compareTo("java.lang.Void") == 0)
+	            	else if(retName.compareTo("java.lang.Void") == 0
+							|| retval.getClass() == void.class
+							|| retval.getClass() == kotlin.Unit.class)
 	            		((ToppingEngine) ToppingEngine.getInstance()).PushInt(0);
 	            	else if(retName.compareTo("java.util.HashMap") == 0)
 	            	{
@@ -993,6 +1158,7 @@ public class Lunar
 //    			Log.e("Lunar", "Exception on sThunk, " + s);
 //			Log.e("Lunar", e.getMessage());
 //			Tools.LogException(e.L, "Lunar", e);
+			Log.e("Lunar", "Exception on sThunk " + e.getMessage());
 			return 1;
 		}
     }
@@ -1030,5 +1196,101 @@ public class Lunar
 		String name = ptrHold.getClass().getSimpleName();
 		Lua.lua_pushstring(L, name);
 		return 1;
+	}
+
+	public static void putBundle(Bundle b, String key, Object value)
+	{
+		Class c = value.getClass();
+		String name = c.getName();
+		if(name.compareTo("java.lang.Boolean") == 0
+				|| c == boolean.class)
+			b.putBoolean(key, (Boolean) value);
+		else if(name.compareTo("java.lang.Byte") == 0
+				|| c == byte.class)
+			b.putByte(key, (Byte) value);
+		else if(name.compareTo("java.lang.Short") == 0
+				|| c == short.class)
+			b.putShort(key, (Short) value);
+		else if(name.compareTo("java.lang.Integer") == 0
+				|| c == int.class)
+			b.putInt(key, (Integer) value);
+		else if(name.compareTo("java.lang.Long") == 0
+				|| c == long.class)
+			b.putLong(key, (Long) value);
+		else if(name.compareTo("java.lang.Float") == 0
+				|| c == float.class)
+			b.putFloat(key, (Float) value);
+		else if(name.compareTo("java.lang.Double") == 0
+				|| c == double.class)
+			b.putDouble(key, (Double) value);
+		else if(name.compareTo("java.lang.Char") == 0
+				|| c == char.class)
+		{
+			b.putChar(key, (Character) value);
+		}
+		else if(name.compareTo("java.lang.String") == 0)
+			b.putString(key, (String) value);
+		else if(c.isArray())
+		{
+			Class component = c.getComponentType();
+			String componentName = component.getName();
+			if(componentName.compareTo("java.lang.Boolean") == 0
+					|| component == boolean.class)
+				b.putBooleanArray(key, (boolean[]) value);
+			else if(componentName.compareTo("java.lang.Byte") == 0
+					|| component == byte.class)
+				b.putByteArray(key, (byte[]) value);
+			else if(componentName.compareTo("java.lang.Short") == 0
+					|| component == short.class)
+				b.putShortArray(key, (short[]) value);
+			else if(componentName.compareTo("java.lang.Integer") == 0
+					|| component == int.class)
+				b.putIntArray(key, (int[]) value);
+			else if(componentName.compareTo("java.lang.Long") == 0
+					|| component == long.class)
+				b.putLongArray(key, (long[]) value);
+			else if(componentName.compareTo("java.lang.Float") == 0
+					|| component == float.class)
+				b.putFloatArray(key, (float[]) value);
+			else if(componentName.compareTo("java.lang.Double") == 0
+					|| component == double.class)
+				b.putDoubleArray(key, (double[]) value);
+			else if(componentName.compareTo("java.lang.Char") == 0
+					|| component == char.class)
+			{
+				b.putCharArray(key, (char[]) value);
+			}
+			else if(componentName.compareTo("java.lang.String") == 0)
+				b.putStringArray(key, (String[]) value);
+			else {
+				Class[] cListComponent = component.getClasses();
+				boolean parcelableFoundComponent = false;
+				for (Class cInComponent : cListComponent) {
+					if (cInComponent == Parcelable.class) {
+						parcelableFoundComponent = true;
+						break;
+					}
+				}
+				if (parcelableFoundComponent)
+					b.putParcelableArray(key, (Parcelable[]) value);
+			}
+		}
+		else {
+			Class[] cList = c.getClasses();
+			boolean parcelableFound = false;
+			for(Class cIn : cList)
+			{
+				if(cIn == Parcelable.class) {
+					parcelableFound = true;
+					break;
+				}
+			}
+			if(parcelableFound)
+				b.putParcelable(key, (Parcelable) value);
+			else
+			{
+				Log.e("Lunar", "Cannot add parameter");
+			}
+		}
 	}
 }
