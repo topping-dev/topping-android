@@ -16,6 +16,7 @@ import dev.topping.android.backend.LuaFunction
 import dev.topping.android.backend.LuaInterface
 import dev.topping.android.backend.LuaStaticVariable
 import dev.topping.android.luagui.LuaContext
+import dev.topping.android.luagui.LuaRef
 import dev.topping.android.luagui.LuaViewInflator
 import java.util.HashMap
 
@@ -190,8 +191,8 @@ open class LuaFragment : Fragment, LuaInterface {
      * @return LGView
      */
     @SuppressLint("UseRequireInsteadOfGet")
-    @LuaFunction(manual = false, methodName = "GetViewById", arguments = [String::class])
-    fun GetViewById(lId: String?): LGView {
+    @LuaFunction(manual = false, methodName = "GetViewById", arguments = [LuaRef::class])
+    fun GetViewById(lId: LuaRef): LGView {
         return view!!.GetViewById(lId)
     }
 

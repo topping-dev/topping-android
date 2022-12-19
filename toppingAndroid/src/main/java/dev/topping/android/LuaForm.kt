@@ -244,19 +244,10 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
      * Gets the view of form.
      * @return LGView
      */
-    @LuaFunction(manual = false, methodName = "GetViewById", arguments = [String::class])
-    fun GetViewById(lId: String?): LGView {
-        return view!!.GetViewById(lId)
-    }
+    @LuaFunction(manual = false, methodName = "GetViewById", arguments = [LuaRef::class])
+    fun GetViewById(lId: LuaRef): LGView {
 
-    /**
-     * Gets the view of form.
-     * @return LGView
-     */
-    @LuaFunction(manual = false, methodName = "GetViewByIdRef", arguments = [LuaRef::class])
-    fun GetViewByIdRef(ref: LuaRef): LGView {
-        val resourceName = luaContext!!.GetContext().resources.getResourceEntryName(ref.ref)
-        return view!!.GetViewById(resourceName)
+        return view!!.GetViewById(lId)
     }
 
     /**

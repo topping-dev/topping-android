@@ -202,10 +202,11 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 * @param lId
 	 * @return LGView
 	 */
-	@LuaFunction(manual = false, methodName = "GetViewById", arguments = { String.class })
-	public LGView GetViewById(String lId)
+	@LuaFunction(manual = false, methodName = "GetViewById", arguments = { LuaRef.class })
+	public LGView GetViewById(LuaRef lId)
 	{
-		if(this.GetId() != null && this.GetId().compareTo(lId) == 0)
+		String resourceName = view.getContext().getResources().getResourceEntryName(lId.getRef());
+		if(this.GetId() != null && this.GetId().compareTo(resourceName) == 0)
 			return this;
 		else
 		{
@@ -240,27 +241,11 @@ public class LGView extends Object implements LuaInterface, Serializable
 	}
 
 	/**
-	 * Set background
-	 * @param background
-	 */
-	@LuaFunction(manual = false, methodName = "SetBackground", arguments = { String.class })
-	public void SetBackground(String background)
-	{
-		int res = lc.GetContext().getResources().getIdentifier(background, (String)null, lc.GetContext().getPackageName());
-		if(res == 0)
-		{
-			int backVal = LuaViewInflator.parseColor(lc, background);
-			if (backVal != Integer.MAX_VALUE)
-				view.setBackgroundColor(backVal);
-		}
-	}
-
-	/**
 	 * Set background ref
 	 * @param backgroundRef
 	 */
-	@LuaFunction(manual = false, methodName = "SetBackgroundRef", arguments = { LuaRef.class })
-	public void SetBackgroundRef(LuaRef backgroundRef)
+	@LuaFunction(manual = false, methodName = "SetBackground", arguments = { LuaRef.class })
+	public void SetBackground(LuaRef backgroundRef)
 	{
 		TypedValue value = new TypedValue();
 		view.getContext().getResources().getValue(backgroundRef.getRef(), value, true); // will throw if resId doesn't exist

@@ -94,7 +94,7 @@ public class LGTextView extends LGView implements LuaInterface
 	 * @param val
 	 */
 	@LuaFunction(manual = false, methodName = "SetText", arguments = { String.class })
-	public void SetText(String val)
+	public void SetTextInternal(String val)
 	{
 		((TextView)view).setText(val);
 	}
@@ -104,7 +104,7 @@ public class LGTextView extends LGView implements LuaInterface
 	 * @param ref
 	 */
 	@LuaFunction(manual = false, methodName = "SetTextRef", arguments = { LuaRef.class })
-	public void SetTextRef(LuaRef ref) {
+	public void SetText(LuaRef ref) {
 		((TextView)view).setText(ref.getRef());
 	}
 
@@ -120,20 +120,10 @@ public class LGTextView extends LGView implements LuaInterface
 
 	/**
 	 * Sets the text color
-	 * @param color
-	 */
-	@LuaFunction(manual = false, methodName = "SetTextColor", arguments = { String.class })
-	public void SetTextColor(String color)
-	{
-		((TextView)view).setTextColor(LuaViewInflator.parseColor(lc, color));
-	}
-
-	/**
-	 * Sets the text color
 	 * @param colorRef
 	 */
-	@LuaFunction(manual = false, methodName = "SetTextColorRef", arguments = { String.class })
-	public void SetTextColorRef(LuaRef colorRef)
+	@LuaFunction(manual = false, methodName = "SetTextColor", arguments = { String.class })
+	public void SetTextColor(LuaRef colorRef)
 	{
 		((TextView)view).setTextColor(lc.GetContext().getResources().getColor(colorRef.getRef()));
 	}
