@@ -155,10 +155,10 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
             manual = false,
             methodName = "RegisterFormEvent",
             self = LuaForm::class,
-            arguments = [String::class, Int::class, LuaTranslator::class]
+            arguments = [LuaRef::class, Int::class, LuaTranslator::class]
         )
-        fun RegisterFormEvent(luaId: String, event: Int, lt: LuaTranslator) {
-            eventMap[luaId + event] = lt
+        fun RegisterFormEvent(luaId: LuaRef, event: Int, lt: LuaTranslator) {
+            eventMap[luaId.ref.toString() + event] = lt
         }
 
         /**

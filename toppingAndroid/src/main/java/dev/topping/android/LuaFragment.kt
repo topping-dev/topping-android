@@ -98,10 +98,10 @@ open class LuaFragment : Fragment, LuaInterface {
             manual = false,
             methodName = "RegisterFragmentEvent",
             self = LuaFragment::class,
-            arguments = [String::class, Int::class, LuaTranslator::class]
+            arguments = [LuaRef::class, Int::class, LuaTranslator::class]
         )
-        fun RegisterFragmentEvent(luaId: String, event: Int, lt: LuaTranslator) {
-            eventMap[luaId + event] = lt
+        fun RegisterFragmentEvent(luaId: LuaRef, event: Int, lt: LuaTranslator) {
+            eventMap[luaId.ref.toString() + event] = lt
         }
 
         /**

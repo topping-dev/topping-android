@@ -7,7 +7,7 @@ apply plugin: 'org.ysb33r.doxygen'
 android {
     compileSdkVersion 31
     buildToolsVersion '31.0.0'
-    ndkVersion "16.1.4479499"
+    ndkVersion "24.0.8215888"
 
     defaultConfig {
         minSdkVersion 14
