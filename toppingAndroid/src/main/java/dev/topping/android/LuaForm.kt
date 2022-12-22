@@ -16,6 +16,7 @@ import android.view.WindowManager
 import android.widget.LGView
 import android.widget.LGViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import dev.topping.android.backend.LuaClass
 import dev.topping.android.backend.LuaFunction
@@ -138,7 +139,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
             var ltToCall: LuaTranslator? = null
             ltToCall = eventMap[self.GetId() + event]
             if (ltToCall != null) {
-                if (args.isNotEmpty()) ltToCall.CallInSelf(self, lc, args)
+                if (args.isNotEmpty()) ltToCall.CallInSelf(self, lc, *args)
                 else ltToCall.CallInSelf(self, lc)
                 return true
             }
@@ -158,7 +159,8 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
             arguments = [LuaRef::class, Int::class, LuaTranslator::class]
         )
         fun RegisterFormEvent(luaId: LuaRef, event: Int, lt: LuaTranslator) {
-            eventMap[luaId.ref.toString() + event] = lt
+            val strId = ToppingEngine.getInstance().GetContext().resources.getResourceEntryName(luaId.ref)
+            eventMap[strId + event] = lt
         }
 
         /**

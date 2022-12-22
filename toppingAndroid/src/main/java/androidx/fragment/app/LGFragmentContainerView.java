@@ -1,9 +1,15 @@
-package android.widget;
+package androidx.fragment.app;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
+import android.widget.LGViewGroup;
+import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentContainerView;
 
 import dev.topping.android.backend.LuaClass;
@@ -62,7 +68,11 @@ public class LGFragmentContainerView extends LGViewGroup implements LuaInterface
     public void Setup(Context context, AttributeSet attrs) {
         super.Setup(context, attrs);
         view = new LinearLayout(context, attrs);
-        fragmentContainerView = new FragmentContainerView(context, attrs);
+        if(context instanceof FragmentActivity) {
+            fragmentContainerView = new FragmentContainerView(context, attrs, ((FragmentActivity)context).getSupportFragmentManager());
+        } else {
+            fragmentContainerView = new FragmentContainerView(context);
+        }
     }
 
     /**
@@ -72,7 +82,11 @@ public class LGFragmentContainerView extends LGViewGroup implements LuaInterface
     public void Setup(Context context, AttributeSet attrs, int defStyle) {
         super.Setup(context, attrs, defStyle);
         view = new LinearLayout(context, attrs, defStyle);
-        fragmentContainerView = new FragmentContainerView(context, attrs, defStyle);
+        if(context instanceof FragmentActivity) {
+            fragmentContainerView = new FragmentContainerView(context, attrs, ((FragmentActivity)context).getSupportFragmentManager());
+        } else {
+            fragmentContainerView = new FragmentContainerView(context);
+        }
     }
 
     /**

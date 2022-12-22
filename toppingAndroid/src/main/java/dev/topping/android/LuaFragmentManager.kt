@@ -2,8 +2,10 @@ package dev.topping.android
 
 import android.widget.LGView
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.NavHostFragment
 import dev.topping.android.backend.LuaClass
 import dev.topping.android.backend.LuaFunction
+import dev.topping.android.luagui.LuaContext
 
 @LuaClass(className = "LuaFragmentManager", isKotlin = true)
 class LuaFragmentManager(private val fragmentManager: FragmentManager) {
@@ -34,7 +36,15 @@ class LuaFragmentManager(private val fragmentManager: FragmentManager) {
         arguments = [Int::class]
     )
     fun findFragmentById(id: Int): LuaFragment {
-        return fragmentManager.findFragmentById(id) as LuaFragment
+        val fragment = fragmentManager.findFragmentById(id)
+        if(fragment is LuaFragment)
+            return fragment as LuaFragment
+        else if(fragment is NavHostFragment) {
+            val f = LuaNavHostFragment(fragment.context, "")
+            f.navHostFragment = fragment
+            return f
+        }
+        return fragment as LuaFragment
     }
 
     /**
@@ -47,6 +57,14 @@ class LuaFragmentManager(private val fragmentManager: FragmentManager) {
         arguments = [String::class]
     )
     fun findFragmentByTag(tag: String): LuaFragment {
-        return fragmentManager.findFragmentByTag(tag) as LuaFragment
+        val fragment = fragmentManager.findFragmentByTag(tag)
+        if(fragment is LuaFragment)
+            return fragment as LuaFragment
+        else if(fragment is NavHostFragment) {
+            val f = LuaNavHostFragment(fragment.context, "")
+            f.navHostFragment = fragment
+            return f
+        }
+        return fragment as LuaFragment
     }
 }

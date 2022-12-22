@@ -23,25 +23,20 @@ import java.util.HashMap
  * User interface fragment
  */
 @LuaClass(className = "LuaNavHostFragment", isKotlin = true)
-open class LuaNavHostFragment : NavHostFragment, LuaInterface {
-    protected var luaContext: LuaContext? = null
-    protected var luaId: String? = null
-    protected var ui: String? = null
-    protected var view: LGView? = null
-    protected var rootView: LinearLayout? = null
+open class LuaNavHostFragment : LuaFragment, LuaInterface {
+    var navHostFragment: NavHostFragment? = null
 
     companion object {
         private val eventMap = HashMap<String, LuaTranslator>()
 
-        fun OnFragmentEvent(self: LuaInterface, event: Int, lc: LuaContext?, vararg args: Any?): Boolean {
+        fun OnFragmentEvent(self: LuaInterface, event: Int, lc: LuaContext?, vararg args: Any?): Any? {
             var ltToCall: LuaTranslator? = null
             ltToCall = eventMap[self.GetId() + event]
             if (ltToCall != null) {
-                if (args.isNotEmpty()) ltToCall.CallInSelf(self, lc, args)
+                return if (args.isNotEmpty()) ltToCall.CallInSelf(self, lc, args)
                 else ltToCall.CallInSelf(self, lc)
-                return true
             }
-            return false
+            return null
         }
 
         /**
@@ -54,10 +49,11 @@ open class LuaNavHostFragment : NavHostFragment, LuaInterface {
             manual = false,
             methodName = "RegisterFragmentEvent",
             self = LuaNavHostFragment::class,
-            arguments = [String::class, Int::class, LuaTranslator::class]
+            arguments = [LuaRef::class, Int::class, LuaTranslator::class]
         )
-        fun RegisterFragmentEvent(luaId: String, event: Int, lt: LuaTranslator) {
-            eventMap[luaId + event] = lt
+        fun RegisterFragmentEvent(luaId: LuaRef, event: Int, lt: LuaTranslator) {
+            val strId = ToppingEngine.getInstance().GetContext().resources.getResourceEntryName(luaId.ref)
+            eventMap[strId + event] = lt
         }
 
         /**
@@ -101,15 +97,6 @@ open class LuaNavHostFragment : NavHostFragment, LuaInterface {
     }
 
     /**
-     * Gets LuaContext value of fragment
-     * @return LuaContext
-     */
-    @LuaFunction(manual = false, methodName = "GetContext")
-    fun GetContext(): LuaContext? {
-        return luaContext
-    }
-
-    /**
      * (Ignore)
      */
     constructor() {}
@@ -133,90 +120,12 @@ open class LuaNavHostFragment : NavHostFragment, LuaInterface {
     }
 
     /**
-     * Checks that fragment is initialized or not.
-     * @return boolean
-     */
-    @LuaFunction(manual = false, methodName = "IsInitialized")
-    fun IsInitialized(): Boolean {
-        return view != null
-    }
-
-    /**
-     * Gets the view by id
-     * @param lId
-     * @return LGView
-     */
-    @SuppressLint("UseRequireInsteadOfGet")
-    @LuaFunction(manual = false, methodName = "GetViewById", arguments = [LuaRef::class])
-    fun GetViewById(lId: LuaRef): LGView {
-        return view!!.GetViewById(lId)
-    }
-
-    /**
-     * Gets the view of fragment.
-     * @return LGView
-     */
-    @LuaFunction(manual = false, methodName = "GetView")
-    fun GetView(): LGView? {
-        return view
-    }
-
-    /**
-     * Sets the view to render.
-     * @param v
-     */
-    @LuaFunction(manual = false, methodName = "SetView", arguments = [LGView::class])
-    fun SetView(v: LGView) {
-        view = v
-        rootView!!.removeAllViews()
-        rootView!!.addView(v.GetView())
-    }
-
-    /**
-     * Sets the xml file of the view to render.
-     * @param xml
-     */
-    @LuaFunction(manual = false, methodName = "SetViewXML", arguments = [String::class])
-    fun SetViewXML(xml: String?) {
-        val inflater = LuaViewInflator(luaContext)
-        view = inflater.ParseFile(xml, null)
-        rootView!!.removeAllViews()
-        rootView!!.addView(view?.view)
-    }
-
-    /**
-     * Sets the luaid of the view to render.
-     * @param luaId
-     */
-    @LuaFunction(manual = false, methodName = "SetViewId", arguments = [String::class])
-    fun SetViewId(luaId: String?) {
-        this.luaId = luaId
-    }
-
-    /**
-     * Sets the title of the screen.
-     * @param str
-     */
-    @LuaFunction(manual = false, methodName = "SetTitle", arguments = [String::class])
-    fun SetTitle(str: String?) {
-        requireActivity().title = str
-    }
-
-    /**
-     * Closes the form
-     */
-    @LuaFunction(manual = false, methodName = "Close")
-    fun Close() {
-        parentFragmentManager.beginTransaction().remove(this).commitAllowingStateLoss()
-    }
-
-    /**
      * Get Nav Controller
      */
     @LuaFunction(manual = false, methodName = "getNavController")
     fun getNavControllerInternal(): LuaNavController
     {
-        return LuaNavController(navController)
+        return LuaNavController(navHostFragment?.navController)
     }
 
     /**
@@ -231,8 +140,7 @@ open class LuaNavHostFragment : NavHostFragment, LuaInterface {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
-        val luaId = "LuaNavHostFragment"
+        this.luaId = "LuaNavHostFragment"
         val ui = ""
         this.luaId = luaId
         luaContext = LuaContext.CreateLuaContext(inflater.context)
@@ -289,6 +197,7 @@ open class LuaNavHostFragment : NavHostFragment, LuaInterface {
      * (Ignore)
      */
     override fun GetId(): String {
-        return luaId ?: "LuaNavHostFragment"
+        val idS = requireContext().resources.getResourceEntryName(super.getId())
+        return idS ?: luaId ?: "LuaNavHostFragment"
     }
 }

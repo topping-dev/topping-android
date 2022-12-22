@@ -298,6 +298,12 @@ public class LGView extends Object implements LuaInterface, Serializable
 	{
 		if(luaId != null)
 			return luaId;
+		String idS = null;
+		try {
+			idS = lc.GetContext().getResources().getResourceEntryName(view.getId());
+		} catch (Exception ex) {}
+		if(idS != null)
+			return idS;
 		String customId = (String) view.getTag(-1);
 		if(customId == null)
 		{

@@ -13,6 +13,7 @@ import android.widget.LGCheckBox;
 import android.widget.LGComboBox;
 import android.widget.LGDatePicker;
 import android.widget.LGEditText;
+import androidx.fragment.app.LGFragmentContainerView;
 import android.widget.LGFrameLayout;
 import android.widget.LGHorizontalScrollView;
 import android.widget.LGImageView;
@@ -350,6 +351,11 @@ public class LuaViewInflator implements LuaInterface
 				|| name.equals("com.google.android.material.appbar.MaterialToolbar"))
 		{
 			lgresult = new LGToolbar(lc, atts);
+		}
+		else if(name.equals("androidx.fragment.app.FragmentContainerView")
+		|| name.equals("FragmentContainerView")
+		|| name.equals("LGFragmentContainerView")) {
+			lgresult = new LGFragmentContainerView(lc, atts);
 		}
 		else if((pluginView = ContainsPluginView(ToppingEngine.GetViewPlugins(), name)) != null)
 		{

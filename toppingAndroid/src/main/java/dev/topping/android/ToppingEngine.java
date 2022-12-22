@@ -16,7 +16,7 @@ import android.widget.LGCompoundButton;
 import android.widget.LGConstraintLayout;
 import android.widget.LGDatePicker;
 import android.widget.LGEditText;
-import android.widget.LGFragmentContainerView;
+import androidx.fragment.app.LGFragmentContainerView;
 import android.widget.LGFrameLayout;
 import android.widget.LGImageView;
 import android.widget.LGLinearLayout;
@@ -65,7 +65,7 @@ import kotlin.reflect.KProperty;
 
 public class ToppingEngine
 {
-	private Context androidContext;
+	private Context context;
 	private static ToppingEngine instance;
 	private static List<Class<?>> plugins = new ArrayList<Class<?>>();
 	private static ArrayList<Class<?>> viewPlugins = new ArrayList<Class<?>>();
@@ -134,7 +134,10 @@ public class ToppingEngine
 				if(lc.isKotlin()) {
 					KClass kclass = kotlin.jvm.JvmClassMappingKt.getKotlinClass(val);
 					if (kclass != null) {
-						Collection<KClass> nestedClasses = kclass.getNestedClasses();
+						Collection<KClass> nestedClasses = null;
+						try {
+							nestedClasses = kclass.getNestedClasses();
+						} catch (Exception e) {}
 						if (nestedClasses != null) {
 							for (Iterator i = nestedClasses.iterator(); i.hasNext(); ) {
 								KClass nestedKClass = (KClass) i.next();
@@ -169,7 +172,7 @@ public class ToppingEngine
 
 	public void Startup(Context context)
 	{
-		androidContext = context;
+		this.context = context;
 		Lua.primaryLoad = primaryLoad;
 		Lua.scriptsRoot = scriptsRoot;
 		LuaState.setasset(context.getAssets());
@@ -339,7 +342,7 @@ public class ToppingEngine
 	@SuppressWarnings("unused")
 	public void StartupDefines()
 	{
-		AssetManager assetManager = androidContext.getAssets();
+		AssetManager assetManager = context.getAssets();
 
 		String[] rtn = null;
 		try
@@ -357,7 +360,7 @@ public class ToppingEngine
 		{
 		case EXTERNAL_DATA: //External SD
 		{
-			String scriptsDir = Defines.GetExternalPathForResource(androidContext, scriptsRoot);
+			String scriptsDir = Defines.GetExternalPathForResource(context, scriptsRoot);
 			File scripts = new File(scriptsDir);
 			{
 				if(!scripts.exists())
@@ -444,7 +447,7 @@ public class ToppingEngine
 							count++;
 							final int countF = count;
 							final String[] filesF = files;
-							((Activity)androidContext).runOnUiThread(new Runnable()
+							((Activity) context).runOnUiThread(new Runnable()
 							{
 								@Override
 								public void run()
@@ -484,7 +487,7 @@ public class ToppingEngine
 						is.close();*/
 
 					//if(Lua.luaL_loadstring(L, buffer.toString()) != 0)
-					if(Lua.luaL_loadfile(L, androidContext, s) != 0)
+					if(Lua.luaL_loadfile(L, context, s) != 0)
 					{
 						Report(L);
 					}
@@ -500,7 +503,7 @@ public class ToppingEngine
 							count++;
 							final int countF = count;
 							final String[] rtnF = rtn;
-							((Activity)androidContext).runOnUiThread(new Runnable()
+							((Activity) context).runOnUiThread(new Runnable()
 							{
 								@Override
 								public void run()
@@ -522,7 +525,7 @@ public class ToppingEngine
 		}break;
 		case INTERNAL_DATA: //Assets
 		{
-			String scriptsDir = androidContext.getFilesDir().getAbsolutePath();
+			String scriptsDir = context.getFilesDir().getAbsolutePath();
 			scriptsDir = scriptsDir + "/" + scriptsRoot;
 			File scripts = new File(scriptsDir);
 			{
@@ -594,7 +597,7 @@ public class ToppingEngine
 						is.close();*/
 
 					//if(Lua.luaL_loadstring(L, buffer.toString()) != 0)
-					if(Lua.luaL_loadfile(L, androidContext, s) != 0)
+					if(Lua.luaL_loadfile(L, context, s) != 0)
 					{
 						Report(L);
 					}
@@ -610,7 +613,7 @@ public class ToppingEngine
 							count++;
 							final int countF = count;
 							final String[] filesF = files;
-							((Activity)androidContext).runOnUiThread(new Runnable()
+							((Activity) context).runOnUiThread(new Runnable()
 							{
 								@Override
 								public void run()
@@ -818,7 +821,7 @@ public class ToppingEngine
 
 		for(String s : rtn)
 		{
-			if(Lua.luaL_loadfile(L, androidContext, s) != 0)
+			if(Lua.luaL_loadfile(L, context, s) != 0)
 			{
 				Report(L);
 			}
@@ -1152,6 +1155,7 @@ public class ToppingEngine
 			LuaObjectStore.class,
 
 			LuaBuffer.class,
+			LuaBundle.class,
 			LuaColor.class,
 			LuaDatabase.class,
 			LuaDate.class,
@@ -1397,12 +1401,12 @@ public class ToppingEngine
 
 	public Context GetContext()
 	{
-		return androidContext;
+		return context;
 	}
 
 	public void SetContext(Context context)
 	{
-		androidContext = context;
+		this.context = context;
 	}
 
 	public String GetScriptsRoot()

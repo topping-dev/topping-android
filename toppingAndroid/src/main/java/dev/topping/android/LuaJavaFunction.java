@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import kotlin.reflect.KFunction;
 import kotlin.reflect.KParameter;
@@ -11,6 +12,7 @@ import kotlin.reflect.KParameter;
 /**
  * Used to define java functions in lua
  */
+@LuaClass(className = "LuaJavaFunction")
 public class LuaJavaFunction implements LuaFunction
 {
 	boolean manual = false;

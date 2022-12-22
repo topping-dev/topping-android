@@ -28,8 +28,7 @@ public class LGImageView extends LGView implements LuaInterface
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class, String.class }, self = LGImageView.class)
 	public static LGImageView Create(LuaContext lc, String luaId)
 	{
-		LGImageView iv = new LGImageView(lc);
-		iv.luaId = luaId;
+		LGImageView iv = new LGImageView(lc, luaId);
 		iv.view.setTag(iv);
 		return iv;
 	}

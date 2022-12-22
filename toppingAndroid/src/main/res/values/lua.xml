@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<declare-styleable name="lua">
-	<attr name="id" format="string"/>
-</declare-styleable>
+	<declare-styleable name="lua">
+		<attr name="id" format="string"/>
+	</declare-styleable>
+
+	<declare-styleable name="ios">
+		<attr name="iosBottomSafeArea" format="boolean" />
+		<attr name="iosTheme" format="integer"/>
+		<attr name="iosToolbarTextColor" format="color" />
+		<attr name="iosHorizontalProgress" format="integer" />
+		<attr name="iosSmallProgress" format="integer" />
+		<attr name="iosDarkProgress" format="integer" />
+	</declare-styleable>
 
 </resources>

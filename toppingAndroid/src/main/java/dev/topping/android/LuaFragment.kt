@@ -77,15 +77,14 @@ open class LuaFragment : Fragment, LuaInterface {
         @JvmField
         var FRAGMENT_EVENT_DESTROY = 5
 
-        fun OnFragmentEvent(self: LuaInterface, event: Int, lc: LuaContext?, vararg args: Any?): Boolean {
+        fun OnFragmentEvent(self: LuaInterface, event: Int, lc: LuaContext?, vararg args: Any?): Any? {
             var ltToCall: LuaTranslator? = null
             ltToCall = eventMap[self.GetId() + event]
             if (ltToCall != null) {
-                if (args.isNotEmpty()) ltToCall.CallInSelf(self, lc, args)
+                return if (args.isNotEmpty()) ltToCall.CallInSelf(self, lc, *args)
                 else ltToCall.CallInSelf(self, lc)
-                return true
             }
-            return false
+            return null
         }
 
         /**
@@ -101,7 +100,8 @@ open class LuaFragment : Fragment, LuaInterface {
             arguments = [LuaRef::class, Int::class, LuaTranslator::class]
         )
         fun RegisterFragmentEvent(luaId: LuaRef, event: Int, lt: LuaTranslator) {
-            eventMap[luaId.ref.toString() + event] = lt
+            val strId = ToppingEngine.getInstance().GetContext().resources.getResourceEntryName(luaId.ref)
+            eventMap[strId + event] = lt
         }
 
         /**
@@ -272,12 +272,9 @@ open class LuaFragment : Fragment, LuaInterface {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        val luaId = "LuaFragment"
-        val ui = ""
-        this.luaId = luaId
         luaContext = LuaContext.CreateLuaContext(inflater.context)
-        if (ui.compareTo("") == 0) {
-            OnFragmentEvent(this, LuaFragment.FRAGMENT_EVENT_CREATE, luaContext)
+        if (ui == null) {
+            view = OnFragmentEvent(this, FRAGMENT_EVENT_CREATE_VIEW, luaContext, LuaViewInflator(luaContext), null, LuaBundle(savedInstanceState)) as LGView?
         } else {
             val inflaterL = LuaViewInflator(luaContext)
             view = inflaterL.ParseFile(ui, null)
@@ -297,8 +294,17 @@ open class LuaFragment : Fragment, LuaInterface {
     /**
      * (Ignore)
      */
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        OnFragmentEvent(this, FRAGMENT_EVENT_VIEW_CREATED, luaContext)
+    }
+
+    /**
+     * (Ignore)
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        OnFragmentEvent(this, FRAGMENT_EVENT_CREATE, luaContext)
     }
 
     /**
@@ -329,6 +335,12 @@ open class LuaFragment : Fragment, LuaInterface {
      * (Ignore)
      */
     override fun GetId(): String {
-        return luaId ?: "LuaFragment"
+        var idS: String? = null
+        getNavController().navController.currentDestination?.let {
+            idS = requireContext().resources.getResourceEntryName(it.id)
+        }
+        if(idS == null)
+            idS = requireContext().resources.getResourceEntryName(id)
+        return idS ?: luaId ?: "LuaFragment"
     }
 }

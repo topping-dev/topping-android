@@ -13,10 +13,12 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
 
+@LuaClass(className = "LuaNFC")
 public class LuaNFC implements LuaInterface, CreateNdefMessageCallback
 {
 	LuaContext context;
