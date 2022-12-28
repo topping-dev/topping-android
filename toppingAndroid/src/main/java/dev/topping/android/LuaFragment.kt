@@ -18,6 +18,7 @@ import dev.topping.android.backend.LuaStaticVariable
 import dev.topping.android.luagui.LuaContext
 import dev.topping.android.luagui.LuaRef
 import dev.topping.android.luagui.LuaViewInflator
+import dev.topping.android.osspecific.utils.toBundle
 import java.util.HashMap
 
 
@@ -28,7 +29,7 @@ import java.util.HashMap
 open class LuaFragment : Fragment, LuaInterface {
     protected var luaContext: LuaContext? = null
     protected var luaId: String? = null
-    protected var ui: String? = null
+    protected var ui: LuaRef? = null
     protected var view: LGView? = null
     protected var rootView: LinearLayout? = null
 
@@ -115,10 +116,28 @@ open class LuaFragment : Fragment, LuaInterface {
             manual = false,
             methodName = "Create",
             self = LuaFragment::class,
-            arguments = [LuaContext::class, String::class]
+            arguments = [LuaContext::class, LuaRef::class]
         )
-        fun Create(lc: LuaContext, luaId: String?): LuaFragment {
+        fun Create(lc: LuaContext, luaId: LuaRef?): LuaFragment {
             return LuaFragment(lc.GetContext(), luaId)
+        }
+
+        /**
+         * Creates LuaFragment Object From Lua.
+         * Fragment that created will be sent on FRAGMENT_EVENT_CREATE event.
+         * @param lc
+         * @param luaId
+         * @param args
+         * @return LuaFragment
+         */
+        @LuaFunction(
+            manual = false,
+            methodName = "Create",
+            self = LuaFragment::class,
+            arguments = [LuaContext::class, LuaRef::class]
+        )
+        fun Create(lc: LuaContext, luaId: LuaRef?, args: Map<String, Any>?): LuaFragment {
+            return LuaFragment(lc.GetContext(), luaId, null, args)
         }
 
         /**
@@ -133,14 +152,15 @@ open class LuaFragment : Fragment, LuaInterface {
             manual = false,
             methodName = "CreateWithUI",
             self = LuaFragment::class,
-            arguments = [LuaContext::class, String::class, String::class]
+            arguments = [LuaContext::class, LuaRef::class, LuaRef::class]
         )
         fun CreateWithUI(
             lc: LuaContext,
-            luaId: String?,
-            ui: String?
+            luaId: LuaRef?,
+            ui: LuaRef?,
+            args: Map<String, Any>?
         ): LuaFragment {
-            return LuaFragment(lc.GetContext(), luaId, ui)
+            return LuaFragment(lc.GetContext(), luaId, ui, args)
         }
     }
 
@@ -161,19 +181,23 @@ open class LuaFragment : Fragment, LuaInterface {
     /**
      * (Ignore)
      */
-    constructor(c: Context?, luaId: String?) {
+    constructor(c: Context?, luaId: LuaRef?) {
         luaContext = LuaContext()
         luaContext!!.SetContext(c)
-        this.luaId = luaId
+        this.luaId = resources.getResourceEntryName(luaId!!.ref)
     }
 
     /**
      * (Ignore)
      */
-    constructor(c: Context?, luaId: String?, ui: String?) {
+    constructor(c: Context?, luaId: LuaRef?, ui: LuaRef?, args: Map<String, Any>?) {
         luaContext = LuaContext()
         luaContext!!.SetContext(c)
-        this.luaId = luaId
+        this.luaId = resources.getResourceEntryName(luaId?.ref!!)
+        this.ui = ui
+        args?.let {
+            arguments = it.toBundle(Bundle())
+        }
     }
 
     /**
@@ -277,7 +301,7 @@ open class LuaFragment : Fragment, LuaInterface {
             view = OnFragmentEvent(this, FRAGMENT_EVENT_CREATE_VIEW, luaContext, LuaViewInflator(luaContext), null, LuaBundle(savedInstanceState)) as LGView?
         } else {
             val inflaterL = LuaViewInflator(luaContext)
-            view = inflaterL.ParseFile(ui, null)
+            view = inflaterL.Inflate(ui, null)
         }
         return if (view != null) view!!.GetView() else {
             rootView = LinearLayout(inflater.context)

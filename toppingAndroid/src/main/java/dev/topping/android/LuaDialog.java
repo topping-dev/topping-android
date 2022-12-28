@@ -33,8 +33,7 @@ public class LuaDialog implements LuaInterface
 	AlertDialog.Builder builder = null;
 	AlertDialog dialog = null;
 	private int dialogType = DIALOG_TYPE_NORMAL;
-	private LuaTranslator ltDateSelected;
-	private LuaTranslator ltTimeSelected;
+
 	/**
 	 * for creating normal dialog
 	 */
@@ -67,8 +66,24 @@ public class LuaDialog implements LuaInterface
 	 * @param title title text
 	 * @param content content text
 	 */
+	@LuaFunction(manual = false, methodName = "MessageBox", arguments = { LuaContext.class, LuaRef.class, LuaRef.class }, self = LuaDialog.class)
+	public static void MessageBox(LuaContext context, LuaRef title, LuaRef content)
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(context.GetContext());
+		builder.setPositiveButton("Ok", null);
+		builder.setMessage(content.getRef());
+		builder.setTitle(title.getRef());
+		builder.show();
+	}
+
+	/**
+	 * Shows a messagebox
+	 * @param context lua context value
+	 * @param title title text
+	 * @param content content text
+	 */
 	@LuaFunction(manual = false, methodName = "MessageBox", arguments = { LuaContext.class, String.class, String.class }, self = LuaDialog.class)
-	public static void MessageBox(LuaContext context, String title, String content)
+	public static void MessageBoxInternal(LuaContext context, String title, String content)
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(context.GetContext());
 		builder.setPositiveButton("Ok", null);
@@ -128,8 +143,29 @@ public class LuaDialog implements LuaInterface
 	 * @param title title of the button
 	 * @param action action to do when button is pressed
 	 */
-	@LuaFunction(manual = false, methodName = "SetPositiveButton", arguments = { String.class, LuaTranslator.class })
-	public void SetPositiveButton(String title, final LuaTranslator action)
+	@LuaFunction(manual = false, methodName = "SetPositiveButton", arguments = { LuaRef.class, LuaTranslator.class })
+	public void SetPositiveButton(LuaRef title, final LuaTranslator action)
+	{
+		if(dialogType == DIALOG_TYPE_NORMAL)
+		{
+			builder.setPositiveButton(title.getRef(), new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					action.CallIn();
+				}
+			});
+		}
+	}
+
+	/**
+	 * Sets the positive button of LuaDialog
+	 * @param title title of the button
+	 * @param action action to do when button is pressed
+	 */
+	@LuaFunction(manual = false, methodName = "SetPositiveButtonInternal", arguments = { String.class, LuaTranslator.class })
+	public void SetPositiveButtonInternal(String title, final LuaTranslator action)
 	{
 		if(dialogType == DIALOG_TYPE_NORMAL)
 		{
@@ -149,8 +185,29 @@ public class LuaDialog implements LuaInterface
 	 * @param title title of the button
 	 * @param action action to do when button is pressed
 	 */
-	@LuaFunction(manual = false, methodName = "SetNegativeButton", arguments = { String.class, LuaTranslator.class })
-	public void SetNegativeButton(String title, final LuaTranslator action)
+	@LuaFunction(manual = false, methodName = "SetNegativeButton", arguments = { LuaRef.class, LuaTranslator.class })
+	public void SetNegativeButton(LuaRef title, final LuaTranslator action)
+	{
+		if(dialogType == DIALOG_TYPE_NORMAL)
+		{
+			builder.setNegativeButton(title.getRef(), new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					action.CallIn();
+				}
+			});
+		}
+	}
+
+	/**
+	 * Sets the negative button of LuaDialog
+	 * @param title title of the button
+	 * @param action action to do when button is pressed
+	 */
+	@LuaFunction(manual = false, methodName = "SetNegativeButtonInternal", arguments = { String.class, LuaTranslator.class })
+	public void SetNegativeButtonInternal(String title, final LuaTranslator action)
 	{
 		if(dialogType == DIALOG_TYPE_NORMAL)
 		{
@@ -182,7 +239,7 @@ public class LuaDialog implements LuaInterface
 	 * Sets the title of the LuaDialog
 	 * @param titleRef
 	 */
-	@LuaFunction(manual = false, methodName = "SetTitleRef", arguments = { String.class })
+	@LuaFunction(manual = false, methodName = "SetTitleRef", arguments = { LuaRef.class })
 	public void SetTitleRef(LuaRef titleRef)
 	{
 		if(dialogType == DIALOG_TYPE_NORMAL)
@@ -208,7 +265,7 @@ public class LuaDialog implements LuaInterface
 	 * Sets the message of the LuaDialog
 	 * @param messageRef
 	 */
-	@LuaFunction(manual = false, methodName = "SetMessageRef", arguments = { String.class })
+	@LuaFunction(manual = false, methodName = "SetMessageRef", arguments = { LuaRef.class })
 	public void SetMessage(LuaRef messageRef)
 	{
 		if(dialogType == DIALOG_TYPE_NORMAL)

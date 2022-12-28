@@ -6,6 +6,7 @@ import com.naef.jnlua.IDelegate;
 import com.naef.jnlua.LuaState;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -53,7 +54,7 @@ import static com.naef.jnlua.Lua.lua_toboolean;
 import static com.naef.jnlua.Lua.lua_upvalueindex;
 
 @LuaClass(className = "LuaRef")
-public class LuaRef implements LuaInterface
+public class LuaRef implements LuaInterface, Serializable
 {
     private int ref;
 

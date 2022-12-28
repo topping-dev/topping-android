@@ -1,9 +1,12 @@
 package dev.topping.android.luagui;
 
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.appcompat.app.CustomLayoutInflater;
 
+import dev.topping.android.LuaForm;
+import dev.topping.android.LuaNativeObject;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
@@ -24,6 +27,26 @@ public class LuaContext implements LuaInterface
 		LuaContext lc = new LuaContext();
 		lc.SetContext(context);
 		return lc;
+	}
+
+	/**
+	 * Gets binded form.
+	 * @return LuaForm
+	 */
+	@LuaFunction(manual = false, methodName = "GetForm")
+	public LuaForm GetForm() {
+		if(context instanceof LuaForm)
+			return (LuaForm) context;
+		return null;
+	}
+
+	/**
+	 * Starts form from created native object
+	 * @see dev.topping.android.LuaForm Create
+	 */
+	@LuaFunction(manual = false, methodName = "StartForm", arguments = { LuaNativeObject.class })
+	public void StartForm(LuaNativeObject obj) {
+		context.startActivity((Intent) obj.obj);
 	}
 
 	/**

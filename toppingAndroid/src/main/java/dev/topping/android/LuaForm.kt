@@ -4,19 +4,16 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
-import android.content.pm.ResolveInfo
 import android.nfc.FormatException
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.Ndef
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import android.widget.LGView
 import android.widget.LGViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import dev.topping.android.backend.LuaClass
 import dev.topping.android.backend.LuaFunction
@@ -40,7 +37,7 @@ import java.util.*
 open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
     protected var luaContext: LuaContext? = null
     protected var luaId: String? = "LuaForm"
-    protected var ui: String? = ""
+    protected var ui: LuaRef? = null
     protected var view: LGView? = null
 
     //Nfc
@@ -168,6 +165,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
          * Form that created will be sent on FORM_EVENT_CREATE event.
          * @param lc
          * @param luaId
+         * @return LuaNativeObject
          */
         @LuaFunction(
             manual = false,
@@ -175,10 +173,10 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
             self = LuaForm::class,
             arguments = [LuaContext::class, String::class]
         )
-        fun Create(lc: LuaContext, luaId: String?) {
+        fun Create(lc: LuaContext, luaId: String?) : LuaNativeObject {
             val intent = Intent(lc.GetContext(), LuaForm::class.java)
             intent.putExtra("LUA_ID_RUED", luaId)
-            lc.GetContext().startActivity(intent)
+            return LuaNativeObject(intent)
         }
 
         /**
@@ -187,6 +185,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
          * @param lc
          * @param luaId
          * @param ui
+         * @return LuaNativeObject
          */
         @LuaFunction(
             manual = false,
@@ -194,18 +193,18 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
             self = LuaForm::class,
             arguments = [LuaContext::class, String::class, String::class]
         )
-        fun CreateWithUI(lc: LuaContext, luaId: String?, ui: String?) {
+        fun CreateWithUI(lc: LuaContext, luaId: String?, ui: String?) : LuaNativeObject {
             val intent = Intent(lc.GetContext(), LuaForm::class.java)
             intent.putExtra("LUA_ID_RUED", luaId)
             intent.putExtra("LUA_UI_RUED", ui)
-            lc.GetContext().startActivity(intent)
+            return LuaNativeObject(intent)
         }
 
         /**
          * Creates LuaForm Object From Lua for tabs.
          * @param lc
          * @param luaId
-         * @return NativeObject
+         * @return LuaNativeObject
          */
         @LuaFunction(
             manual = false,
@@ -213,10 +212,10 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
             self = LuaForm::class,
             arguments = [LuaContext::class, String::class]
         )
-        fun CreateForTab(lc: LuaContext, luaId: String?): Any {
+        fun CreateForTab(lc: LuaContext, luaId: String?): LuaNativeObject {
             val intent = Intent(lc.GetContext(), LuaForm::class.java)
             intent.putExtra("LUA_ID_RUED", luaId)
-            return intent
+            return LuaNativeObject(intent)
         }
 
         /**
@@ -283,10 +282,10 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
      * Sets the xml file of the view to render.
      * @param xml
      */
-    @LuaFunction(manual = false, methodName = "SetViewXML", arguments = [String::class])
-    fun SetViewXML(xml: String?) {
+    @LuaFunction(manual = false, methodName = "SetViewXML", arguments = [LuaRef::class])
+    fun SetViewXML(xml: LuaRef?) {
         val inflater = LuaViewInflator(luaContext)
-        view = inflater.ParseFile(xml, null)
+        view = inflater.Inflate(xml, null)
         setContentView(view?.view)
     }
 
@@ -416,22 +415,22 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
             extras = intent.extras
             if (extras == null) {
                 luaId = "LuaForm"
-                ui = ""
+                ui = LuaRef.WithValue(0)
             } else {
                 luaId = extras.getString("LUA_ID_RUED", "LuaForm")
-                ui = extras.getString("LUA_UI_RUED", "")
+                ui = extras.getSerializable("LUA_UI_RUED") as LuaRef?
             }
         } else {
             luaId = savedInstanceState.getString("LUA_ID_RUED", "LuaForm")
-            ui = savedInstanceState.getString("LUA_UI_RUED", "")
+            ui = savedInstanceState.getSerializable("LUA_UI_RUED") as LuaRef?
         }
         this.luaId = luaId
         luaContext = LuaContext.CreateLuaContext(this)
-        if (ui == null || ui!!.compareTo("") == 0) {
+        if (ui == null || ui!!.ref == 0) {
             OnFormEvent(this, FORM_EVENT_CREATE, luaContext)
         } else {
             val inflater = LuaViewInflator(luaContext)
-            view = inflater.ParseFile(ui, null)
+            view = inflater.Inflate(ui, null)
             setContentView(view?.view)
         }
     }
@@ -464,7 +463,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
                                     OnFormEvent(this, FORM_EVENT_NFC, luaContext, r.uri.toString())
                                 }
                             }
-                        } catch (e: FormatException) {
+                        } catch (_: FormatException) {
                         }
                     }
                 }
@@ -568,7 +567,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         luaId = savedInstanceState.getString("LUA_ID_RUED")
-        ui = savedInstanceState.getString("LUA_UI_RUED")
+        ui = savedInstanceState.getSerializable("LUA_UI_RUED") as LuaRef?
     }
 
     /**
@@ -577,7 +576,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString("LUA_ID_RUED", luaId)
-        outState.putString("LUA_UI_RUED", ui)
+        outState.putSerializable("LUA_UI_RUED", ui)
     }
 
     /**

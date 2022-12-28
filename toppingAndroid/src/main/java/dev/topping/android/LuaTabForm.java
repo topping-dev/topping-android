@@ -14,6 +14,7 @@ import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
+import dev.topping.android.luagui.LuaRef;
 import dev.topping.android.osspecific.utils.Common;
 
 /**
@@ -34,12 +35,12 @@ public class LuaTabForm implements LuaInterface
 	 * @param luaId
 	 * @return LuaTabForm
 	 */
-	@LuaFunction(manual = false, methodName = "Create", self = LuaTabForm.class, arguments = { LuaContext.class, String.class })
-	public static Object Create(LuaContext lc, String luaId)
+	@LuaFunction(manual = false, methodName = "Create", self = LuaTabForm.class, arguments = { LuaContext.class, LuaRef.class })
+	public static Object Create(LuaContext lc, LuaRef luaId)
 	{
 		LuaTabForm ltf = new LuaTabForm();
 		ltf.mTabHost = new FragmentTabHost(lc.GetContext());
-		ltf.luaId = luaId;
+		ltf.luaId = lc.GetContext().getResources().getResourceEntryName(luaId.getRef());
 		ltf.luaContext = lc;
 		return ltf;
 	}
@@ -51,8 +52,8 @@ public class LuaTabForm implements LuaInterface
 	 * @param image image of the tab
 	 * @param ui xml file of tab
 	 */
-	@LuaFunction(manual = false, methodName = "AddTab", arguments = { Object.class, String.class, LuaStream.class, String.class })
-	public void AddTab(Object form, String title, LuaStream image, String ui)
+	@LuaFunction(manual = false, methodName = "AddTab", arguments = { Object.class, String.class, LuaStream.class, LuaRef.class })
+	public void AddTab(Object form, String title, LuaStream image, LuaRef ui)
 	{
 		TabSpec tabToAdd = mTabHost.newTabSpec(title);
 	    //backupTab.setIndicator(title, new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.liste)));
@@ -82,8 +83,8 @@ public class LuaTabForm implements LuaInterface
 	    mTabHost.getTabWidget().getChildAt(0).getLayoutParams().height = Common.GetDPSize(45);
 	}
 	
-	@LuaFunction(manual = false, methodName = "AddTabSrc", arguments = { Object.class, String.class, String.class, String.class, String.class })
-	public void AddTabSrc(Object form, String title, String path, String image, String ui)
+	@LuaFunction(manual = false, methodName = "AddTabSrc", arguments = { Object.class, String.class, String.class, String.class, LuaRef.class })
+	public void AddTabSrc(Object form, String title, String path, String image, LuaRef ui)
 	{
 		TabSpec tabToAdd = mTabHost.newTabSpec(title);
 		tabToAdd.setIndicator(title, new BitmapDrawable(luaContext.GetContext().getResources(), (InputStream)LuaResource.GetResource(path, image).GetStreamInternal()));
