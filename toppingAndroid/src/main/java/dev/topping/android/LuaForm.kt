@@ -10,6 +10,7 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.Ndef
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
 import android.widget.LGView
 import android.widget.LGViewGroup
@@ -18,7 +19,6 @@ import androidx.lifecycle.LifecycleOwner
 import dev.topping.android.backend.LuaClass
 import dev.topping.android.backend.LuaFunction
 import dev.topping.android.backend.LuaInterface
-import dev.topping.android.backend.LuaStaticVariable
 import dev.topping.android.luagui.LuaContext
 import dev.topping.android.luagui.LuaRef
 import dev.topping.android.luagui.LuaViewInflator
@@ -46,119 +46,6 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
 
     companion object {
         private var activeForm: LuaForm? = null
-        private val eventMap = HashMap<String, LuaTranslator>()
-
-        /**
-         * Fires when user interface is created
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FORM_EVENT_CREATE = 0
-
-        /**
-         * Fires when user interface resumed
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FORM_EVENT_RESUME = 1
-
-        /**
-         * Fires when user interface paused
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FORM_EVENT_PAUSE = 2
-
-        /**
-         * Fires when user interface destroyed
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FORM_EVENT_DESTROY = 3
-
-        /**
-         * Fires when user interfaces updated
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FORM_EVENT_UPDATE = 4
-
-        /**
-         * Fires when user interface paint called
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FORM_EVENT_PAINT = 5
-
-        /**
-         * Fires when user interface tapped
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FORM_EVENT_MOUSEDOWN = 6
-
-        /**
-         * Fires when user interface tap dropped
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FORM_EVENT_MOUSEUP = 7
-
-        /**
-         * Fires when user touches and moves
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FORM_EVENT_MOUSEMOVE = 8
-
-        /**
-         * Fires when keystroke happened
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FORM_EVENT_KEYDOWN = 9
-
-        /**
-         * Fires when keystoke dropped
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FORM_EVENT_KEYUP = 10
-
-        /**
-         * Fires when nfc event happened
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FORM_EVENT_NFC = 11
-
-        fun OnFormEvent(self: LuaInterface, event: Int, lc: LuaContext?, vararg args: Any?): Boolean {
-            var ltToCall: LuaTranslator? = null
-            ltToCall = eventMap[self.GetId() + event]
-            if (ltToCall != null) {
-                if (args.isNotEmpty()) ltToCall.CallInSelf(self, lc, *args)
-                else ltToCall.CallInSelf(self, lc)
-                return true
-            }
-            return false
-        }
-
-        /**
-         * Registers GUI event
-         * @param luaId
-         * @param event +"LuaForm.FORM_EVENT_CREATE" | "LuaForm.FORM_EVENT_RESUME" | "LuaForm.FORM_EVENT_RESUME" | "LuaForm.FORM_EVENT_PAUSE" | "LuaForm.FORM_EVENT_DESTROY" | "LuaForm.FORM_EVENT_UPDATE" | "LuaForm.FORM_EVENT_PAINT" | "LuaForm.FORM_EVENT_MOUSEDOWN" | "LuaForm.FORM_EVENT_MOUSEUP" | "LuaForm.FORM_EVENT_MOUSEMOVE" | "LuaForm.FORM_EVENT_KEYDOWN" | "LuaForm.FORM_EVENT_KEYUP"
-         * @param lt +fun(form: LuaForm, context: LuaContext):void
-         */
-        @LuaFunction(
-            manual = false,
-            methodName = "RegisterFormEvent",
-            self = LuaForm::class,
-            arguments = [LuaRef::class, Int::class, LuaTranslator::class]
-        )
-        fun RegisterFormEvent(luaId: LuaRef, event: Int, lt: LuaTranslator) {
-            val strId = ToppingEngine.getInstance().GetContext().resources.getResourceEntryName(luaId.ref)
-            eventMap[strId + event] = lt
-        }
 
         /**
          * Creates LuaForm Object From Lua.
@@ -171,9 +58,9 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
             manual = false,
             methodName = "Create",
             self = LuaForm::class,
-            arguments = [LuaContext::class, String::class]
+            arguments = [LuaContext::class, LuaRef::class]
         )
-        fun Create(lc: LuaContext, luaId: String?) : LuaNativeObject {
+        fun Create(lc: LuaContext, luaId: LuaRef?) : LuaNativeObject {
             val intent = Intent(lc.GetContext(), LuaForm::class.java)
             intent.putExtra("LUA_ID_RUED", luaId)
             return LuaNativeObject(intent)
@@ -191,30 +78,12 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
             manual = false,
             methodName = "CreateWithUI",
             self = LuaForm::class,
-            arguments = [LuaContext::class, String::class, String::class]
+            arguments = [LuaContext::class, LuaRef::class, LuaRef::class]
         )
-        fun CreateWithUI(lc: LuaContext, luaId: String?, ui: String?) : LuaNativeObject {
+        fun CreateWithUI(lc: LuaContext, luaId: LuaRef?, ui: LuaRef?) : LuaNativeObject {
             val intent = Intent(lc.GetContext(), LuaForm::class.java)
             intent.putExtra("LUA_ID_RUED", luaId)
             intent.putExtra("LUA_UI_RUED", ui)
-            return LuaNativeObject(intent)
-        }
-
-        /**
-         * Creates LuaForm Object From Lua for tabs.
-         * @param lc
-         * @param luaId
-         * @return LuaNativeObject
-         */
-        @LuaFunction(
-            manual = false,
-            methodName = "CreateForTab",
-            self = LuaForm::class,
-            arguments = [LuaContext::class, String::class]
-        )
-        fun CreateForTab(lc: LuaContext, luaId: String?): LuaNativeObject {
-            val intent = Intent(lc.GetContext(), LuaForm::class.java)
-            intent.putExtra("LUA_ID_RUED", luaId)
             return LuaNativeObject(intent)
         }
 
@@ -409,25 +278,25 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
         /*if(this.getClass() == MainActivity.class)
 			return;*/
         activeForm = this
-        var luaId: String? = "LuaForm"
+        var luaId: LuaRef? = null
         var extras: Bundle? = null
         if (savedInstanceState == null) {
             extras = intent.extras
             if (extras == null) {
-                luaId = "LuaForm"
-                ui = LuaRef.WithValue(0)
+                luaId = LuaRef.WithValue(View.NO_ID)
+                ui = LuaRef.WithValue(View.NO_ID)
             } else {
-                luaId = extras.getString("LUA_ID_RUED", "LuaForm")
+                luaId = extras.getSerializable("LUA_ID_RUED") as LuaRef?
                 ui = extras.getSerializable("LUA_UI_RUED") as LuaRef?
             }
         } else {
-            luaId = savedInstanceState.getString("LUA_ID_RUED", "LuaForm")
+            luaId = savedInstanceState.getSerializable("LUA_ID_RUED") as LuaRef?
             ui = savedInstanceState.getSerializable("LUA_UI_RUED") as LuaRef?
         }
-        this.luaId = luaId
+        this.luaId = if(luaId?.ref != View.NO_ID) resources.getResourceEntryName(luaId?.ref!!) else "LuaForm"
         luaContext = LuaContext.CreateLuaContext(this)
-        if (ui == null || ui!!.ref == 0) {
-            OnFormEvent(this, FORM_EVENT_CREATE, luaContext)
+        if (ui == null || ui!!.ref == View.NO_ID) {
+            LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_CREATE, luaContext)
         } else {
             val inflater = LuaViewInflator(luaContext)
             view = inflater.Inflate(ui, null)
@@ -460,7 +329,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
                             val highLevel = Message(p)
                             for (r in highLevel) {
                                 if (r is UriRecord) {
-                                    OnFormEvent(this, FORM_EVENT_NFC, luaContext, r.uri.toString())
+                                    LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_NFC, luaContext, r.uri.toString())
                                 }
                             }
                         } catch (_: FormatException) {
@@ -469,7 +338,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
                 }
             }
         }
-        OnFormEvent(this, FORM_EVENT_RESUME, luaContext)
+        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_RESUME, luaContext)
         if (Defines.CheckPermission(this, Manifest.permission.NFC)) {
             if (mNfcAdapter != null) mNfcAdapter!!.enableForegroundDispatch(
                 this,
@@ -489,7 +358,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
     @SuppressLint("NewApi")
     override fun onPause() {
         super.onPause()
-        OnFormEvent(this, FORM_EVENT_PAUSE, luaContext)
+        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_PAUSE, luaContext)
         if (Defines.CheckPermission(this, Manifest.permission.NFC)) {
             if (mNfcAdapter != null) mNfcAdapter!!.disableForegroundDispatch(this)
         }
@@ -503,7 +372,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
      */
     override fun onDestroy() {
         super.onDestroy()
-        OnFormEvent(this, FORM_EVENT_DESTROY, luaContext)
+        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_DESTROY, luaContext)
         //Move destroy event to subviews
         if (view != null) {
             view!!.onDestroy()
@@ -551,7 +420,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
                                         nfcData[count++] = record
                                     }
                                 }
-                                OnFormEvent(this, FORM_EVENT_NFC, luaContext, nfcData)
+                                LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_NFC, luaContext, nfcData)
                             } catch (e: FormatException) {
                             }
                         }

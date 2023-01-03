@@ -10,7 +10,7 @@ import dev.topping.android.backend.LuaFunction
  */
 @LuaClass(className = "LuaLifecycle", isKotlin = true)
 class LuaLifecycle private constructor(
-    private val lifecycle: Lifecycle,
+    val lifecycle: Lifecycle,
     private val luaCoroutineScope: LuaCoroutineScope
 )
 {

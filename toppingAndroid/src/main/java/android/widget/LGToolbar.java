@@ -66,32 +66,7 @@ public class LGToolbar extends LGView implements LuaInterface
     @Override
     public void Setup(Context context)
     {
-        view = lc.GetLayoutInflater().createView(context, "Toolbar");
-        if(view == null){
-            if(attrs instanceof XmlResourceParser)
-            {
-                String name = ((XmlResourceParser) attrs).getName();
-                if(name.equals("com.google.android.material.appbar.MaterialToolbar"))
-                {
-                    try {
-                        Class clz = ClassCache.forName("com.google.android.material.appbar.MaterialToolbar");
-                        Class[] types = {Context.class};
-                        Constructor constructor = clz.getConstructor(types);
-
-                        Object[] parameters = {context};
-                        view = (View) constructor.newInstance(parameters);
-                    } catch (Exception e) {
-                        view = new Toolbar(context);
-                    }
-                }
-                else
-                {
-                    view = new Toolbar(context, attrs);
-                }
-            }
-        }
-        else
-            view = new Toolbar(context, attrs);
+        Setup(context, null, -1);
     }
 
     /**
@@ -100,32 +75,7 @@ public class LGToolbar extends LGView implements LuaInterface
     @Override
     public void Setup(Context context, AttributeSet attrs)
     {
-        view = lc.GetLayoutInflater().createView(context, "Toolbar", attrs);
-        if(view == null){
-            if(attrs instanceof XmlResourceParser)
-            {
-                String name = ((XmlResourceParser) attrs).getName();
-                if(name.equals("com.google.android.material.appbar.MaterialToolbar"))
-                {
-                    try {
-                        Class clz = ClassCache.forName("com.google.android.material.appbar.MaterialToolbar");
-                        Class[] types = {Context.class, AttributeSet.class};
-                        Constructor constructor = clz.getConstructor(types);
-
-                        Object[] parameters = {context, attrs};
-                        view = (View) constructor.newInstance(parameters);
-                    } catch (Exception e) {
-                        view = new Toolbar(context, attrs);
-                    }
-                }
-                else
-                {
-                    view = new Toolbar(context, attrs);
-                }
-            }
-        }
-        else
-            view = new Toolbar(context, attrs);
+        Setup(context, attrs, -1);
     }
 
     /**
@@ -134,7 +84,10 @@ public class LGToolbar extends LGView implements LuaInterface
     @Override
     public void Setup(Context context, AttributeSet attrs, int defStyle)
     {
-        view = lc.GetLayoutInflater().createView(context, "Toolbar", attrs);
+        if(attrs != null)
+            view = lc.GetLayoutInflater().createView(context, "Toolbar", attrs);
+        else
+            view = lc.GetLayoutInflater().createView(context, "Toolbar");
         if(view == null) {
             if(attrs instanceof XmlResourceParser)
             {
@@ -184,7 +137,7 @@ public class LGToolbar extends LGView implements LuaInterface
 
     /**
      * Sets the toolbar navigation icon
-     * @param logo
+     * @param icon
      */
     @LuaFunction(manual = false, methodName = "SetNavigationIcon", arguments = { LuaRef.class })
     public void SetNavigationIcon(LuaRef icon)
@@ -194,7 +147,7 @@ public class LGToolbar extends LGView implements LuaInterface
 
     /**
      * Sets the toolbar overflow icon
-     * @param logo
+     * @param icon
      */
     @LuaFunction(manual = false, methodName = "SetOverflowIcon", arguments = { LuaRef.class })
     public void SetOverflowIcon(LuaRef icon)

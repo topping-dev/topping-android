@@ -27,35 +27,6 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
     var navHostFragment: NavHostFragment? = null
 
     companion object {
-        private val eventMap = HashMap<String, LuaTranslator>()
-
-        fun OnFragmentEvent(self: LuaInterface, event: Int, lc: LuaContext?, vararg args: Any?): Any? {
-            var ltToCall: LuaTranslator? = null
-            ltToCall = eventMap[self.GetId() + event]
-            if (ltToCall != null) {
-                return if (args.isNotEmpty()) ltToCall.CallInSelf(self, lc, args)
-                else ltToCall.CallInSelf(self, lc)
-            }
-            return null
-        }
-
-        /**
-         * Registers GUI event
-         * @param luaId
-         * @param event +"LuaFragment.FRAGMENT_EVENT_CREATE" | "LuaFragment.FRAGMENT_EVENT_CREATE_VIEW" | "LuaFragment.FRAGMENT_EVENT_VIEW_CREATED" | "LuaFragment.FRAGMENT_EVENT_RESUME" | "LuaFragment.FRAGMENT_EVENT_PAUSE" | "LuaFragment.FRAGMENT_EVENT_DESTROY"
-         * @param lt +fun(fragment: LuaNavHostFragment, context: LuaContext):void
-         */
-        @LuaFunction(
-            manual = false,
-            methodName = "RegisterFragmentEvent",
-            self = LuaNavHostFragment::class,
-            arguments = [LuaRef::class, Int::class, LuaTranslator::class]
-        )
-        fun RegisterFragmentEvent(luaId: LuaRef, event: Int, lt: LuaTranslator) {
-            val strId = ToppingEngine.getInstance().GetContext().resources.getResourceEntryName(luaId.ref)
-            eventMap[strId + event] = lt
-        }
-
         /**
          * Creates LuaNavHostFragment Object From Lua.
          * Fragment that created will be sent on FRAGMENT_EVENT_CREATE event.
@@ -67,9 +38,9 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
             manual = false,
             methodName = "Create",
             self = LuaNavHostFragment::class,
-            arguments = [LuaContext::class, String::class]
+            arguments = [LuaContext::class, LuaRef::class]
         )
-        fun Create(lc: LuaContext, luaId: String?): LuaNavHostFragment {
+        fun Create(lc: LuaContext, luaId: LuaRef?): LuaNavHostFragment {
             return LuaNavHostFragment(lc.GetContext(), luaId)
         }
 
@@ -85,12 +56,12 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
             manual = false,
             methodName = "CreateWithUI",
             self = LuaNavHostFragment::class,
-            arguments = [LuaContext::class, String::class, String::class]
+            arguments = [LuaContext::class, LuaRef::class, LuaRef::class]
         )
         fun CreateWithUI(
             lc: LuaContext,
-            luaId: String?,
-            ui: String?
+            luaId: LuaRef?,
+            ui: LuaRef?
         ): LuaNavHostFragment {
             return LuaNavHostFragment(lc.GetContext(), luaId, ui)
         }
@@ -104,19 +75,20 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
     /**
      * (Ignore)
      */
-    constructor(c: Context?, luaId: String?) {
+    constructor(c: Context?, luaId: LuaRef?) {
         luaContext = LuaContext()
         luaContext!!.SetContext(c)
-        this.luaId = luaId
+        this.luaId = c!!.resources.getResourceEntryName(luaId!!.ref)
     }
 
     /**
      * (Ignore)
      */
-    constructor(c: Context?, luaId: String?, ui: String?) {
+    constructor(c: Context?, luaId: LuaRef?, ui: LuaRef?) {
         luaContext = LuaContext()
         luaContext!!.SetContext(c)
-        this.luaId = luaId
+        this.luaId = c!!.resources.getResourceEntryName(luaId!!.ref)
+        this.ui = ui
     }
 
     /**
@@ -145,7 +117,7 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
         this.luaId = luaId
         luaContext = LuaContext.CreateLuaContext(inflater.context)
         if (ui.compareTo("") == 0) {
-            OnFragmentEvent(this, LuaFragment.FRAGMENT_EVENT_CREATE, luaContext)
+            LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_CREATE, luaContext)
         } else {
             val inflaterL = LuaViewInflator(luaContext)
             view = inflaterL.ParseFile(ui, null)
@@ -174,7 +146,7 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
      */
     override fun onResume() {
         super.onResume()
-        OnFragmentEvent(this, LuaFragment.FRAGMENT_EVENT_RESUME, luaContext)
+        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_RESUME, luaContext)
     }
 
     /**
@@ -182,7 +154,7 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
      */
     override fun onPause() {
         super.onPause()
-        OnFragmentEvent(this, LuaFragment.FRAGMENT_EVENT_PAUSE, luaContext)
+        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_PAUSE, luaContext)
     }
 
     /**
@@ -190,7 +162,7 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
      */
     override fun onDestroy() {
         super.onDestroy()
-        OnFragmentEvent(this, LuaFragment.FRAGMENT_EVENT_DESTROY, luaContext)
+        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_DESTROY, luaContext)
     }
 
     /**

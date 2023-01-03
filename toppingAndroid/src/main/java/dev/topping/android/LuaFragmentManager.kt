@@ -1,14 +1,16 @@
 package dev.topping.android
 
+import android.view.View
 import android.widget.LGView
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.NavHostFragment
 import dev.topping.android.backend.LuaClass
 import dev.topping.android.backend.LuaFunction
 import dev.topping.android.luagui.LuaContext
+import dev.topping.android.luagui.LuaRef
 
 @LuaClass(className = "LuaFragmentManager", isKotlin = true)
-class LuaFragmentManager(private val fragmentManager: FragmentManager) {
+class LuaFragmentManager(val fragmentManager: FragmentManager) {
 
     companion object {
         /**
@@ -40,7 +42,7 @@ class LuaFragmentManager(private val fragmentManager: FragmentManager) {
         if(fragment is LuaFragment)
             return fragment as LuaFragment
         else if(fragment is NavHostFragment) {
-            val f = LuaNavHostFragment(fragment.context, "")
+            val f = LuaNavHostFragment(fragment.context, LuaRef.WithValue(fragment.id))
             f.navHostFragment = fragment
             return f
         }
@@ -61,7 +63,7 @@ class LuaFragmentManager(private val fragmentManager: FragmentManager) {
         if(fragment is LuaFragment)
             return fragment as LuaFragment
         else if(fragment is NavHostFragment) {
-            val f = LuaNavHostFragment(fragment.context, "")
+            val f = LuaNavHostFragment(fragment.context, LuaRef.WithValue(fragment.id))
             f.navHostFragment = fragment
             return f
         }

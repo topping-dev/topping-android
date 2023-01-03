@@ -17,6 +17,8 @@ import android.widget.LGConstraintLayout;
 import android.widget.LGDatePicker;
 import android.widget.LGEditText;
 import androidx.fragment.app.LGFragmentContainerView;
+
+import android.widget.LGFragmentStateAdapter;
 import android.widget.LGFrameLayout;
 import android.widget.LGImageView;
 import android.widget.LGLinearLayout;
@@ -27,9 +29,11 @@ import android.widget.LGRadioGroup;
 import android.widget.LGRecyclerView;
 import android.widget.LGRecyclerViewAdapter;
 import android.widget.LGScrollView;
+import android.widget.LGTabLayout;
 import android.widget.LGTextView;
 import android.widget.LGToolbar;
 import android.widget.LGView;
+import android.widget.LGViewPager;
 
 import com.naef.jnlua.IDelegate;
 import com.naef.jnlua.Lua;
@@ -1134,6 +1138,7 @@ public class ToppingEngine
 			LGDatePicker.class,
 			LGEditText.class,
 			LGFragmentContainerView.class,
+			LGFragmentStateAdapter.class,
 			LGFrameLayout.class,
 			LGImageView.class,
 			LGLinearLayout.class,
@@ -1143,12 +1148,14 @@ public class ToppingEngine
 			LGRadioGroup.class,
 			//LGRelativeLayout.class,
 			LGScrollView.class,
+			LGTabLayout.class,
 			LGTextView.class,
 			LGView.class,
 			//LGViewGroup.class,
 			LGRecyclerView.class,
 			LGRecyclerViewAdapter.class,
 			LGToolbar.class,
+			LGViewPager.class,
 
 			LuaDefines.class,
 			LuaNativeObject.class,
@@ -1160,6 +1167,7 @@ public class ToppingEngine
 			LuaDatabase.class,
 			LuaDate.class,
 			LuaDialog.class,
+			LuaEvent.class,
 			LuaForm.class,
 			LuaFragment.class,
 			LuaHttpClient.class,
@@ -1174,7 +1182,7 @@ public class ToppingEngine
 			LuaResource.class,
 			LuaStore.class,
 			LuaStream.class,
-			LuaTabForm.class,
+			LuaTab.class,
 			LuaThread.class,
 			LuaToast.class,
 

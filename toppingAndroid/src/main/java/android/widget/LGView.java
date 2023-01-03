@@ -30,13 +30,14 @@ public class LGView extends Object implements LuaInterface, Serializable
 	/**
 	 *
 	 */
-	protected boolean loaded = false;
+	protected Boolean loaded = null;
 	protected AttributeSet attrs;
 	public View view;
 	public LuaContext lc;
 	public String luaId = null;
 	protected ArrayList<LGView> subviews = new ArrayList<LGView>();
 	public String internalName = "";
+	public LGView parent;
 
 	/**
 	 * Creates LGView Object From Lua.
@@ -332,15 +333,20 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 */
 	public boolean IsLoaded()
 	{
-		return loaded;
+		if(loaded == null || !loaded)
+			return false;
+		return true;
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public void SetLoaded(boolean loaded)
+	public void SetLoaded(Object loaded)
 	{
-		this.loaded = loaded;
+		if(loaded == null)
+			return;
+		if(loaded instanceof Boolean)
+			this.loaded = (Boolean) loaded;
 	}
 
 	/**
@@ -348,6 +354,7 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 */
 	public void AddSubview(LGView view)
 	{
+		view.parent = this;
 		this.subviews.add(view);
 	}
 }

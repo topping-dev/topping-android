@@ -14,13 +14,10 @@ import androidx.navigation.fragment.findNavController
 import dev.topping.android.backend.LuaClass
 import dev.topping.android.backend.LuaFunction
 import dev.topping.android.backend.LuaInterface
-import dev.topping.android.backend.LuaStaticVariable
 import dev.topping.android.luagui.LuaContext
 import dev.topping.android.luagui.LuaRef
 import dev.topping.android.luagui.LuaViewInflator
 import dev.topping.android.osspecific.utils.toBundle
-import java.util.HashMap
-
 
 /**
  * User interface fragment
@@ -34,77 +31,6 @@ open class LuaFragment : Fragment, LuaInterface {
     protected var rootView: LinearLayout? = null
 
     companion object {
-        private val eventMap = HashMap<String, LuaTranslator>()
-
-        /**
-         * Fires when user interface is created
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FRAGMENT_EVENT_CREATE = 0
-
-        /**
-         * Fires when user interface create view called
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FRAGMENT_EVENT_CREATE_VIEW = 1
-
-        /**
-         * Fires when user interface view created
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FRAGMENT_EVENT_VIEW_CREATED = 2
-
-        /**
-         * Fires when user interface resumed
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FRAGMENT_EVENT_RESUME = 3
-
-        /**
-         * Fires when user interface paused
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FRAGMENT_EVENT_PAUSE = 4
-
-        /**
-         * Fires when user interface destroyed
-         */
-        @LuaStaticVariable
-        @JvmField
-        var FRAGMENT_EVENT_DESTROY = 5
-
-        fun OnFragmentEvent(self: LuaInterface, event: Int, lc: LuaContext?, vararg args: Any?): Any? {
-            var ltToCall: LuaTranslator? = null
-            ltToCall = eventMap[self.GetId() + event]
-            if (ltToCall != null) {
-                return if (args.isNotEmpty()) ltToCall.CallInSelf(self, lc, *args)
-                else ltToCall.CallInSelf(self, lc)
-            }
-            return null
-        }
-
-        /**
-         * Registers GUI event
-         * @param luaId
-         * @param event +"LuaFragment.FRAGMENT_EVENT_CREATE" | "LuaFragment.FRAGMENT_EVENT_CREATE_VIEW" | "LuaFragment.FRAGMENT_EVENT_VIEW_CREATED" | "LuaFragment.FRAGMENT_EVENT_RESUME" | "LuaFragment.FRAGMENT_EVENT_PAUSE" | "LuaFragment.FRAGMENT_EVENT_DESTROY"
-         * @param lt +fun(fragment: LuaFragment, context: LuaContext):void
-         */
-        @LuaFunction(
-            manual = false,
-            methodName = "RegisterFragmentEvent",
-            self = LuaFragment::class,
-            arguments = [LuaRef::class, Int::class, LuaTranslator::class]
-        )
-        fun RegisterFragmentEvent(luaId: LuaRef, event: Int, lt: LuaTranslator) {
-            val strId = ToppingEngine.getInstance().GetContext().resources.getResourceEntryName(luaId.ref)
-            eventMap[strId + event] = lt
-        }
-
         /**
          * Creates LuaFragment Object From Lua.
          * Fragment that created will be sent on FRAGMENT_EVENT_CREATE event.
@@ -134,7 +60,7 @@ open class LuaFragment : Fragment, LuaInterface {
             manual = false,
             methodName = "Create",
             self = LuaFragment::class,
-            arguments = [LuaContext::class, LuaRef::class]
+            arguments = [LuaContext::class, LuaRef::class, Map::class]
         )
         fun Create(lc: LuaContext, luaId: LuaRef?, args: Map<String, Any>?): LuaFragment {
             return LuaFragment(lc.GetContext(), luaId, null, args)
@@ -152,7 +78,7 @@ open class LuaFragment : Fragment, LuaInterface {
             manual = false,
             methodName = "CreateWithUI",
             self = LuaFragment::class,
-            arguments = [LuaContext::class, LuaRef::class, LuaRef::class]
+            arguments = [LuaContext::class, LuaRef::class, LuaRef::class, Map::class]
         )
         fun CreateWithUI(
             lc: LuaContext,
@@ -184,7 +110,7 @@ open class LuaFragment : Fragment, LuaInterface {
     constructor(c: Context?, luaId: LuaRef?) {
         luaContext = LuaContext()
         luaContext!!.SetContext(c)
-        this.luaId = resources.getResourceEntryName(luaId!!.ref)
+        this.luaId = c!!.resources.getResourceEntryName(luaId!!.ref)
     }
 
     /**
@@ -193,7 +119,7 @@ open class LuaFragment : Fragment, LuaInterface {
     constructor(c: Context?, luaId: LuaRef?, ui: LuaRef?, args: Map<String, Any>?) {
         luaContext = LuaContext()
         luaContext!!.SetContext(c)
-        this.luaId = resources.getResourceEntryName(luaId?.ref!!)
+        this.luaId = c!!.resources.getResourceEntryName(luaId?.ref!!)
         this.ui = ui
         args?.let {
             arguments = it.toBundle(Bundle())
@@ -244,10 +170,10 @@ open class LuaFragment : Fragment, LuaInterface {
      * Sets the xml file of the view to render.
      * @param xml
      */
-    @LuaFunction(manual = false, methodName = "SetViewXML", arguments = [String::class])
-    fun SetViewXML(xml: String?) {
+    @LuaFunction(manual = false, methodName = "SetViewXML", arguments = [LuaRef::class])
+    fun SetViewXML(xml: LuaRef?) {
         val inflater = LuaViewInflator(luaContext)
-        view = inflater.ParseFile(xml, null)
+        view = inflater.Inflate(xml, null)
         rootView!!.removeAllViews()
         rootView!!.addView(view?.view)
     }
@@ -298,7 +224,7 @@ open class LuaFragment : Fragment, LuaInterface {
         super.onCreateView(inflater, container, savedInstanceState)
         luaContext = LuaContext.CreateLuaContext(inflater.context)
         if (ui == null) {
-            view = OnFragmentEvent(this, FRAGMENT_EVENT_CREATE_VIEW, luaContext, LuaViewInflator(luaContext), null, LuaBundle(savedInstanceState)) as LGView?
+            view = LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_FRAGMENT_CREATE_VIEW, luaContext, LuaViewInflator(luaContext), null, LuaBundle(savedInstanceState)) as LGView?
         } else {
             val inflaterL = LuaViewInflator(luaContext)
             view = inflaterL.Inflate(ui, null)
@@ -320,7 +246,7 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        OnFragmentEvent(this, FRAGMENT_EVENT_VIEW_CREATED, luaContext)
+        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_FRAGMENT_VIEW_CREATED, luaContext)
     }
 
     /**
@@ -328,7 +254,7 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        OnFragmentEvent(this, FRAGMENT_EVENT_CREATE, luaContext)
+        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_CREATE, luaContext)
     }
 
     /**
@@ -336,7 +262,7 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onResume() {
         super.onResume()
-        OnFragmentEvent(this, FRAGMENT_EVENT_RESUME, luaContext)
+        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_RESUME, luaContext)
     }
 
     /**
@@ -344,7 +270,7 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onPause() {
         super.onPause()
-        OnFragmentEvent(this, FRAGMENT_EVENT_PAUSE, luaContext)
+        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_PAUSE, luaContext)
     }
 
     /**
@@ -352,7 +278,7 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onDestroy() {
         super.onDestroy()
-        OnFragmentEvent(this, FRAGMENT_EVENT_DESTROY, luaContext)
+        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_DESTROY, luaContext)
     }
 
     /**

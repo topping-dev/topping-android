@@ -11,6 +11,7 @@ import android.widget.LGAutoCompleteTextView;
 import android.widget.LGButton;
 import android.widget.LGCheckBox;
 import android.widget.LGComboBox;
+import android.widget.LGConstraintLayout;
 import android.widget.LGDatePicker;
 import android.widget.LGEditText;
 import androidx.fragment.app.LGFragmentContainerView;
@@ -25,9 +26,11 @@ import android.widget.LGRadioGroup;
 import android.widget.LGRecyclerView;
 import android.widget.LGRelativeLayout;
 import android.widget.LGScrollView;
+import android.widget.LGTabLayout;
 import android.widget.LGTextView;
 import android.widget.LGToolbar;
 import android.widget.LGView;
+import android.widget.LGViewPager;
 import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -39,7 +42,9 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Stack;
 
+import dev.topping.android.LuaEvent;
 import dev.topping.android.LuaForm;
+import dev.topping.android.LuaTab;
 import dev.topping.android.ToppingEngine;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
@@ -138,7 +143,7 @@ public class LuaViewInflator implements LuaInterface
 			ArrayList<LGView> lgRoot = new ArrayList<LGView>();
 			LGView v = inflate(parse, lgRoot, parent);
 			if(!v.IsLoaded())
-				v.SetLoaded(LuaForm.Companion.OnFormEvent(v, LuaForm.FORM_EVENT_CREATE, lc));
+				v.SetLoaded(LuaEvent.Companion.OnUIEvent(v, LuaEvent.UI_EVENT_VIEW_CREATE, lc));
 			return v;
 		}
 		catch (XmlPullParserException ex) { Log.e("LuaViewInflator", ex.getMessage()); }
@@ -162,7 +167,7 @@ public class LuaViewInflator implements LuaInterface
 			ArrayList<LGView> lgRoot = new ArrayList<LGView>();
 			LGView v = inflate(parse, lgRoot, parent);
 			if(!v.IsLoaded())
-				v.SetLoaded(LuaForm.Companion.OnFormEvent(v, LuaForm.FORM_EVENT_CREATE, lc));
+				v.SetLoaded(LuaEvent.Companion.OnUIEvent(v, LuaEvent.UI_EVENT_VIEW_CREATE, lc));
 			return v;
 		}
 		catch (XmlPullParserException ex) { Log.e("LuaViewInflator", ex.getMessage()); }
@@ -213,7 +218,7 @@ public class LuaViewInflator implements LuaInterface
 				}
 				else
 				{
-					v.SetLoaded(LuaForm.Companion.OnFormEvent(v, LuaForm.FORM_EVENT_CREATE, lc));
+					v.SetLoaded(LuaEvent.Companion.OnUIEvent(v, LuaEvent.UI_EVENT_VIEW_CREATE, lc));
 				}
 
 				if (root == null) {
@@ -227,7 +232,7 @@ public class LuaViewInflator implements LuaInterface
 				data.pop();
 				if(lgStack.size() > 0 && lgStack.peek().internalName.equalsIgnoreCase(parse.getName()))
 				{
-					lgStack.peek().SetLoaded(LuaForm.Companion.OnFormEvent(lgStack.peek(), LuaForm.FORM_EVENT_CREATE, lc));
+					lgStack.peek().SetLoaded(LuaEvent.Companion.OnUIEvent(lgStack.peek(), LuaEvent.UI_EVENT_VIEW_CREATE, lc));
 					lgStack.pop();
 				}
 			}
@@ -352,10 +357,27 @@ public class LuaViewInflator implements LuaInterface
 		{
 			lgresult = new LGToolbar(lc, atts);
 		}
+		else if(name.equals("androidx.constraintlayout.widget.ConstraintLayout")
+			|| name.equals("LGConstraintLayout")) {
+			lgresult = new LGConstraintLayout(lc, atts);
+		}
 		else if(name.equals("androidx.fragment.app.FragmentContainerView")
 		|| name.equals("FragmentContainerView")
 		|| name.equals("LGFragmentContainerView")) {
 			lgresult = new LGFragmentContainerView(lc, atts);
+		}
+		else if(name.equals("com.google.android.material.tabs.TabLayout")
+				|| name.equals("LGTabLayout")) {
+			lgresult = new LGTabLayout(lc, atts);
+		}
+		else if(name.equals("com.google.android.material.tabs.TabItem")
+				|| name.equals("LuaTab")) {
+			lgresult = LuaTab.Create();
+		}
+		else if(name.equals("androidx.viewpager2.widget.ViewPager2")
+				|| name.equals("android.support.v4.view.ViewPager")
+				|| name.equals("LGViewPager")) {
+			lgresult = new LGViewPager(lc, atts);
 		}
 		else if((pluginView = ContainsPluginView(ToppingEngine.GetViewPlugins(), name)) != null)
 		{
@@ -385,7 +407,7 @@ public class LuaViewInflator implements LuaInterface
 			ViewGroup.LayoutParams lps = ((ViewGroup)lgStack.peek().view).generateLayoutParams(atts);
 			lgresult.view.setLayoutParams(lps);
 		}
-		else if(parent != null && parent.view != null && parent.view instanceof ViewGroup)
+		else if(parent != null && parent.view instanceof ViewGroup)
 		{
 			lgresult.view.setLayoutParams(((ViewGroup)parent.view).generateLayoutParams(atts));
 		}
