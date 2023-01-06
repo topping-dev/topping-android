@@ -6,7 +6,7 @@ import dev.topping.android.backend.LuaFunction
 
 @LuaClass(className = "LuaViewModel", isKotlin = true)
 class LuaViewModel : ViewModel() {
-    private val objectMap = mutableMapOf<String, Any>()
+    private val objectMap = mutableMapOf<String, Any?>()
 
     /**
      * Set LuaViewModel object
@@ -18,7 +18,7 @@ class LuaViewModel : ViewModel() {
         methodName = "SetObject",
         arguments = [String::class, Any::class]
     )
-    fun SetObject(key: String, obj: Any) {
+    fun SetObject(key: String, obj: Any?) {
         objectMap[key] = obj
     }
 

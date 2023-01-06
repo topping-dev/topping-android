@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.LGAbsListView;
 import android.widget.LGAdapterView;
 import android.widget.LGAutoCompleteTextView;
+import android.widget.LGBottomNavigationView;
 import android.widget.LGButton;
 import android.widget.LGCheckBox;
 import android.widget.LGComboBox;
@@ -1130,6 +1131,7 @@ public class ToppingEngine
 			LGAbsListView.class,
 			LGAdapterView.class,
 			LGAutoCompleteTextView.class,
+			LGBottomNavigationView.class,
 			LGButton.class,
 			LGCheckBox.class,
 			LGComboBox.class,
@@ -1175,6 +1177,7 @@ public class ToppingEngine
 			LuaJSONArray.class,
 			LuaJSONObject.class,
 			LuaLog.class,
+			LuaMenu.class,
 			LuaNativeCall.class,
 			LuaPoint.class,
 			LuaRect.class,

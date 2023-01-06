@@ -8,6 +8,7 @@ import android.util.Log;
 import android.util.Xml;
 import android.view.ViewGroup;
 import android.widget.LGAutoCompleteTextView;
+import android.widget.LGBottomNavigationView;
 import android.widget.LGButton;
 import android.widget.LGCheckBox;
 import android.widget.LGComboBox;
@@ -378,6 +379,10 @@ public class LuaViewInflator implements LuaInterface
 				|| name.equals("android.support.v4.view.ViewPager")
 				|| name.equals("LGViewPager")) {
 			lgresult = new LGViewPager(lc, atts);
+		}
+		else if(name.equals("com.google.android.material.bottomnavigation.BottomNavigationView")
+			|| name.equals("LGBottomNavigationView")) {
+			lgresult = new LGBottomNavigationView(lc, atts);
 		}
 		else if((pluginView = ContainsPluginView(ToppingEngine.GetViewPlugins(), name)) != null)
 		{
