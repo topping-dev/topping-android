@@ -23,7 +23,6 @@ import dev.topping.android.luagui.LuaContext
 import dev.topping.android.luagui.LuaRef
 import dev.topping.android.luagui.LuaViewInflator
 import dev.topping.android.osspecific.Defines
-import dev.topping.android.osspecific.utils.Common
 import org.ndeftools.Message
 import org.ndeftools.wellknown.SmartPosterRecord
 import org.ndeftools.wellknown.UriRecord
@@ -216,8 +215,6 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
                 Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0
             )
         }
-        Common.pack = applicationContext.packageName
-        Common.scale = resources.displayMetrics.density
         super.onCreate(savedInstanceState)
     }
 
@@ -258,8 +255,6 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
                 Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0
             )
         }
-        Common.pack = applicationContext.packageName
-        Common.scale = resources.displayMetrics.density
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         /*val pm = packageManager
         val mainIntent = Intent(Intent.ACTION_MAIN, null)

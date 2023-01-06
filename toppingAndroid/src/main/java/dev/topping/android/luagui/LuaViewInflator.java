@@ -384,6 +384,10 @@ public class LuaViewInflator implements LuaInterface
 			|| name.equals("LGBottomNavigationView")) {
 			lgresult = new LGBottomNavigationView(lc, atts);
 		}
+		else if(name.equals("WebView")
+				|| name.equals("LGWebView")) {
+			lgresult = new LGBottomNavigationView(lc, atts);
+		}
 		else if((pluginView = ContainsPluginView(ToppingEngine.GetViewPlugins(), name)) != null)
 		{
 			try

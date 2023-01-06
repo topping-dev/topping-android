@@ -35,6 +35,7 @@ import android.widget.LGTextView;
 import android.widget.LGToolbar;
 import android.widget.LGView;
 import android.widget.LGViewPager;
+import android.widget.LGWebView;
 
 import com.naef.jnlua.IDelegate;
 import com.naef.jnlua.Lua;
@@ -1158,6 +1159,7 @@ public class ToppingEngine
 			LGRecyclerViewAdapter.class,
 			LGToolbar.class,
 			LGViewPager.class,
+			LGWebView.class,
 
 			LuaDefines.class,
 			LuaNativeObject.class,
