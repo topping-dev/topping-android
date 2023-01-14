@@ -1200,6 +1200,7 @@ public class ToppingEngine
 			LuaLifecycle.class,
 			LuaLifecycleObserver.class,
 			LuaLifecycleOwner.class,
+			LuaLiveData.class,
 			LuaMutableLiveData.class,
 			LuaNavController.class,
 			LuaNavigationUI.class,

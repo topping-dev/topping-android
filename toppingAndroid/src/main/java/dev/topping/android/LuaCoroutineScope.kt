@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @LuaClass(className = "LuaCoroutineScope", isKotlin = true)
-class LuaCoroutineScope(private val scope: CoroutineScope) {
+open class LuaCoroutineScope(private val scope: CoroutineScope) {
     /**
      * Launch coroutine
      * @param lt +fun():void
@@ -17,10 +17,10 @@ class LuaCoroutineScope(private val scope: CoroutineScope) {
         methodName = "launch",
         arguments = [LuaTranslator::class]
     )
-    fun launch(lt: LuaTranslator) {
-        scope.launch {
+    fun launch(lt: LuaTranslator): LuaJob {
+        return LuaJob(scope.launch {
             lt.CallIn()
-        }
+        })
     }
 
     /**
@@ -33,8 +33,8 @@ class LuaCoroutineScope(private val scope: CoroutineScope) {
         methodName = "launchDispatcher",
         arguments = [Int::class, LuaTranslator::class]
     )
-    fun launchDispatcher(dispatcher: Int, lt: LuaTranslator) {
-        scope.launch(when(dispatcher)
+    fun launchDispatcher(dispatcher: Int, lt: LuaTranslator): LuaJob {
+        return LuaJob(scope.launch(when(dispatcher)
         {
             LuaDispatchers.UNCONFINED -> {
                 Dispatchers.Unconfined
@@ -50,6 +50,6 @@ class LuaCoroutineScope(private val scope: CoroutineScope) {
             }
         }) {
             lt.CallIn()
-        }
+        })
     }
 }

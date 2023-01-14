@@ -29,6 +29,7 @@ open class LuaFragment : Fragment, LuaInterface {
     protected var ui: LuaRef? = null
     protected var view: LGView? = null
     protected var rootView: LinearLayout? = null
+    private var kotlinInterface: LuaFragmentInterface? = null
 
     companion object {
         /**
@@ -225,6 +226,8 @@ open class LuaFragment : Fragment, LuaInterface {
         luaContext = LuaContext.CreateLuaContext(inflater.context)
         if (ui == null) {
             view = LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_FRAGMENT_CREATE_VIEW, luaContext, LuaViewInflator(luaContext), null, LuaBundle(savedInstanceState)) as LGView?
+            if(view == null)
+                view = kotlinInterface?.ltOnCreateView?.CallIn(luaContext, LuaViewInflator(luaContext), null, LuaBundle(savedInstanceState)) as LGView?
         } else {
             val inflaterL = LuaViewInflator(luaContext)
             view = inflaterL.Inflate(ui, null)
@@ -246,6 +249,7 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        kotlinInterface?.ltOnViewCreated?.CallIn(this.view, mutableMapOf<String, Any>())
         LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_FRAGMENT_VIEW_CREATED, luaContext)
     }
 
@@ -254,6 +258,8 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        kotlinInterface = LuaEvent.GetFragmentInstance(GetId(), this)
+        kotlinInterface?.ltOnCreate?.CallIn(mutableMapOf<String, Any>())
         LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_CREATE, luaContext)
     }
 
@@ -262,6 +268,7 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onResume() {
         super.onResume()
+        kotlinInterface?.ltOnResume?.CallIn()
         LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_RESUME, luaContext)
     }
 
@@ -270,6 +277,7 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onPause() {
         super.onPause()
+        kotlinInterface?.ltOnPause?.CallIn()
         LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_PAUSE, luaContext)
     }
 
@@ -278,6 +286,7 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onDestroy() {
         super.onDestroy()
+        kotlinInterface?.ltOnDestroy?.CallIn()
         LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_DESTROY, luaContext)
     }
 

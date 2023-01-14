@@ -6,7 +6,6 @@ import dev.topping.android.backend.LuaInterface
 import dev.topping.android.backend.LuaStaticVariable
 import dev.topping.android.luagui.LuaContext
 import dev.topping.android.luagui.LuaRef
-import java.util.HashMap
 
 /**
  * Event handler
@@ -15,7 +14,8 @@ import java.util.HashMap
 class LuaEvent : LuaInterface {
 
     companion object {
-        private val eventMap = HashMap<String, LuaTranslator>()
+        private val eventMap = mutableMapOf<String, LuaTranslator>()
+        private val fragmentMap = mutableMapOf<String, LuaTranslator>()
 
         /**
          * Fires when form or fragment is created
@@ -147,6 +147,14 @@ class LuaEvent : LuaInterface {
         fun RegisterUIEvent(luaId: LuaRef, event: Int, lt: LuaTranslator) {
             val strId = ToppingEngine.getInstance().GetContext().resources.getResourceEntryName(luaId.ref)
             eventMap[strId + event] = lt
+        }
+
+        fun RegisterFragment(name: String, ltInit: LuaTranslator) {
+            fragmentMap[name] = ltInit
+        }
+
+        fun GetFragmentInstance(name: String, luaFragment: LuaFragment) : LuaFragmentInterface? {
+            return fragmentMap[name]?.CallIn(luaFragment) as LuaFragmentInterface?
         }
     }
 
