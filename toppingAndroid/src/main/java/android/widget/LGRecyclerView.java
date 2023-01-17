@@ -5,6 +5,9 @@ import android.util.AttributeSet;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import dev.topping.android.ILGRecyclerViewAdapter;
+import dev.topping.android.LuaTranslator;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.luagui.LuaContext;
@@ -110,5 +113,14 @@ public class LGRecyclerView extends LGView
     {
         ((RecyclerView)view).setAdapter(adapter);
         adapter.parent = this;
+    }
+
+    public void SetAdapter(LuaTranslator ltInit)
+    {
+        LGRecyclerViewAdapter adapter = LGRecyclerViewAdapter.Create(lc, "");
+        adapter.kotlinInterface = (ILGRecyclerViewAdapter)ltInit.CallIn(adapter);
+        adapter.SetOnCreateViewHolder(adapter.kotlinInterface.ltOnCreateViewHolder);
+        adapter.SetOnBindViewHolder(adapter.kotlinInterface.ltOnBindViewHolder);
+        adapter.SetGetItemViewType(adapter.kotlinInterface.ltGetItemViewType);
     }
 }

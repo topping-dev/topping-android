@@ -38,6 +38,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
     protected var luaId: String? = "LuaForm"
     protected var ui: LuaRef? = null
     protected var view: LGView? = null
+    private var kotlinInterface: ILuaForm? = null
 
     //Nfc
     var mNfcAdapter: NfcAdapter? = null
@@ -292,6 +293,8 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
         luaContext = LuaContext.CreateLuaContext(this)
         if (ui == null || ui!!.ref == View.NO_ID) {
             LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_CREATE, luaContext)
+            kotlinInterface = LuaEvent.GetFormInstance(GetId(), this)
+            kotlinInterface?.ltOnCreate?.CallIn()
         } else {
             val inflater = LuaViewInflator(luaContext)
             view = inflater.Inflate(ui, null)
@@ -334,6 +337,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
             }
         }
         LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_RESUME, luaContext)
+        kotlinInterface?.ltOnResume?.CallIn()
         if (Defines.CheckPermission(this, Manifest.permission.NFC)) {
             if (mNfcAdapter != null) mNfcAdapter!!.enableForegroundDispatch(
                 this,
@@ -354,6 +358,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
     override fun onPause() {
         super.onPause()
         LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_PAUSE, luaContext)
+        kotlinInterface?.ltOnPause?.CallIn()
         if (Defines.CheckPermission(this, Manifest.permission.NFC)) {
             if (mNfcAdapter != null) mNfcAdapter!!.disableForegroundDispatch(this)
         }
@@ -368,6 +373,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
     override fun onDestroy() {
         super.onDestroy()
         LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_DESTROY, luaContext)
+        kotlinInterface?.ltOnDestroy?.CallIn()
         //Move destroy event to subviews
         if (view != null) {
             view!!.onDestroy()

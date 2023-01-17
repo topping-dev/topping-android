@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import dev.topping.android.ILGRecyclerViewAdapter;
 import dev.topping.android.LuaTranslator;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
@@ -26,6 +28,7 @@ public class LGRecyclerViewAdapter extends RecyclerView.Adapter implements LuaIn
     private LuaTranslator ltCreateViewHolder;
     private LuaTranslator ltBindViewHolder;
     private LuaTranslator ltGetItemViewType;
+    public ILGRecyclerViewAdapter kotlinInterface;
 
     /**
      * (Ignore)
@@ -123,8 +126,9 @@ public class LGRecyclerViewAdapter extends RecyclerView.Adapter implements LuaIn
      * (Ignore)
      */
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
+        if (kotlinInterface.ltGetItemCount != null)
+            return (int) kotlinInterface.ltGetItemCount.CallIn();
         return values.size();
     }
 

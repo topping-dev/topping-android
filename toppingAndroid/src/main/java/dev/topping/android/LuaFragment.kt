@@ -29,7 +29,7 @@ open class LuaFragment : Fragment, LuaInterface {
     protected var ui: LuaRef? = null
     protected var view: LGView? = null
     protected var rootView: LinearLayout? = null
-    private var kotlinInterface: LuaFragmentInterface? = null
+    private var kotlinInterface: ILuaFragment? = null
 
     companion object {
         /**
@@ -249,7 +249,7 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        kotlinInterface?.ltOnViewCreated?.CallIn(this.view, mutableMapOf<String, Any>())
+        kotlinInterface?.ltOnViewCreated?.CallIn(this.view, LuaBundle(savedInstanceState))
         LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_FRAGMENT_VIEW_CREATED, luaContext)
     }
 
@@ -259,7 +259,7 @@ open class LuaFragment : Fragment, LuaInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         kotlinInterface = LuaEvent.GetFragmentInstance(GetId(), this)
-        kotlinInterface?.ltOnCreate?.CallIn(mutableMapOf<String, Any>())
+        kotlinInterface?.ltOnCreate?.CallIn(LuaBundle(null))
         LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_CREATE, luaContext)
     }
 

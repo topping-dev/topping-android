@@ -16,6 +16,7 @@ class LuaEvent : LuaInterface {
     companion object {
         private val eventMap = mutableMapOf<String, LuaTranslator>()
         private val fragmentMap = mutableMapOf<String, LuaTranslator>()
+        private val formMap = mutableMapOf<String, LuaTranslator>()
 
         /**
          * Fires when form or fragment is created
@@ -149,12 +150,20 @@ class LuaEvent : LuaInterface {
             eventMap[strId + event] = lt
         }
 
+        fun RegisterForm(name: String, ltInit: LuaTranslator) {
+            formMap[name] = ltInit
+        }
+
+        fun GetFormInstance(name: String, luaForm: LuaForm) : ILuaForm? {
+            return formMap[name]?.CallIn(luaForm) as ILuaForm?
+        }
+
         fun RegisterFragment(name: String, ltInit: LuaTranslator) {
             fragmentMap[name] = ltInit
         }
 
-        fun GetFragmentInstance(name: String, luaFragment: LuaFragment) : LuaFragmentInterface? {
-            return fragmentMap[name]?.CallIn(luaFragment) as LuaFragmentInterface?
+        fun GetFragmentInstance(name: String, luaFragment: LuaFragment) : ILuaFragment? {
+            return fragmentMap[name]?.CallIn(luaFragment) as ILuaFragment?
         }
     }
 
