@@ -206,6 +206,15 @@ open class LuaFragment : Fragment, LuaInterface {
     }
 
     /**
+     * Get Arguments
+     */
+    @LuaFunction(manual = false, methodName = "getArguments")
+    fun getArgumentsBundle(): LuaBundle
+    {
+        return LuaBundle(arguments)
+    }
+
+    /**
      * Get Nav Controller
      */
     @LuaFunction(manual = false, methodName = "getNavController")
