@@ -1,7 +1,5 @@
 package dev.topping.android
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import dev.topping.android.backend.LuaClass
 import dev.topping.android.backend.LuaFunction
 

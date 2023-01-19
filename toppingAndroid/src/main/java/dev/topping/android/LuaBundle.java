@@ -28,6 +28,7 @@ public class LuaBundle implements LuaInterface
 	 * @param key
 	 * @return
 	 */
+	@LuaFunction(methodName = "getString", arguments = { String.class })
 	public String getString(String key) {
 		if(bundle != null) {
 			bundle.getString(key);
@@ -41,6 +42,7 @@ public class LuaBundle implements LuaInterface
 	 * @param def
 	 * @return
 	 */
+	@LuaFunction(methodName = "getStringDef", arguments = { String.class, String.class })
 	public String getString(String key, String def) {
 		if(bundle != null) {
 			bundle.getString(key, def);
@@ -53,6 +55,7 @@ public class LuaBundle implements LuaInterface
 	 * @param key
 	 * @param value
 	 */
+	@LuaFunction(methodName = "putString", arguments = { String.class, String.class })
 	public void putString(String key, String value) {
 		if(bundle != null) {
 			bundle.putString(key, value);
@@ -64,6 +67,7 @@ public class LuaBundle implements LuaInterface
 	 * @param key
 	 * @return
 	 */
+	@LuaFunction(methodName = "getByte", arguments = { String.class })
 	public byte getByte(String key) {
 		if(bundle != null) {
 			bundle.getByte(key);
@@ -77,6 +81,7 @@ public class LuaBundle implements LuaInterface
 	 * @param def
 	 * @return
 	 */
+	@LuaFunction(methodName = "getByteDef", arguments = { String.class, Byte.class })
 	public byte getByte(String key, byte def) {
 		if(bundle != null) {
 			bundle.getByte(key, def);
@@ -89,9 +94,88 @@ public class LuaBundle implements LuaInterface
 	 * @param key
 	 * @param value
 	 */
+	@LuaFunction(methodName = "putByte", arguments = { String.class, Byte.class })
 	public void putByte(String key, byte value) {
 		if(bundle != null) {
 			bundle.putByte(key, value);
+		}
+	}
+
+	/**
+	 * Get char
+	 * @param key
+	 * @return
+	 */
+	@LuaFunction(methodName = "getChar", arguments = { String.class })
+	public char getChar(String key) {
+		if(bundle != null) {
+			bundle.getChar(key);
+		}
+		return 0;
+	}
+
+	/**
+	 * Get char
+	 * @param key
+	 * @param def
+	 * @return
+	 */
+	@LuaFunction(methodName = "getCharDef", arguments = { String.class, Character.class })
+	public char getChar(String key, char def) {
+		if(bundle != null) {
+			bundle.getChar(key, def);
+		}
+		return def;
+	}
+
+	/**
+	 * Put char
+	 * @param key
+	 * @param value
+	 */
+	@LuaFunction(methodName = "putChar", arguments = { String.class, Character.class })
+	public void putChar(String key, char value) {
+		if(bundle != null) {
+			bundle.putChar(key, value);
+		}
+	}
+
+	/**
+	 * Get short
+	 * @param key
+	 * @return
+	 */
+	@LuaFunction(methodName = "getShort", arguments = { String.class })
+	public short getShort(String key) {
+		if(bundle != null) {
+			bundle.getShort(key);
+		}
+		return 0;
+	}
+
+	/**
+	 * Get short
+	 * @param key
+	 * @param def
+	 * @return
+	 */
+	@LuaFunction(methodName = "getShortDef", arguments = { String.class, Short.class })
+	public short getShort(String key, short def) {
+		if(bundle != null) {
+			bundle.getShort(key, def);
+		}
+		return def;
+	}
+
+	/**
+	 * Put short
+	 * @param key
+	 * @param value
+	 */
+	@LuaFunction(methodName = "putShort", arguments = { String.class, Short.class })
+	public void putShort(String key, short value) {
+		if(bundle != null) {
+			bundle.putShort(key, value);
 		}
 	}
 
@@ -100,6 +184,7 @@ public class LuaBundle implements LuaInterface
 	 * @param key
 	 * @return
 	 */
+	@LuaFunction(methodName = "getInt", arguments = { String.class })
 	public int getInt(String key) {
 		if(bundle != null) {
 			bundle.getInt(key);
@@ -113,6 +198,7 @@ public class LuaBundle implements LuaInterface
 	 * @param def
 	 * @return
 	 */
+	@LuaFunction(methodName = "getIntDef", arguments = { String.class, Integer.class })
 	public int getInt(String key, int def) {
 		if(bundle != null) {
 			bundle.getInt(key, def);
@@ -125,6 +211,7 @@ public class LuaBundle implements LuaInterface
 	 * @param key
 	 * @param value
 	 */
+	@LuaFunction(methodName = "putInt", arguments = { String.class, Integer.class })
 	public void putInt(String key, int value) {
 		if(bundle != null) {
 			bundle.putInt(key, value);
@@ -136,6 +223,7 @@ public class LuaBundle implements LuaInterface
 	 * @param key
 	 * @return
 	 */
+	@LuaFunction(methodName = "getLong", arguments = { String.class })
 	public long getLong(String key) {
 		if(bundle != null) {
 			bundle.getInt(key);
@@ -149,6 +237,7 @@ public class LuaBundle implements LuaInterface
 	 * @param def
 	 * @return
 	 */
+	@LuaFunction(methodName = "getLongDef", arguments = { String.class, Long.class })
 	public long getLong(String key, long def) {
 		if(bundle != null) {
 			bundle.getLong(key, def);
@@ -161,6 +250,7 @@ public class LuaBundle implements LuaInterface
 	 * @param key
 	 * @param value
 	 */
+	@LuaFunction(methodName = "putLong", arguments = { String.class, Long.class })
 	public void putLong(String key, long value) {
 		if(bundle != null) {
 			bundle.putLong(key, value);
@@ -172,6 +262,7 @@ public class LuaBundle implements LuaInterface
 	 * @param key
 	 * @return
 	 */
+	@LuaFunction(methodName = "getFloat", arguments = { String.class })
 	public float getFloat(String key) {
 		if(bundle != null) {
 			bundle.getFloat(key);
@@ -185,6 +276,7 @@ public class LuaBundle implements LuaInterface
 	 * @param def
 	 * @return
 	 */
+	@LuaFunction(methodName = "getFloatDef", arguments = { String.class, Float.class })
 	public float getFloat(String key, float def) {
 		if(bundle != null) {
 			bundle.getFloat(key, def);
@@ -197,6 +289,7 @@ public class LuaBundle implements LuaInterface
 	 * @param key
 	 * @param value
 	 */
+	@LuaFunction(methodName = "putFloat", arguments = { String.class, Float.class })
 	public void putFloat(String key, float value) {
 		if(bundle != null) {
 			bundle.putFloat(key, value);
@@ -208,6 +301,7 @@ public class LuaBundle implements LuaInterface
 	 * @param key
 	 * @return
 	 */
+	@LuaFunction(methodName = "getDouble", arguments = { String.class })
 	public double getDouble(String key) {
 		if(bundle != null) {
 			bundle.getDouble(key);
@@ -221,6 +315,7 @@ public class LuaBundle implements LuaInterface
 	 * @param def
 	 * @return
 	 */
+	@LuaFunction(methodName = "getDoubleDef", arguments = { String.class, Double.class })
 	public double getDouble(String key, double def) {
 		if(bundle != null) {
 			bundle.getDouble(key, def);
@@ -233,6 +328,7 @@ public class LuaBundle implements LuaInterface
 	 * @param key
 	 * @param value
 	 */
+	@LuaFunction(methodName = "putDouble", arguments = { String.class, Double.class })
 	public void putDouble(String key, double value) {
 		if(bundle != null) {
 			bundle.putDouble(key, value);

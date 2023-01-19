@@ -1173,6 +1173,7 @@ public class ToppingEngine
 			LuaDialog.class,
 			LuaEvent.class,
 			LuaForm.class,
+			LuaFormIntent.class,
 			LuaFragment.class,
 			LuaHttpClient.class,
 			LuaJavaFunction.class,

@@ -28,9 +28,8 @@ import org.ndeftools.wellknown.SmartPosterRecord
 import org.ndeftools.wellknown.UriRecord
 import java.util.*
 
-
 /**
- * User interface form
+ * User interface controller
  */
 @LuaClass(className = "LuaForm", isKotlin = true)
 open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
@@ -60,10 +59,10 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
             self = LuaForm::class,
             arguments = [LuaContext::class, LuaRef::class]
         )
-        fun Create(lc: LuaContext, luaId: LuaRef?) : LuaNativeObject {
+        fun Create(lc: LuaContext, luaId: LuaRef?) : LuaFormIntent {
             val intent = Intent(lc.GetContext(), LuaForm::class.java)
             intent.putExtra("LUA_ID_RUED", luaId)
-            return LuaNativeObject(intent)
+            return LuaFormIntent(intent)
         }
 
         /**
@@ -80,11 +79,11 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
             self = LuaForm::class,
             arguments = [LuaContext::class, LuaRef::class, LuaRef::class]
         )
-        fun CreateWithUI(lc: LuaContext, luaId: LuaRef?, ui: LuaRef?) : LuaNativeObject {
+        fun CreateWithUI(lc: LuaContext, luaId: LuaRef?, ui: LuaRef?) : LuaFormIntent {
             val intent = Intent(lc.GetContext(), LuaForm::class.java)
             intent.putExtra("LUA_ID_RUED", luaId)
             intent.putExtra("LUA_UI_RUED", ui)
-            return LuaNativeObject(intent)
+            return LuaFormIntent(intent)
         }
 
         /**
@@ -116,7 +115,6 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
      */
     @LuaFunction(manual = false, methodName = "GetViewById", arguments = [LuaRef::class])
     fun GetViewById(lId: LuaRef): LGView {
-
         return view!!.GetViewById(lId)
     }
 

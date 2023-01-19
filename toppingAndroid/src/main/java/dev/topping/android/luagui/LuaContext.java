@@ -6,6 +6,7 @@ import android.content.Intent;
 import androidx.appcompat.app.CustomLayoutInflater;
 
 import dev.topping.android.LuaForm;
+import dev.topping.android.LuaFormIntent;
 import dev.topping.android.LuaNativeObject;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
@@ -41,12 +42,12 @@ public class LuaContext implements LuaInterface
 	}
 
 	/**
-	 * Starts form from created native object
+	 * Starts form from created form intent
 	 * @see dev.topping.android.LuaForm Create
 	 */
-	@LuaFunction(manual = false, methodName = "StartForm", arguments = { LuaNativeObject.class })
-	public void StartForm(LuaNativeObject obj) {
-		context.startActivity((Intent) obj.obj);
+	@LuaFunction(manual = false, methodName = "StartForm", arguments = { LuaFormIntent.class })
+	public void StartForm(LuaFormIntent formIntent) {
+		context.startActivity(formIntent.getIntent());
 	}
 
 	/**
