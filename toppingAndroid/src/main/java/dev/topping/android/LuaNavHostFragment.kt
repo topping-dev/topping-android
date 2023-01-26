@@ -7,17 +7,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LGView
 import android.widget.LinearLayout
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import dev.topping.android.backend.LuaClass
 import dev.topping.android.backend.LuaFunction
 import dev.topping.android.backend.LuaInterface
 import dev.topping.android.luagui.LuaContext
 import dev.topping.android.luagui.LuaRef
 import dev.topping.android.luagui.LuaViewInflator
-import java.util.HashMap
 
 /**
  * User interface fragment
@@ -36,12 +33,12 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
          */
         @LuaFunction(
             manual = false,
-            methodName = "Create",
+            methodName = "create",
             self = LuaNavHostFragment::class,
             arguments = [LuaContext::class, LuaRef::class]
         )
-        fun Create(lc: LuaContext, luaId: LuaRef?): LuaNavHostFragment {
-            return LuaNavHostFragment(lc.GetContext(), luaId)
+        fun create(lc: LuaContext, luaId: LuaRef?): LuaNavHostFragment {
+            return LuaNavHostFragment(lc.getContext(), luaId)
         }
 
         /**
@@ -54,16 +51,16 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
          */
         @LuaFunction(
             manual = false,
-            methodName = "CreateWithUI",
+            methodName = "createWithUI",
             self = LuaNavHostFragment::class,
             arguments = [LuaContext::class, LuaRef::class, LuaRef::class]
         )
-        fun CreateWithUI(
+        fun createWithUI(
             lc: LuaContext,
             luaId: LuaRef?,
             ui: LuaRef?
         ): LuaNavHostFragment {
-            return LuaNavHostFragment(lc.GetContext(), luaId, ui)
+            return LuaNavHostFragment(lc.getContext(), luaId, ui)
         }
     }
 
@@ -77,7 +74,7 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
      */
     constructor(c: Context?, luaId: LuaRef?) {
         luaContext = LuaContext()
-        luaContext!!.SetContext(c)
+        luaContext!!.setContext(c)
         this.luaId = c!!.resources.getResourceEntryName(luaId!!.ref)
     }
 
@@ -86,7 +83,7 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
      */
     constructor(c: Context?, luaId: LuaRef?, ui: LuaRef?) {
         luaContext = LuaContext()
-        luaContext!!.SetContext(c)
+        luaContext!!.setContext(c)
         this.luaId = c!!.resources.getResourceEntryName(luaId!!.ref)
         this.ui = ui
     }
@@ -115,14 +112,14 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
         this.luaId = "LuaNavHostFragment"
         val ui = ""
         this.luaId = luaId
-        luaContext = LuaContext.CreateLuaContext(inflater.context)
+        luaContext = LuaContext.createLuaContext(inflater.context)
         if (ui.compareTo("") == 0) {
-            LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_CREATE, luaContext)
+            LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_CREATE, luaContext)
         } else {
             val inflaterL = LuaViewInflator(luaContext)
-            view = inflaterL.ParseFile(ui, null)
+            view = inflaterL.parseFile(ui, null)
         }
-        return if (view != null) view!!.GetView() else {
+        return if (view != null) view!!.getView() else {
             rootView = LinearLayout(inflater.context)
             rootView!!.layoutParams =
                 ViewGroup.LayoutParams(
@@ -146,7 +143,7 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
      */
     override fun onResume() {
         super.onResume()
-        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_RESUME, luaContext)
+        LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_RESUME, luaContext)
     }
 
     /**
@@ -154,7 +151,7 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
      */
     override fun onPause() {
         super.onPause()
-        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_PAUSE, luaContext)
+        LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_PAUSE, luaContext)
     }
 
     /**
@@ -162,7 +159,7 @@ open class LuaNavHostFragment : LuaFragment, LuaInterface {
      */
     override fun onDestroy() {
         super.onDestroy()
-        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_DESTROY, luaContext)
+        LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_DESTROY, luaContext)
     }
 
     /**

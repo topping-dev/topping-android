@@ -22,7 +22,6 @@ import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
 import dev.topping.android.luagui.LuaRef;
-import dev.topping.android.luagui.LuaViewInflator;
 
 @LuaClass(className = "LGView")
 public class LGView extends Object implements LuaInterface, Serializable
@@ -44,8 +43,8 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 * @param lc
 	 * @return LGView
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGView.class)
-	public static LGView Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGView.class)
+	public static LGView create(LuaContext lc)
 	{
 		return new LGView(lc);
 	}
@@ -56,9 +55,9 @@ public class LGView extends Object implements LuaInterface, Serializable
 	public LGView(LuaContext context)
 	{
 		this.lc = context;
-		BeforeSetup(context.GetContext());
-		Setup(context.GetContext());
-		AfterSetup(context.GetContext());
+		BeforeSetup(context.getContext());
+		Setup(context.getContext());
+		AfterSetup(context.getContext());
 	}
 
 	/**
@@ -68,9 +67,9 @@ public class LGView extends Object implements LuaInterface, Serializable
 	{
 		this.lc = context;
 		this.luaId = luaId;
-		BeforeSetup(context.GetContext());
-		Setup(context.GetContext());
-		AfterSetup(context.GetContext());
+		BeforeSetup(context.getContext());
+		Setup(context.getContext());
+		AfterSetup(context.getContext());
 	}
 
 	/**
@@ -80,9 +79,9 @@ public class LGView extends Object implements LuaInterface, Serializable
 	{
 		this.lc = context;
 		this.attrs = attrs;
-		BeforeSetup(context.GetContext());
-		Setup(context.GetContext(), attrs);
-		AfterSetup(context.GetContext());
+		BeforeSetup(context.getContext());
+		Setup(context.getContext(), attrs);
+		AfterSetup(context.getContext());
 	}
 
 	/**
@@ -92,9 +91,9 @@ public class LGView extends Object implements LuaInterface, Serializable
 	{
 		this.lc = context;
 		this.attrs = attrs;
-		BeforeSetup(context.GetContext());
-		Setup(context.GetContext(), attrs);
-		AfterSetup(context.GetContext());
+		BeforeSetup(context.getContext());
+		Setup(context.getContext(), attrs);
+		AfterSetup(context.getContext());
 	}
 
 	/**
@@ -102,7 +101,7 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 */
 	public void Setup(Context context)
 	{
-		view = lc.GetLayoutInflater().createView(context, "View");
+		view = lc.getLayoutInflater().createView(context, "View");
 		if(view == null)
 			view = new View(context);
 	}
@@ -112,7 +111,7 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = lc.GetLayoutInflater().createView(context, "View", attrs);
+		view = lc.getLayoutInflater().createView(context, "View", attrs);
 		if(view == null)
 			view = new View(context, attrs);
 	}
@@ -122,7 +121,7 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = lc.GetLayoutInflater().createView(context, "View", attrs);
+		view = lc.getLayoutInflater().createView(context, "View", attrs);
 		if(view == null)
 			view = new View(context, attrs, defStyle);
 	}
@@ -181,12 +180,12 @@ public class LGView extends Object implements LuaInterface, Serializable
 	/**
 	 * (Ignore)
 	 */
-	public View GetView() { return view; }
+	public View getView() { return view; }
 
 	/**
 	 * (Ignore)
 	 */
-	public void PrintDescription(String last)
+	public void printDescription(String last)
 	{
 		ViewGroup.LayoutParams lps = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);//getLayoutParams();
 		ViewGroup.LayoutParams lpsv = view.getLayoutParams();
@@ -194,7 +193,7 @@ public class LGView extends Object implements LuaInterface, Serializable
 		Log.e("PrintDescriptionView", last + view.toString() + " Width: " + lpsv.width + " Height: " + lpsv.height);
 		for(LGView w : subviews)
 		{
-			w.PrintDescription(last + "--");
+			w.printDescription(last + "--");
 		}
 	}
 
@@ -203,8 +202,8 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 * @param lId
 	 * @return LGView
 	 */
-	@LuaFunction(manual = false, methodName = "GetViewById", arguments = { LuaRef.class })
-	public LGView GetViewById(LuaRef lId)
+	@LuaFunction(manual = false, methodName = "getViewById", arguments = { LuaRef.class })
+	public LGView getViewById(LuaRef lId)
 	{
 		String resourceName = view.getContext().getResources().getResourceEntryName(lId.getRef());
 		if(this.GetId() != null && this.GetId().compareTo(resourceName) == 0)
@@ -213,7 +212,7 @@ public class LGView extends Object implements LuaInterface, Serializable
 		{
 			for(LGView w : subviews)
 			{
-				LGView wFound = w.GetViewById(lId);
+				LGView wFound = w.getViewById(lId);
 				if(wFound != null)
 					return wFound;
 			}
@@ -225,8 +224,8 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 * Set enabled
 	 * @param value
 	 */
-	@LuaFunction(manual = false, methodName = "SetEnabled", arguments = { Boolean.class })
-	public void SetEnabled(Boolean value)
+	@LuaFunction(manual = false, methodName = "setEnabled", arguments = { Boolean.class })
+	public void setEnabled(Boolean value)
 	{
 		view.setEnabled(value);
 	}
@@ -235,8 +234,8 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 * Set focusable
 	 * @param value
 	 */
-	@LuaFunction(manual = false, methodName = "SetFocusable", arguments = { Boolean.class })
-	public void SetFocusable(Boolean value)
+	@LuaFunction(manual = false, methodName = "setFocusable", arguments = { Boolean.class })
+	public void setFocusable(Boolean value)
 	{
 		view.setFocusable(value);
 	}
@@ -245,8 +244,8 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 * Set background ref
 	 * @param backgroundRef
 	 */
-	@LuaFunction(manual = false, methodName = "SetBackground", arguments = { LuaRef.class })
-	public void SetBackground(LuaRef backgroundRef)
+	@LuaFunction(manual = false, methodName = "setBackground", arguments = { LuaRef.class })
+	public void setBackground(LuaRef backgroundRef)
 	{
 		TypedValue value = new TypedValue();
 		view.getContext().getResources().getValue(backgroundRef.getRef(), value, true); // will throw if resId doesn't exist
@@ -262,8 +261,8 @@ public class LGView extends Object implements LuaInterface, Serializable
 	 * Adds click event to button
 	 * @param lt +fun(view: LGView, context: LuaContext):void
 	 */
-	@LuaFunction(manual = false, methodName = "SetOnClickListener", arguments = { LuaTranslator.class })
-	public void SetOnClickListener(LuaTranslator lt)
+	@LuaFunction(manual = false, methodName = "setOnClickListener", arguments = { LuaTranslator.class })
+	public void setOnClickListener(LuaTranslator lt)
 	{
 		if(lt == null)
 		{
@@ -276,7 +275,7 @@ public class LGView extends Object implements LuaInterface, Serializable
 			@Override
 			public void onClick(View view)
 			{
-				lt.CallIn(lc);
+				lt.callIn(lc);
 			}
 		});
 	}
@@ -301,7 +300,7 @@ public class LGView extends Object implements LuaInterface, Serializable
 			return luaId;
 		String idS = null;
 		try {
-			idS = lc.GetContext().getResources().getResourceEntryName(view.getId());
+			idS = lc.getContext().getResources().getResourceEntryName(view.getId());
 		} catch (Exception ex) {}
 		if(idS != null)
 			return idS;
@@ -323,7 +322,7 @@ public class LGView extends Object implements LuaInterface, Serializable
 	/**
 	 * (Ignore)
 	 */
-	public void SetLuaId(String val)
+	public void setLuaId(String val)
 	{
 		luaId = val;
 	}
@@ -331,7 +330,7 @@ public class LGView extends Object implements LuaInterface, Serializable
 	/**
 	 * (Ignore)
 	 */
-	public boolean IsLoaded()
+	public boolean isLoaded()
 	{
 		if(loaded == null || !loaded)
 			return false;
@@ -341,7 +340,7 @@ public class LGView extends Object implements LuaInterface, Serializable
 	/**
 	 * (Ignore)
 	 */
-	public void SetLoaded(Object loaded)
+	public void setLoaded(Object loaded)
 	{
 		if(loaded == null)
 			return;
@@ -352,7 +351,7 @@ public class LGView extends Object implements LuaInterface, Serializable
 	/**
 	 * (Ignore)
 	 */
-	public void AddSubview(LGView view)
+	public void addSubview(LGView view)
 	{
 		view.parent = this;
 		this.subviews.add(view);

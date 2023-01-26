@@ -20,8 +20,8 @@ public class LuaJSONArray implements LuaInterface
 	 * Get array count.
 	 * @return int count of array.
 	 */
-	@LuaFunction(manual = false, methodName = "Count", arguments = { })
-	public int Count()
+	@LuaFunction(manual = false, methodName = "count", arguments = { })
+	public int count()
 	{
 		return jsa.length();
 	}
@@ -31,8 +31,8 @@ public class LuaJSONArray implements LuaInterface
 	 * @param index value.
 	 * @return LuaJSONObject
 	 */
-	@LuaFunction(manual = false, methodName = "GetJSONObject", arguments = { Integer.class })
-	public LuaJSONObject GetJSONObject(Integer index)
+	@LuaFunction(manual = false, methodName = "getJSONObject", arguments = { Integer.class })
+	public LuaJSONObject getJSONObject(Integer index)
 	{
 		LuaJSONObject lso = new LuaJSONObject();
 		try
@@ -51,8 +51,8 @@ public class LuaJSONArray implements LuaInterface
 	 * @param index value.
 	 * @return LuaJSONArray
 	 */
-	@LuaFunction(manual = false, methodName = "GetJSONArray", arguments = { Integer.class })
-	public LuaJSONArray GetJSONArray(Integer index)
+	@LuaFunction(manual = false, methodName = "getJSONArray", arguments = { Integer.class })
+	public LuaJSONArray getJSONArray(Integer index)
 	{
 		LuaJSONArray lsa = new LuaJSONArray();
 		try
@@ -71,8 +71,8 @@ public class LuaJSONArray implements LuaInterface
 	 * @param index value.
 	 * @return String value.
 	 */
-	@LuaFunction(manual = false, methodName = "GetString", arguments = { Integer.class })
-	public String GetString(Integer index)
+	@LuaFunction(manual = false, methodName = "getString", arguments = { Integer.class })
+	public String getString(Integer index)
 	{
 		try
 		{
@@ -89,8 +89,8 @@ public class LuaJSONArray implements LuaInterface
 	 * @param index value.
 	 * @return int value.
 	 */
-	@LuaFunction(manual = false, methodName = "GetInt", arguments = { Integer.class })
-	public Integer GetInt(Integer index)
+	@LuaFunction(manual = false, methodName = "getInt", arguments = { Integer.class })
+	public Integer getInt(Integer index)
 	{
 		try
 		{
@@ -107,8 +107,8 @@ public class LuaJSONArray implements LuaInterface
 	 * @param index value.
 	 * @return double value.
 	 */
-	@LuaFunction(manual = false, methodName = "GetDouble", arguments = { Integer.class })
-	public Double GetDouble(Integer index)
+	@LuaFunction(manual = false, methodName = "getDouble", arguments = { Integer.class })
+	public Double getDouble(Integer index)
 	{
 		try
 		{
@@ -125,8 +125,8 @@ public class LuaJSONArray implements LuaInterface
 	 * @param index value.
 	 * @return float value.
 	 */
-	@LuaFunction(manual = false, methodName = "GetFloat", arguments = { Integer.class })
-	public Float GetFloat(Integer index)
+	@LuaFunction(manual = false, methodName = "getFloat", arguments = { Integer.class })
+	public Float getFloat(Integer index)
 	{
 		try
 		{
@@ -143,8 +143,8 @@ public class LuaJSONArray implements LuaInterface
 	 * @param index value.
 	 * @return boolean value.
 	 */
-	@LuaFunction(manual = false, methodName = "GetBool", arguments = { Integer.class })
-	public Boolean GetBool(Integer index)
+	@LuaFunction(manual = false, methodName = "getBool", arguments = { Integer.class })
+	public Boolean getBool(Integer index)
 	{
 		try
 		{

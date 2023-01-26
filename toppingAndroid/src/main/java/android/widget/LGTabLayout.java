@@ -66,11 +66,11 @@ public class LGTabLayout extends LGScrollView implements LuaInterface {
     @Override
     public void Setup(Context context, AttributeSet attrs, int defStyle) {
         if(attrs == null) {
-            view = lc.GetLayoutInflater().createView(context, "TabLayout", null);
+            view = lc.getLayoutInflater().createView(context, "TabLayout", null);
             if (view == null)
                 view = new TabLayout(context);
         } else {
-            view = lc.GetLayoutInflater().createView(context, "TabLayout", attrs);
+            view = lc.getLayoutInflater().createView(context, "TabLayout", attrs);
             if (view == null)
                 view = new TabLayout(context, attrs);
         }
@@ -79,7 +79,7 @@ public class LGTabLayout extends LGScrollView implements LuaInterface {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if(ltTabSelectedListener != null) {
-                    ltTabSelectedListener.CallIn(tab.getPosition());
+                    ltTabSelectedListener.callIn(tab.getPosition());
                 }
             }
 
@@ -99,8 +99,8 @@ public class LGTabLayout extends LGScrollView implements LuaInterface {
      * Set tab selected listener
      * @param ltTabSelectedListener
      */
-    @LuaFunction(manual = false, methodName = "SetTabSelectedListener", arguments = { LuaTranslator.class })
-    public void SetTabSelectedListener(LuaTranslator ltTabSelectedListener) {
+    @LuaFunction(manual = false, methodName = "setTabSelectedListener", arguments = { LuaTranslator.class })
+    public void setTabSelectedListener(LuaTranslator ltTabSelectedListener) {
         this.ltTabSelectedListener = ltTabSelectedListener;
     }
 

@@ -17,7 +17,7 @@ public class LuaBuffer implements LuaInterface
 	 * @param capacity
 	 * @return LuaBuffer
 	 */
-	public static LuaBuffer Create(int capacity)
+	public static LuaBuffer create(int capacity)
 	{
 		LuaBuffer lb = new LuaBuffer();
 		lb.buffer = new byte[capacity];
@@ -29,8 +29,8 @@ public class LuaBuffer implements LuaInterface
 	 * @param index
 	 * @return int
 	 */
-	@LuaFunction(manual = false, methodName = "GetByte", arguments = { Integer.class })
-	public Integer GetByte(Integer index)
+	@LuaFunction(manual = false, methodName = "getByte", arguments = { Integer.class })
+	public Integer getByte(Integer index)
 	{
 		return (int) buffer[index];
 	}
@@ -40,8 +40,8 @@ public class LuaBuffer implements LuaInterface
 	 * @param index
 	 * @param value
 	 */
-	@LuaFunction(manual = false, methodName = "SetByte", arguments = { Integer.class, Integer.class })
-	public void SetByte(Integer index, Integer value)
+	@LuaFunction(manual = false, methodName = "setByte", arguments = { Integer.class, Integer.class })
+	public void setByte(Integer index, Integer value)
 	{
 		buffer[index] = (byte)value.intValue();
 	}
@@ -49,7 +49,7 @@ public class LuaBuffer implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public byte[] GetBuffer() { return buffer; }
+	public byte[] getBuffer() { return buffer; }
 
 	/**
 	 * (Ignore)

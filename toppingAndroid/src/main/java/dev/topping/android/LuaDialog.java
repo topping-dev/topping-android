@@ -66,10 +66,10 @@ public class LuaDialog implements LuaInterface
 	 * @param title title text
 	 * @param content content text
 	 */
-	@LuaFunction(manual = false, methodName = "MessageBox", arguments = { LuaContext.class, LuaRef.class, LuaRef.class }, self = LuaDialog.class)
-	public static void MessageBox(LuaContext context, LuaRef title, LuaRef content)
+	@LuaFunction(manual = false, methodName = "messageBox", arguments = { LuaContext.class, LuaRef.class, LuaRef.class }, self = LuaDialog.class)
+	public static void messageBox(LuaContext context, LuaRef title, LuaRef content)
 	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(context.GetContext());
+		AlertDialog.Builder builder = new AlertDialog.Builder(context.getContext());
 		builder.setPositiveButton("Ok", null);
 		builder.setMessage(content.getRef());
 		builder.setTitle(title.getRef());
@@ -82,10 +82,10 @@ public class LuaDialog implements LuaInterface
 	 * @param title title text
 	 * @param content content text
 	 */
-	@LuaFunction(manual = false, methodName = "MessageBox", arguments = { LuaContext.class, String.class, String.class }, self = LuaDialog.class)
-	public static void MessageBoxInternal(LuaContext context, String title, String content)
+	@LuaFunction(manual = false, methodName = "messageBoxInternal", arguments = { LuaContext.class, String.class, String.class }, self = LuaDialog.class)
+	public static void  messageBoxInternal(LuaContext context, String title, String content)
 	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(context.GetContext());
+		AlertDialog.Builder builder = new AlertDialog.Builder(context.getContext());
 		builder.setPositiveButton("Ok", null);
 		builder.setMessage(content);
 		builder.setTitle(title);
@@ -98,8 +98,8 @@ public class LuaDialog implements LuaInterface
 	 * @param dialogType +"LuaDialog.DIALOG_TYPE_NORMAL" | "LuaDialog.DIALOG_TYPE_PROGRESS" | "LuaDialog.DIALOG_TYPE_NORMAL" | "LuaDialog.DIALOG_TYPE_PROGRESS_INDETERMINATE" | "LuaDialog.DIALOG_TYPE_DATEPICKER" | "LuaDialog.DIALOG_TYPE_TIMEPICKER"
 	 * @return LuaDialog
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class, Integer.class }, self = LuaDialog.class)
-	public static LuaDialog Create(LuaContext context, int dialogType)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class, Integer.class }, self = LuaDialog.class)
+	public static LuaDialog create(LuaContext context, int dialogType)
 	{
 		LuaDialog ld = new LuaDialog();
 		ld.dialogType = dialogType;
@@ -107,32 +107,32 @@ public class LuaDialog implements LuaInterface
 		{
 		case DIALOG_TYPE_NORMAL:
 		{
-			ld.builder = new AlertDialog.Builder(context.GetContext());
+			ld.builder = new AlertDialog.Builder(context.getContext());
 		} break;
 		case DIALOG_TYPE_PROGRESS:
 		{
-			ld.dialog = new ProgressDialog(context.GetContext());
+			ld.dialog = new ProgressDialog(context.getContext());
 			((ProgressDialog)ld.dialog).setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 			((ProgressDialog)ld.dialog).setIndeterminate(false);
 		} break;
 		case DIALOG_TYPE_PROGRESS_INDETERMINATE:
 		{
-			ld.dialog = new ProgressDialog(context.GetContext());
+			ld.dialog = new ProgressDialog(context.getContext());
 		} break;
 		case DIALOG_TYPE_DATEPICKER:
 		{
 			Calendar c = Calendar.getInstance(Locale.getDefault());
-			ld.dialog = new CDatePickerDialog(context.GetContext(), null, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+			ld.dialog = new CDatePickerDialog(context.getContext(), null, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 		} break;
 		case DIALOG_TYPE_TIMEPICKER:
 		{
 			Calendar c = Calendar.getInstance(Locale.getDefault());
-			ld.dialog = new CTimePickerDialog(context.GetContext(), null, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), DateFormat.is24HourFormat(context.GetContext()));
+			ld.dialog = new CTimePickerDialog(context.getContext(), null, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), DateFormat.is24HourFormat(context.getContext()));
 		} break;
 		default:
 		{
 			ld.dialogType = DIALOG_TYPE_NORMAL;
-			ld.builder = new AlertDialog.Builder(context.GetContext());
+			ld.builder = new AlertDialog.Builder(context.getContext());
 		} break;
 		}
 		return ld;
@@ -143,8 +143,8 @@ public class LuaDialog implements LuaInterface
 	 * @param title title of the button
 	 * @param action action to do when button is pressed
 	 */
-	@LuaFunction(manual = false, methodName = "SetPositiveButton", arguments = { LuaRef.class, LuaTranslator.class })
-	public void SetPositiveButton(LuaRef title, final LuaTranslator action)
+	@LuaFunction(manual = false, methodName = "setPositiveButton", arguments = { LuaRef.class, LuaTranslator.class })
+	public void setPositiveButton(LuaRef title, final LuaTranslator action)
 	{
 		if(dialogType == DIALOG_TYPE_NORMAL)
 		{
@@ -153,7 +153,7 @@ public class LuaDialog implements LuaInterface
 				@Override
 				public void onClick(DialogInterface dialog, int which)
 				{
-					action.CallIn();
+					action.callIn();
 				}
 			});
 		}
@@ -164,8 +164,8 @@ public class LuaDialog implements LuaInterface
 	 * @param title title of the button
 	 * @param action action to do when button is pressed
 	 */
-	@LuaFunction(manual = false, methodName = "SetPositiveButtonInternal", arguments = { String.class, LuaTranslator.class })
-	public void SetPositiveButtonInternal(String title, final LuaTranslator action)
+	@LuaFunction(manual = false, methodName = "setPositiveButtonInternal", arguments = { String.class, LuaTranslator.class })
+	public void setPositiveButtonInternal(String title, final LuaTranslator action)
 	{
 		if(dialogType == DIALOG_TYPE_NORMAL)
 		{
@@ -174,7 +174,7 @@ public class LuaDialog implements LuaInterface
 				@Override
 				public void onClick(DialogInterface dialog, int which)
 				{
-					action.CallIn();
+					action.callIn();
 				}
 			});
 		}
@@ -185,8 +185,8 @@ public class LuaDialog implements LuaInterface
 	 * @param title title of the button
 	 * @param action action to do when button is pressed
 	 */
-	@LuaFunction(manual = false, methodName = "SetNegativeButton", arguments = { LuaRef.class, LuaTranslator.class })
-	public void SetNegativeButton(LuaRef title, final LuaTranslator action)
+	@LuaFunction(manual = false, methodName = "setNegativeButton", arguments = { LuaRef.class, LuaTranslator.class })
+	public void setNegativeButton(LuaRef title, final LuaTranslator action)
 	{
 		if(dialogType == DIALOG_TYPE_NORMAL)
 		{
@@ -195,7 +195,7 @@ public class LuaDialog implements LuaInterface
 				@Override
 				public void onClick(DialogInterface dialog, int which)
 				{
-					action.CallIn();
+					action.callIn();
 				}
 			});
 		}
@@ -206,8 +206,8 @@ public class LuaDialog implements LuaInterface
 	 * @param title title of the button
 	 * @param action action to do when button is pressed
 	 */
-	@LuaFunction(manual = false, methodName = "SetNegativeButtonInternal", arguments = { String.class, LuaTranslator.class })
-	public void SetNegativeButtonInternal(String title, final LuaTranslator action)
+	@LuaFunction(manual = false, methodName = "setNegativeButtonInternal", arguments = { String.class, LuaTranslator.class })
+	public void setNegativeButtonInternal(String title, final LuaTranslator action)
 	{
 		if(dialogType == DIALOG_TYPE_NORMAL)
 		{
@@ -216,7 +216,7 @@ public class LuaDialog implements LuaInterface
 				@Override
 				public void onClick(DialogInterface dialog, int which)
 				{
-					action.CallIn();
+					action.callIn();
 				}
 			});
 		}
@@ -226,8 +226,8 @@ public class LuaDialog implements LuaInterface
 	 * Sets the title of the LuaDialog
 	 * @param title
 	 */
-	@LuaFunction(manual = false, methodName = "SetTitle", arguments = { String.class })
-	public void SetTitle(String title)
+	@LuaFunction(manual = false, methodName = "setTitle", arguments = { String.class })
+	public void setTitle(String title)
 	{
 		if(dialogType == DIALOG_TYPE_NORMAL)
 			builder.setTitle(title);
@@ -239,21 +239,21 @@ public class LuaDialog implements LuaInterface
 	 * Sets the title of the LuaDialog
 	 * @param titleRef
 	 */
-	@LuaFunction(manual = false, methodName = "SetTitleRef", arguments = { LuaRef.class })
-	public void SetTitleRef(LuaRef titleRef)
+	@LuaFunction(manual = false, methodName = "setTitleRef", arguments = { LuaRef.class })
+	public void setTitleRef(LuaRef titleRef)
 	{
 		if(dialogType == DIALOG_TYPE_NORMAL)
-			builder.setTitle(titleRef.getRef());
+			builder.setTitle(dialog.getContext().getString(titleRef.getRef()));
 		else
-			dialog.setTitle(titleRef.getRef());
+			dialog.setTitle(dialog.getContext().getString(titleRef.getRef()));
 	}
 
 	/**
 	 * Sets the message of the LuaDialog
 	 * @param message
 	 */
-	@LuaFunction(manual = false, methodName = "SetMessage", arguments = { String.class })
-	public void SetMessage(String message)
+	@LuaFunction(manual = false, methodName = "setMessage", arguments = { String.class })
+	public void setMessage(String message)
 	{
 		if(dialogType == DIALOG_TYPE_NORMAL)
 			builder.setMessage(message);
@@ -265,8 +265,8 @@ public class LuaDialog implements LuaInterface
 	 * Sets the message of the LuaDialog
 	 * @param messageRef
 	 */
-	@LuaFunction(manual = false, methodName = "SetMessageRef", arguments = { LuaRef.class })
-	public void SetMessage(LuaRef messageRef)
+	@LuaFunction(manual = false, methodName = "setMessageRef", arguments = { LuaRef.class })
+	public void setMessage(LuaRef messageRef)
 	{
 		if(dialogType == DIALOG_TYPE_NORMAL)
 			builder.setMessage(messageRef.getRef());
@@ -279,8 +279,8 @@ public class LuaDialog implements LuaInterface
 	 * (progress bar is needed otherwise it wont effect anything)
 	 * @param value
 	 */
-	@LuaFunction(manual = false, methodName = "SetProgress", arguments = { Integer.class })
-	public void SetProgress(Integer value)
+	@LuaFunction(manual = false, methodName = "setProgress", arguments = { Integer.class })
+	public void setProgress(Integer value)
 	{
 		if((dialogType & DIALOG_TYPE_PROGRESS) > 0)
 			((ProgressDialog)dialog).setProgress(value);
@@ -291,8 +291,8 @@ public class LuaDialog implements LuaInterface
 	 * (progress bar is needed otherwise it wont effect anything)
 	 * @param value
 	 */
-	@LuaFunction(manual = false, methodName = "SetMax", arguments = { Integer.class })
-	public void SetMax(Integer value)
+	@LuaFunction(manual = false, methodName = "setMax", arguments = { Integer.class })
+	public void setMax(Integer value)
 	{
 		if((dialogType & DIALOG_TYPE_PROGRESS) > 0)
 			((ProgressDialog)dialog).setMax(value);
@@ -303,12 +303,12 @@ public class LuaDialog implements LuaInterface
 	 * (date picker dialog is needed otherwise it wort effect anything)
 	 * @param date
 	 */
-	@LuaFunction(manual = false, methodName = "SetDate", arguments = { LuaDate.class })
-	public void SetDate(LuaDate date)
+	@LuaFunction(manual = false, methodName = "setDate", arguments = { LuaDate.class })
+	public void setDate(LuaDate date)
 	{
 		if(dialogType == DIALOG_TYPE_DATEPICKER)
 		{
-			((CDatePickerDialog)dialog).updateDate(date.GetYear(), date.GetMonth(), date.GetDay());
+			((CDatePickerDialog)dialog).updateDate(date.getYear(), date.getMonth(), date.getDay());
 		}
 	}
 
@@ -319,8 +319,8 @@ public class LuaDialog implements LuaInterface
 	 * @param month
 	 * @param year
 	 */
-	@LuaFunction(manual = false, methodName = "SetDateManual", arguments = { Integer.class, Integer.class, Integer.class })
-	public void SetDateManual(int day, int month, int year)
+	@LuaFunction(manual = false, methodName = "setDateManual", arguments = { Integer.class, Integer.class, Integer.class })
+	public void setDateManual(int day, int month, int year)
 	{
 		if(dialogType == DIALOG_TYPE_DATEPICKER)
 			((CDatePickerDialog)dialog).updateDate(year, month - 1, day);
@@ -331,12 +331,12 @@ public class LuaDialog implements LuaInterface
 	 * (time picker dialog is needed otherwise it wort effect anything)
 	 * @param date
 	 */
-	@LuaFunction(manual = false, methodName = "SetTime", arguments = { LuaDate.class })
-	public void SetTime(LuaDate date)
+	@LuaFunction(manual = false, methodName = "setTime", arguments = { LuaDate.class })
+	public void setTime(LuaDate date)
 	{
 		if(dialogType == DIALOG_TYPE_TIMEPICKER)
 		{
-			((CTimePickerDialog)dialog).updateTime(date.GetHour(), date.GetMinute());
+			((CTimePickerDialog)dialog).updateTime(date.getHour(), date.getMinute());
 		}
 	}
 
@@ -346,8 +346,8 @@ public class LuaDialog implements LuaInterface
 	 * @param hour
 	 * @param minute
 	 */
-	@LuaFunction(manual = false, methodName = "SetTimeManual", arguments = { Integer.class, Integer.class })
-	public void SetTimeManual(int hour, int minute)
+	@LuaFunction(manual = false, methodName = "setTimeManual", arguments = { Integer.class, Integer.class })
+	public void setTimeManual(int hour, int minute)
 	{
 		if(dialogType == DIALOG_TYPE_TIMEPICKER)
 			((CTimePickerDialog)dialog).updateTime(hour, minute);
@@ -356,8 +356,8 @@ public class LuaDialog implements LuaInterface
 	/**
 	 * Shows the created dialog of LuaDialog
 	 */
-	@LuaFunction(manual = false, methodName = "Show")
-	public void Show()
+	@LuaFunction(manual = false, methodName = "show")
+	public void show()
 	{
 		if(dialogType == DIALOG_TYPE_NORMAL)
 			dialog = builder.show();
@@ -368,8 +368,8 @@ public class LuaDialog implements LuaInterface
 	/**
 	 * Dismiss the created dialog
 	 */
-	@LuaFunction(manual = false, methodName = "Dismiss")
-	public void Dismiss()
+	@LuaFunction(manual = false, methodName = "dismiss")
+	public void dismiss()
 	{
 		if(dialog != null)
 			dialog.dismiss();
@@ -379,8 +379,8 @@ public class LuaDialog implements LuaInterface
 	 * Sets combo changed listener
 	 * @param lt +fun(datePicker: LuaDialog, context: LuaContext, day: number, month: number, year: number):void
 	 */
-	@LuaFunction(manual = false, methodName = "SetDateSelectedListener", arguments = { LuaTranslator.class })
-	public void SetDateSelectedListener(final LuaTranslator lt)
+	@LuaFunction(manual = false, methodName = "setDateSelectedListener", arguments = { LuaTranslator.class })
+	public void setDateSelectedListener(final LuaTranslator lt)
 	{
 		if(dialogType == DIALOG_TYPE_DATEPICKER)
 			((CDatePickerDialog)dialog).SetLuaData(this, lt);
@@ -390,8 +390,8 @@ public class LuaDialog implements LuaInterface
 	 * Sets combo changed listener
 	 * @param lt +fun(timePicker: LuaDialog, context: LuaContext, hour: number, minute: number):void
 	 */
-	@LuaFunction(manual = false, methodName = "SetTimeSelectedListener", arguments = { LuaTranslator.class })
-	public void SetTimeSelectedListener(final LuaTranslator lt)
+	@LuaFunction(manual = false, methodName = "setTimeSelectedListener", arguments = { LuaTranslator.class })
+	public void setTimeSelectedListener(final LuaTranslator lt)
 	{
 		if(dialogType == DIALOG_TYPE_TIMEPICKER)
 			((CTimePickerDialog)dialog).SetLuaData(this, lt);

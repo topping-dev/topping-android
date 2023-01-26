@@ -14,8 +14,8 @@ public class LuaLog implements LuaInterface
      * @param tag
      * @param message
      */
-    @LuaFunction(manual = false, methodName = "V", self = LuaLog.class, arguments = { String.class, String.class })
-    public static void V(String tag, String message)
+    @LuaFunction(manual = false, methodName = "v", self = LuaLog.class, arguments = { String.class, String.class })
+    public static void v(String tag, String message)
     {
         Log.v(tag, message);
     }
@@ -25,8 +25,8 @@ public class LuaLog implements LuaInterface
      * @param tag
      * @param message
      */
-    @LuaFunction(manual = false, methodName = "D", self = LuaLog.class, arguments = { String.class, String.class })
-    public static void D(String tag, String message)
+    @LuaFunction(manual = false, methodName = "d", self = LuaLog.class, arguments = { String.class, String.class })
+    public static void d(String tag, String message)
     {
         Log.d(tag, message);
     }
@@ -36,8 +36,8 @@ public class LuaLog implements LuaInterface
      * @param tag
      * @param message
      */
-    @LuaFunction(manual = false, methodName = "I", self = LuaLog.class, arguments = { String.class, String.class })
-    public static void I(String tag, String message)
+    @LuaFunction(manual = false, methodName = "i", self = LuaLog.class, arguments = { String.class, String.class })
+    public static void i(String tag, String message)
     {
         Log.i(tag, message);
     }
@@ -47,8 +47,8 @@ public class LuaLog implements LuaInterface
      * @param tag
      * @param message
      */
-    @LuaFunction(manual = false, methodName = "W", self = LuaLog.class, arguments = { String.class, String.class })
-    public static void W(String tag, String message)
+    @LuaFunction(manual = false, methodName = "w", self = LuaLog.class, arguments = { String.class, String.class })
+    public static void w(String tag, String message)
     {
         Log.w(tag, message);
     }
@@ -58,8 +58,8 @@ public class LuaLog implements LuaInterface
      * @param tag
      * @param message
      */
-    @LuaFunction(manual = false, methodName = "E", self = LuaLog.class, arguments = { String.class, String.class })
-    public static void E(String tag, String message)
+    @LuaFunction(manual = false, methodName = "e", self = LuaLog.class, arguments = { String.class, String.class })
+    public static void e(String tag, String message)
     {
         Log.e(tag, message);
     }

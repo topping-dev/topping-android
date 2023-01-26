@@ -21,8 +21,8 @@ public class LuaDate implements LuaInterface
 	 * Returns the current LuaDate
 	 * @return LuaDate
 	 */
-	@LuaFunction(manual = false, methodName = "Now", self = LuaDate.class)
-	public static LuaDate Now()
+	@LuaFunction(manual = false, methodName = "now", self = LuaDate.class)
+	public static LuaDate now()
 	{
 		LuaDate ret = new LuaDate();
 		ret.dateStore = Calendar.getInstance(Locale.getDefault());
@@ -36,8 +36,8 @@ public class LuaDate implements LuaInterface
 	 * @param year
 	 * @return LuaDate
 	 */
-	@LuaFunction(manual = false, methodName = "CreateDate", self = LuaDate.class, arguments = { Integer.class, Integer.class, Integer.class })
-	public static LuaDate CreateDate(int day, int month, int year)
+	@LuaFunction(manual = false, methodName = "createDate", self = LuaDate.class, arguments = { Integer.class, Integer.class, Integer.class })
+	public static LuaDate createDate(int day, int month, int year)
 	{
 		LuaDate ret = new LuaDate();
 		ret.dateStore = Calendar.getInstance(Locale.getDefault());
@@ -55,8 +55,8 @@ public class LuaDate implements LuaInterface
 	 * @param second
 	 * @return LuaDate
 	 */
-	@LuaFunction(manual = false, methodName = "CreateDateWithTime", self = LuaDate.class, arguments = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
-	public static LuaDate CreateDateWithTime(int day, int month, int year, int hour, int minute, int second)
+	@LuaFunction(manual = false, methodName = "createDateWithTime", self = LuaDate.class, arguments = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
+	public static LuaDate createDateWithTime(int day, int month, int year, int hour, int minute, int second)
 	{
 		LuaDate ret = new LuaDate();
 		ret.dateStore = Calendar.getInstance(Locale.getDefault());
@@ -68,8 +68,8 @@ public class LuaDate implements LuaInterface
 	 * Gets the day of month
 	 * @return int
 	 */
-	@LuaFunction(manual = false, methodName = "GetDay")
-	public Integer GetDay()
+	@LuaFunction(manual = false, methodName = "getDay")
+	public Integer getDay()
 	{
 		return dateStore.get(Calendar.DAY_OF_MONTH);
 	}
@@ -78,8 +78,8 @@ public class LuaDate implements LuaInterface
 	 * Sets the day of month
 	 * @param val
 	 */
-	@LuaFunction(manual = false, methodName = "SetDay", arguments = { Integer.class })
-	public void SetDay(Integer val)
+	@LuaFunction(manual = false, methodName = "setDay", arguments = { Integer.class })
+	public void setDay(Integer val)
 	{
 		dateStore.set(Calendar.DAY_OF_MONTH, val);
 	}
@@ -88,8 +88,8 @@ public class LuaDate implements LuaInterface
 	 * Gets the month
 	 * @return int
 	 */
-	@LuaFunction(manual = false, methodName = "GetMonth")
-	public Integer GetMonth()
+	@LuaFunction(manual = false, methodName = "getMonth")
+	public Integer getMonth()
 	{
 		return dateStore.get(Calendar.MONTH);
 	}
@@ -98,8 +98,8 @@ public class LuaDate implements LuaInterface
 	 * Sets the month
 	 * @param val
 	 */
-	@LuaFunction(manual = false, methodName = "SetMonth", arguments = { Integer.class })
-	public void SetMonth(Integer val)
+	@LuaFunction(manual = false, methodName = "setMonth", arguments = { Integer.class })
+	public void setMonth(Integer val)
 	{
 		dateStore.set(Calendar.MONTH, val);
 	}
@@ -108,8 +108,8 @@ public class LuaDate implements LuaInterface
 	 * Gets the year
 	 * @return int
 	 */
-	@LuaFunction(manual = false, methodName = "GetYear")
-	public Integer GetYear()
+	@LuaFunction(manual = false, methodName = "getYear")
+	public Integer getYear()
 	{
 		return dateStore.get(Calendar.YEAR);
 	}
@@ -118,8 +118,8 @@ public class LuaDate implements LuaInterface
 	 * Sets the year
 	 * @param val
 	 */
-	@LuaFunction(manual = false, methodName = "SetYear", arguments = { Integer.class })
-	public void SetYear(Integer val)
+	@LuaFunction(manual = false, methodName = "setYear", arguments = { Integer.class })
+	public void setYear(Integer val)
 	{
 		dateStore.set(Calendar.YEAR, val);
 	}
@@ -128,8 +128,8 @@ public class LuaDate implements LuaInterface
 	 * Gets the hour of the day (24)
 	 * @return int
 	 */
-	@LuaFunction(manual = false, methodName = "GetHour")
-	public Integer GetHour()
+	@LuaFunction(manual = false, methodName = "getHour")
+	public Integer getHour()
 	{
 		return dateStore.get(Calendar.HOUR_OF_DAY);
 	}
@@ -138,8 +138,8 @@ public class LuaDate implements LuaInterface
 	 * Sets the hour of the day (24)
 	 * @param val
 	 */
-	@LuaFunction(manual = false, methodName = "SetHour", arguments = { Integer.class })
-	public void SetHour(Integer val)
+	@LuaFunction(manual = false, methodName = "setHour", arguments = { Integer.class })
+	public void setHour(Integer val)
 	{
 		dateStore.set(Calendar.HOUR_OF_DAY, val);
 	}	
@@ -148,8 +148,8 @@ public class LuaDate implements LuaInterface
 	 * Gets the minute
 	 * @return int
 	 */
-	@LuaFunction(manual = false, methodName = "GetMinute")
-	public Integer GetMinute()
+	@LuaFunction(manual = false, methodName = "getMinute")
+	public Integer getMinute()
 	{
 		return dateStore.get(Calendar.MINUTE);
 	}
@@ -158,8 +158,8 @@ public class LuaDate implements LuaInterface
 	 * Set the minute
 	 * @param val
 	 */
-	@LuaFunction(manual = false, methodName = "SetMinute", arguments = { Integer.class })
-	public void SetMinute(Integer val)
+	@LuaFunction(manual = false, methodName = "setMinute", arguments = { Integer.class })
+	public void setMinute(Integer val)
 	{
 		dateStore.set(Calendar.MINUTE, val);
 	}	
@@ -168,8 +168,8 @@ public class LuaDate implements LuaInterface
 	 * Gets the Second
 	 * @return int
 	 */
-	@LuaFunction(manual = false, methodName = "GetSecond")
-	public Integer GetSecond()
+	@LuaFunction(manual = false, methodName = "getSecond")
+	public Integer getSecond()
 	{
 		return dateStore.get(Calendar.SECOND);
 	}
@@ -178,8 +178,8 @@ public class LuaDate implements LuaInterface
 	 * Sets the second
 	 * @param val
 	 */
-	@LuaFunction(manual = false, methodName = "SetSecond", arguments = { Integer.class })
-	public void SetSecond(Integer val)
+	@LuaFunction(manual = false, methodName = "setSecond", arguments = { Integer.class })
+	public void setSecond(Integer val)
 	{
 		dateStore.set(Calendar.SECOND, val);
 	}
@@ -188,8 +188,8 @@ public class LuaDate implements LuaInterface
 	 * Gets the millisecond
 	 * @return int
 	 */
-	@LuaFunction(manual = false, methodName = "GetMilliSecond")
-	public Integer GetMilliSecond()
+	@LuaFunction(manual = false, methodName = "getMilliSecond")
+	public Integer getMilliSecond()
 	{
 		return dateStore.get(Calendar.MILLISECOND);
 	}
@@ -198,8 +198,8 @@ public class LuaDate implements LuaInterface
 	 * Sets the millisecond
 	 * @param val
 	 */
-	@LuaFunction(manual = false, methodName = "SetMilliSecond", arguments = { Integer.class })
-	public void SetMilliSecond(Integer val)
+	@LuaFunction(manual = false, methodName = "setMilliSecond", arguments = { Integer.class })
+	public void setMilliSecond(Integer val)
 	{
 		dateStore.set(Calendar.MILLISECOND, val);
 	}
@@ -233,7 +233,7 @@ public class LuaDate implements LuaInterface
 	 * @param frmt
 	 * @return String
 	 */
-	public String ToString(String frmt)
+	public String toString(String frmt)
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat(frmt);
 		return sdf.format(dateStore.getTime());

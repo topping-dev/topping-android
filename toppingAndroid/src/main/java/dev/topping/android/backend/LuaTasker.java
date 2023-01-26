@@ -11,12 +11,12 @@ public abstract class LuaTasker<T> implements Runnable
 	private ConcurrentLinkedQueue<T> valsToDl = new ConcurrentLinkedQueue<T>();
 	private boolean exit;
 	
-	private void DecrementCounter()
+	private void decrementCounter()
 	{
 		CURRENT_COUNT--;
 	}
 
-	private boolean IncrementCounter()
+	private boolean incrementCounter()
 	{
 		if(CURRENT_COUNT + 1 < MAX_THREAD_COUNT)
 		{
@@ -26,7 +26,7 @@ public abstract class LuaTasker<T> implements Runnable
 		return false;
 	}
 	
-	public void AddToQueue(T val)
+	public void addToQueue(T val)
 	{
 		synchronized (lock)
 		{
@@ -34,7 +34,7 @@ public abstract class LuaTasker<T> implements Runnable
 		}
 	}
 	
-	public void RemoveFromQueue(T val)
+	public void removeFromQueue(T val)
 	{
 		synchronized (lock)
 		{
@@ -42,7 +42,7 @@ public abstract class LuaTasker<T> implements Runnable
 		}
 	}
 	
-	public boolean HasJob()
+	public boolean hasJob()
 	{
 		synchronized (lock)
 		{
@@ -50,7 +50,7 @@ public abstract class LuaTasker<T> implements Runnable
 		}
 	}
 	
-	public void Exit()
+	public void exit()
 	{
 		exit = true;
 	}
@@ -65,7 +65,7 @@ public abstract class LuaTasker<T> implements Runnable
 			synchronized (lock)
 			{
 				if(valsToDl.size() > 0)
-					canStart = IncrementCounter();
+					canStart = incrementCounter();
 				if(canStart)
 					valToDoJob = valsToDl.poll();				
 			}
@@ -90,10 +90,10 @@ public abstract class LuaTasker<T> implements Runnable
 						@Override
 						public void run()
 						{
-							DoJob(fValToDoJob);
+							doJob(fValToDoJob);
 							synchronized (lock)
 							{
-								DecrementCounter();
+								decrementCounter();
 							}
 						}
 					}, "Tasker Worker");
@@ -110,5 +110,5 @@ public abstract class LuaTasker<T> implements Runnable
 		}
 	}
 	
-	public abstract void DoJob(T val);
+	public abstract void doJob(T val);
 }

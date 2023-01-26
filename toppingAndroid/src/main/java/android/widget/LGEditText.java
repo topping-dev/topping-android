@@ -26,8 +26,8 @@ public class LGEditText extends LGTextView implements LuaInterface
 	 * @param lc
 	 * @return LGEditText
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGEditText.class)
-	public static LGEditText Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGEditText.class)
+	public static LGEditText create(LuaContext lc)
 	{
 		return new LGEditText(lc);
 	}
@@ -69,7 +69,7 @@ public class LGEditText extends LGTextView implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = lc.GetLayoutInflater().createView(context, "EditText");
+		view = lc.getLayoutInflater().createView(context, "EditText");
 		if(view == null)
 			view = new EditText(context);
 	}
@@ -79,7 +79,7 @@ public class LGEditText extends LGTextView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = lc.GetLayoutInflater().createView(context, "EditText", attrs);
+		view = lc.getLayoutInflater().createView(context, "EditText", attrs);
 		if(view == null)
 			view = new EditText(context, attrs);
 	}
@@ -89,12 +89,12 @@ public class LGEditText extends LGTextView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = lc.GetLayoutInflater().createView(context, "EditText", attrs);
+		view = lc.getLayoutInflater().createView(context, "EditText", attrs);
 		if(view == null)
 			view = new EditText(context, attrs, defStyle);
 	}
 	
-	private void InitEvents()
+	private void initEvents()
 	{
 		((TextView)view).addTextChangedListener(new TextWatcher()
 		{
@@ -102,7 +102,7 @@ public class LGEditText extends LGTextView implements LuaInterface
 			public void onTextChanged(CharSequence s, int start, int before, int count)
 			{
 				if(ltTextChanged != null)
-					ltTextChanged.CallIn(LGEditText.this, s);
+					ltTextChanged.callIn(LGEditText.this, s);
 			}
 
 			@Override
@@ -110,14 +110,14 @@ public class LGEditText extends LGTextView implements LuaInterface
 										  int after)
 			{
 				if(ltBeforeTextChanged != null)
-					ltBeforeTextChanged.CallIn(LGEditText.this, s);
+					ltBeforeTextChanged.callIn(LGEditText.this, s);
 			}
 
 			@Override
 			public void afterTextChanged(Editable s)
 			{
 				if(ltAfterTextChanged != null)
-					ltAfterTextChanged.CallIn(LGEditText.this, s);
+					ltAfterTextChanged.callIn(LGEditText.this, s);
 			}
 		});
 	}
@@ -126,32 +126,32 @@ public class LGEditText extends LGTextView implements LuaInterface
 	 * Sets text changed listener
 	 * @param lt +fun(textView: LGTextView, view: LGView, s: string):void
 	 */
-	@LuaFunction(manual = false, methodName = "SetTextChangedListener", arguments = { LuaTranslator.class })
-	public void SetTextChangedListener(LuaTranslator lt)
+	@LuaFunction(manual = false, methodName = "setTextChangedListener", arguments = { LuaTranslator.class })
+	public void setTextChangedListener(LuaTranslator lt)
 	{
 		ltTextChanged = lt;
-		InitEvents();
+		initEvents();
 	}
 
 	/**
 	 * Sets before text changed listener
 	 * @param lt +fun(textView: LGTextView, view: LGView, s: string):void
 	 */
-	@LuaFunction(manual = false, methodName = "SetBeforeTextChangedListener", arguments = { LuaTranslator.class })
-	public void SetBeforeTextChangedListener(LuaTranslator lt)
+	@LuaFunction(manual = false, methodName = "setBeforeTextChangedListener", arguments = { LuaTranslator.class })
+	public void setBeforeTextChangedListener(LuaTranslator lt)
 	{
 		ltBeforeTextChanged = lt;
-		InitEvents();
+		initEvents();
 	}
 
 	/**
 	 * Sets after text changed listener
 	 * @param lt +fun(textView: LGTextView, view: LGView, s: string):void
 	 */
-	@LuaFunction(manual = false, methodName = "SetAfterTextChangedListener", arguments = { LuaTranslator.class })
-	public void SetAfterTextChangedListener(LuaTranslator lt)
+	@LuaFunction(manual = false, methodName = "setAfterTextChangedListener", arguments = { LuaTranslator.class })
+	public void setAfterTextChangedListener(LuaTranslator lt)
 	{
 		ltAfterTextChanged = lt;
-		InitEvents();
+		initEvents();
 	}
 }

@@ -1,6 +1,5 @@
 package android.widget;
 
-import android.content.Context;
 import android.util.AttributeSet;
 
 import dev.topping.android.backend.LuaClass;
@@ -19,8 +18,8 @@ public class LGCompoundButton extends LGButton implements LuaInterface
 	 * @param lc
 	 * @return LGCompoundButton
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGCompoundButton.class)
-	public static LGCompoundButton Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGCompoundButton.class)
+	public static LGCompoundButton create(LuaContext lc)
 	{
 		return new LGCompoundButton(lc);
 	}

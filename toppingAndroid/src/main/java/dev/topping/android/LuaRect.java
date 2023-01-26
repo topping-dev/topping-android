@@ -13,8 +13,8 @@ public class LuaRect extends RectF implements LuaInterface
 	 * Creates LuaRect
 	 * @return LuaRect
 	 */
-	@LuaFunction(manual = false, methodName = "CreateRect", self = LuaRect.class)
-	public static LuaRect CreateRect()
+	@LuaFunction(manual = false, methodName = "createRect", self = LuaRect.class)
+	public static LuaRect createRect()
 	{
 		return new LuaRect();
 	}
@@ -27,8 +27,8 @@ public class LuaRect extends RectF implements LuaInterface
 	 * @param bottom
 	 * @return LuaRect
 	 */
-	@LuaFunction(manual = false, methodName = "CreateRectPar", self = LuaRect.class, arguments = { Float.class, Float.class ,Float.class, Float.class })
-	public static LuaRect CreateRectPar(Float left, Float top, Float right, Float bottom)
+	@LuaFunction(manual = false, methodName = "createRectPar", self = LuaRect.class, arguments = { Float.class, Float.class ,Float.class, Float.class })
+	public static LuaRect createRectPar(Float left, Float top, Float right, Float bottom)
 	{
 		LuaRect lr = new LuaRect();
 		lr.set(left.floatValue(), top.floatValue(), right.floatValue(), bottom.floatValue());
@@ -42,40 +42,39 @@ public class LuaRect extends RectF implements LuaInterface
 	 * @param right
 	 * @param bottom
 	 */
-	@LuaFunction(manual = false, methodName = "Set", arguments = { Float.class, Float.class ,Float.class, Float.class })
-	public void Set(Float left, Float top, Float right, Float bottom)
+	@LuaFunction(manual = false, methodName = "set", arguments = { Float.class, Float.class ,Float.class, Float.class })
+	public void set(Float left, Float top, Float right, Float bottom)
 	{
-		// TODO Auto-generated method stub
-		super.set(left.floatValue(), top.floatValue(), right.floatValue(), bottom.floatValue());
+		super.set(left, top, right, bottom);
 	}
 	
 	/**
 	 * Gets Left value
 	 * @return float
 	 */
-	@LuaFunction(manual = false, methodName = "GetLeft")
-	public Float GetLeft() { return Float.valueOf(left); }
+	@LuaFunction(manual = false, methodName = "getLeft")
+	public Float getLeft() { return left; }
 	
 	/**
 	 * Gets Right value
 	 * @return float
 	 */
-	@LuaFunction(manual = false, methodName = "GetRight")
-	public Float GetRight() { return Float.valueOf(right); }
+	@LuaFunction(manual = false, methodName = "getRight")
+	public Float getRight() { return right; }
 	
 	/**
 	 * Gets Top value
 	 * @return float
 	 */
-	@LuaFunction(manual = false, methodName = "GetTop")
-	public Float GetTop() { return Float.valueOf(top); }
+	@LuaFunction(manual = false, methodName = "getTop")
+	public Float getTop() { return top; }
 	
 	/**
 	 * Gets Bottom value
 	 * @return float
 	 */
-	@LuaFunction(manual = false, methodName = "GetBottom")
-	public Float GetBottom() { return Float.valueOf(bottom); }
+	@LuaFunction(manual = false, methodName = "getBottom")
+	public Float getBottom() { return bottom; }
 
 	/**
 	 * (Ignore)

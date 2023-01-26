@@ -20,11 +20,11 @@ public class LuaThread implements LuaInterface
      * Run function on ui thread
      * @param lt +fun():void
      */
-    @LuaFunction(manual = false, methodName = "RunOnUIThread", arguments = { LuaTranslator.class }, self = LuaThread.class)
-    public static void RunOnUIThread(LuaTranslator lt)
+    @LuaFunction(manual = false, methodName = "runOnUIThread", arguments = { LuaTranslator.class }, self = LuaThread.class)
+    public static void runOnUIThread(LuaTranslator lt)
     {
         if(Looper.myLooper() == Looper.getMainLooper())
-            lt.CallIn();
+            lt.callIn();
         else
         {
             new Handler(Looper.getMainLooper()).post(new Runnable()
@@ -32,7 +32,7 @@ public class LuaThread implements LuaInterface
                 @Override
                 public void run()
                 {
-                    lt.CallIn();
+                    lt.callIn();
                 }
             });
         }
@@ -42,12 +42,12 @@ public class LuaThread implements LuaInterface
      * Run function on background thread
      * @param lt +fun(thread: LuaThread):void
      */
-    @LuaFunction(manual = false, methodName = "RunOnBackground", arguments = { LuaTranslator.class }, self = LuaThread.class)
-    public static void RunOnBackground(LuaTranslator lt)
+    @LuaFunction(manual = false, methodName = "runOnBackground", arguments = { LuaTranslator.class }, self = LuaThread.class)
+    public static void runOnBackground(LuaTranslator lt)
     {
         LuaThread thread = new LuaThread();
         thread.lt = lt;
-        thread.Run();
+        thread.start();
     }
 
     /**
@@ -55,8 +55,8 @@ public class LuaThread implements LuaInterface
      * @param lt +fun(thread: LuaThread):void
      * @return LuaThread
      */
-    @LuaFunction(manual = false, methodName = "New", arguments = { LuaTranslator.class }, self = LuaThread.class)
-    public static LuaThread New(LuaTranslator lt)
+    @LuaFunction(manual = false, methodName = "create", arguments = { LuaTranslator.class }, self = LuaThread.class)
+    public static LuaThread create(LuaTranslator lt)
     {
         LuaThread thread = new LuaThread();
         thread.lt = lt;
@@ -66,51 +66,25 @@ public class LuaThread implements LuaInterface
     /**
      * Run the thread
      */
-    @LuaFunction(manual = false, methodName = "Run")
-    public void Run()
+    @LuaFunction(manual = false, methodName = "start")
+    public void start()
     {
         thread = new Thread(new Runnable()
         {
             @Override
             public void run()
             {
-                lt.CallInSelf(LuaThread.this);
+                lt.callInSelf(LuaThread.this);
             }
         });
         thread.start();
     }
 
     /**
-     * Wait thread
-     * @param milliseconds
-     */
-    @LuaFunction(manual = false, methodName = "Wait", arguments = { Long.class })
-    public void Wait(long milliseconds)
-    {
-        try
-        {
-            thread.wait(milliseconds);
-        }
-        catch (InterruptedException e)
-        {
-
-        }
-    }
-
-    /**
-     * Notify thread
-     */
-    @LuaFunction(manual = false, methodName = "Notify")
-    public void Notify()
-    {
-        thread.notify();
-    }
-
-    /**
      * Interrupt thread
      */
-    @LuaFunction(manual = false, methodName = "Interrupt")
-    public void Interrupt()
+    @LuaFunction(manual = false, methodName = "interrupt")
+    public void interrupt()
     {
         thread.interrupt();
     }
@@ -119,8 +93,8 @@ public class LuaThread implements LuaInterface
      * Sleep thread
      * @param milliseconds
      */
-    @LuaFunction(manual = false, methodName = "Sleep", arguments = { Long.class })
-    public void Sleep(long milliseconds)
+    @LuaFunction(manual = false, methodName = "sleep", arguments = { Long.class })
+    public void sleep(long milliseconds)
     {
         try
         {

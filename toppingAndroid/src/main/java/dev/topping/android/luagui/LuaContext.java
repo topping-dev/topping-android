@@ -1,13 +1,11 @@
 package dev.topping.android.luagui;
 
 import android.content.Context;
-import android.content.Intent;
 
 import androidx.appcompat.app.CustomLayoutInflater;
 
 import dev.topping.android.LuaForm;
 import dev.topping.android.LuaFormIntent;
-import dev.topping.android.LuaNativeObject;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
@@ -22,11 +20,11 @@ public class LuaContext implements LuaInterface
 	 * Creates LuaContext Object From Lua.
 	 * @return LuaContext
 	 */
-	@LuaFunction(manual = false, methodName = "CreateLuaContext", self = LuaContext.class, arguments = { Object.class })
-	public static LuaContext CreateLuaContext(Object context)
+	@LuaFunction(manual = false, methodName = "createLuaContext", self = LuaContext.class, arguments = { Object.class })
+	public static LuaContext createLuaContext(Object context)
 	{
 		LuaContext lc = new LuaContext();
-		lc.SetContext(context);
+		lc.setContext(context);
 		return lc;
 	}
 
@@ -34,8 +32,8 @@ public class LuaContext implements LuaInterface
 	 * Gets binded form.
 	 * @return LuaForm
 	 */
-	@LuaFunction(manual = false, methodName = "GetForm")
-	public LuaForm GetForm() {
+	@LuaFunction(manual = false, methodName = "getForm")
+	public LuaForm getForm() {
 		if(context instanceof LuaForm)
 			return (LuaForm) context;
 		return null;
@@ -45,27 +43,27 @@ public class LuaContext implements LuaInterface
 	 * Starts form from created form intent
 	 * @see dev.topping.android.LuaForm Create
 	 */
-	@LuaFunction(manual = false, methodName = "StartForm", arguments = { LuaFormIntent.class })
-	public void StartForm(LuaFormIntent formIntent) {
+	@LuaFunction(manual = false, methodName = "startForm", arguments = { LuaFormIntent.class })
+	public void startForm(LuaFormIntent formIntent) {
 		context.startActivity(formIntent.getIntent());
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public Context GetContext() { return context; }
+	public Context getContext() { return context; }
 	
 	/**
 	 * (Ignore)
 	 */
-	public void SetContext(Object val) {
+	public void setContext(Object val) {
 		context = (Context) val;
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public CustomLayoutInflater GetLayoutInflater() {
+	public CustomLayoutInflater getLayoutInflater() {
 		return layoutInflater;
 	}
 

@@ -25,8 +25,8 @@ public class LGImageView extends LGView implements LuaInterface
 	 * @param luaId String
 	 * @return LGImageView
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class, String.class }, self = LGImageView.class)
-	public static LGImageView Create(LuaContext lc, String luaId)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class, String.class }, self = LGImageView.class)
+	public static LGImageView create(LuaContext lc, String luaId)
 	{
 		LGImageView iv = new LGImageView(lc, luaId);
 		iv.view.setTag(iv);
@@ -70,7 +70,7 @@ public class LGImageView extends LGView implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = lc.GetLayoutInflater().createView(context, "ImageView");
+		view = lc.getLayoutInflater().createView(context, "ImageView");
 		if(view == null)
 			view = new ImageView(context);
 	}
@@ -80,7 +80,7 @@ public class LGImageView extends LGView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = lc.GetLayoutInflater().createView(context, "ImageView", attrs);
+		view = lc.getLayoutInflater().createView(context, "ImageView", attrs);
 		if(view == null)
 			view = new ImageView(context, attrs);
 	}
@@ -90,7 +90,7 @@ public class LGImageView extends LGView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = lc.GetLayoutInflater().createView(context, "ImageView", attrs);
+		view = lc.getLayoutInflater().createView(context, "ImageView", attrs);
 		if(view == null)
 			view = new ImageView(context, attrs, defStyle);
 	}
@@ -99,10 +99,10 @@ public class LGImageView extends LGView implements LuaInterface
 	 * Sets the image view from LuaStream stream
 	 * @param stream
 	 */
-	@LuaFunction(manual = false, methodName = "SetImage", arguments = { LuaStream.class })
-	public void SetImage(LuaStream stream)
+	@LuaFunction(manual = false, methodName = "setImage", arguments = { LuaStream.class })
+	public void setImage(LuaStream stream)
 	{
-		InputStream is = (InputStream)stream.GetStreamInternal();
+		InputStream is = (InputStream)stream.getStreamInternal();
 		BitmapDrawable bd = new BitmapDrawable(is);
 		((ImageView)view).setImageDrawable(bd);
 	}
@@ -111,8 +111,8 @@ public class LGImageView extends LGView implements LuaInterface
 	 * Sets the image view from ref
 	 * @param ref
 	 */
-	@LuaFunction(manual = false, methodName = "SetImageRef", arguments = { LuaRef.class })
-	public void SetImageRef(LuaRef ref)
+	@LuaFunction(manual = false, methodName = "setImageRef", arguments = { LuaRef.class })
+	public void setImageRef(LuaRef ref)
 	{
 		((ImageView)view).setImageResource(ref.getRef());
 	}

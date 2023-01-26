@@ -82,8 +82,8 @@ public class LuaColor implements LuaInterface
 	 * @param colorStr
 	 * @return LuaColor
 	 */
-	@LuaFunction(manual = false, methodName = "FromString", self = LuaColor.class, arguments = { String.class })
-	public static LuaColor FromString(String colorStr)
+	@LuaFunction(manual = false, methodName = "fromString", self = LuaColor.class, arguments = { String.class })
+	public static LuaColor fromString(String colorStr)
 	{
 		LuaColor color = new LuaColor();
 		color.colorValue = Color.parseColor(colorStr);
@@ -98,8 +98,8 @@ public class LuaColor implements LuaInterface
 	 * @param blue
 	 * @return LuaColor
 	 */
-	@LuaFunction(manual = false, methodName = "CreateFromARGB", self = LuaColor.class, arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
-	public static LuaColor CreateFromARGB(int alpha, int red, int green, int blue)
+	@LuaFunction(manual = false, methodName = "createFromARGB", self = LuaColor.class, arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
+	public static LuaColor createFromARGB(int alpha, int red, int green, int blue)
 	{
 		LuaColor color = new LuaColor();
 		color.colorValue = Color.argb(alpha, red, green, blue);
@@ -113,8 +113,8 @@ public class LuaColor implements LuaInterface
 	 * @param blue
 	 * @return LuaColor
 	 */
-	@LuaFunction(manual = false, methodName = "CreateFromRGB", self = LuaColor.class, arguments = { Integer.class, Integer.class, Integer.class })
-	public static LuaColor CreateFromRGB(int red, int green, int blue)
+	@LuaFunction(manual = false, methodName = "createFromRGB", self = LuaColor.class, arguments = { Integer.class, Integer.class, Integer.class })
+	public static LuaColor createFromRGB(int red, int green, int blue)
 	{
 		LuaColor color = new LuaColor();
 		color.colorValue = Color.rgb(red, green, blue);
@@ -125,8 +125,8 @@ public class LuaColor implements LuaInterface
 	 * Returns the integer color value
 	 * @return int
 	 */
-	@LuaFunction(manual = false, methodName = "GetColorValue")
-	public int GetColorValue()
+	@LuaFunction(manual = false, methodName = "getColorValue")
+	public int getColorValue()
 	{
 		return colorValue;
 	}

@@ -21,8 +21,8 @@ public class LGCheckBox extends LGCompoundButton implements LuaInterface
 	 * @param lc
 	 * @return LGCheckBox
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGCheckBox.class)
-	public static LGCheckBox Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGCheckBox.class)
+	public static LGCheckBox create(LuaContext lc)
 	{
 		return new LGCheckBox(lc);
 	}
@@ -64,7 +64,7 @@ public class LGCheckBox extends LGCompoundButton implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = lc.GetLayoutInflater().createView(context, "CheckBox");
+		view = lc.getLayoutInflater().createView(context, "CheckBox");
 		if(view == null)
 			view = new CheckBox(context);
 	}
@@ -74,7 +74,7 @@ public class LGCheckBox extends LGCompoundButton implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = lc.GetLayoutInflater().createView(context, "CheckBox", attrs);
+		view = lc.getLayoutInflater().createView(context, "CheckBox", attrs);
 		if(view == null)
 			view = new CheckBox(context, attrs);
 	}
@@ -84,7 +84,7 @@ public class LGCheckBox extends LGCompoundButton implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = lc.GetLayoutInflater().createView(context, "CheckBox", attrs);
+		view = lc.getLayoutInflater().createView(context, "CheckBox", attrs);
 		if(view == null)
 			view = new CheckBox(context, attrs, defStyle);
 	}
@@ -93,8 +93,8 @@ public class LGCheckBox extends LGCompoundButton implements LuaInterface
 	 * Sets on checked changed listener
 	 * @param lt +fun(checkbox: LGCheckBox, context: LuaContext, isChecked: bool):void
 	 */
-	@LuaFunction(manual = false, methodName = "SetOnCheckedChangedListener", arguments = { LuaTranslator.class })
-	public void SetOnCheckedChangedListener(LuaTranslator lt)
+	@LuaFunction(manual = false, methodName = "setOnCheckedChangedListener", arguments = { LuaTranslator.class })
+	public void setOnCheckedChangedListener(LuaTranslator lt)
 	{
 		if(lt == null)
 		{
@@ -106,7 +106,7 @@ public class LGCheckBox extends LGCompoundButton implements LuaInterface
 			@Override
 			public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked)
 			{
-				lt.Call(LGCheckBox.this.lc, isChecked);
+				lt.call(LGCheckBox.this.lc, isChecked);
 			}
 		});
 	}

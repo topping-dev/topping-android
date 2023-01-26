@@ -20,8 +20,8 @@ public class LGRadioGroup extends LGLinearLayout implements LuaInterface
 	 * @param lc
 	 * @return LGRadioGroup
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGRadioGroup.class)
-	public static LGRadioGroup Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGRadioGroup.class)
+	public static LGRadioGroup create(LuaContext lc)
 	{
 		return new LGRadioGroup(lc);
 	}
@@ -55,7 +55,7 @@ public class LGRadioGroup extends LGLinearLayout implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = lc.GetLayoutInflater().createView(context, "RadioGroup");
+		view = lc.getLayoutInflater().createView(context, "RadioGroup");
 		if(view == null)
 			view = new RadioGroup(context);
 	}
@@ -65,7 +65,7 @@ public class LGRadioGroup extends LGLinearLayout implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = lc.GetLayoutInflater().createView(context, "RadioGroup", attrs);
+		view = lc.getLayoutInflater().createView(context, "RadioGroup", attrs);
 		if(view == null)
 			view = new RadioGroup(context, attrs);
 	}
@@ -74,8 +74,8 @@ public class LGRadioGroup extends LGLinearLayout implements LuaInterface
 	 * Sets group checked changed listener
 	 * @param lt +fun(radioGroup: LGRadioGroup, context: LuaContext, isChecked: bool):void
 	 */
-	@LuaFunction(manual = false, methodName = "SetOnCheckedChangedListener", arguments = { LuaTranslator.class })
-	public void SetOnCheckedChangedListener(LuaTranslator lt)
+	@LuaFunction(manual = false, methodName = "setOnCheckedChangedListener", arguments = { LuaTranslator.class })
+	public void setOnCheckedChangedListener(LuaTranslator lt)
 	{
 		if(lt == null)
 		{
@@ -88,7 +88,7 @@ public class LGRadioGroup extends LGLinearLayout implements LuaInterface
 			@Override
 			public void onCheckedChanged(RadioGroup radioGroup, int i)
 			{
-				lt.CallIn(LGRadioGroup.this, i);
+				lt.callIn(LGRadioGroup.this, i);
 			}
 		});
 	}

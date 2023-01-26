@@ -56,11 +56,11 @@ public class LuaHttpClient implements LuaInterface
 	 * @param tag
 	 * @return LuaHttpClient
 	 */
-	@LuaFunction(manual = false, methodName = "Create", self = LuaHttpClient.class, arguments = { String.class })
-	public static LuaHttpClient Create(String tag)
+	@LuaFunction(manual = false, methodName = "create", self = LuaHttpClient.class, arguments = { String.class })
+	public static LuaHttpClient create(String tag)
 	{
 		LuaHttpClient lhc = new LuaHttpClient();
-		lhc.httpClient = ToppingEngine.getInstance().GetHttpClient(tag).getConnection();
+		lhc.httpClient = ToppingEngine.getInstance().getHttpClient(tag).getConnection();
 		lhc.tag = tag;
 		return lhc;
 	}
@@ -69,8 +69,8 @@ public class LuaHttpClient implements LuaInterface
 	 * Sets the content type of the connection
 	 * @param type type
 	 */
-	@LuaFunction(manual = false, methodName = "SetContentType", arguments = { String.class })
-	public void SetContentType(String type)
+	@LuaFunction(manual = false, methodName = "setContentType", arguments = { String.class })
+	public void setContentType(String type)
 	{
 		contentType = type;
 	}
@@ -81,8 +81,8 @@ public class LuaHttpClient implements LuaInterface
 	 * To end form use EndForm.
 	 * return LuaObjectStore
 	 */
-	@LuaFunction(manual = false, methodName = "StartForm", arguments = { })
-	public LuaObjectStore StartForm()
+	@LuaFunction(manual = false, methodName = "startForm", arguments = { })
+	public LuaObjectStore startForm()
 	{
 		LuaObjectStore los = new LuaObjectStore();
 		try
@@ -103,8 +103,8 @@ public class LuaHttpClient implements LuaInterface
 	 * @param name id of the data.
 	 * @param value value of the data.
 	 */
-	@LuaFunction(manual = false, methodName = "AppendPostData", arguments = { Object.class, String.class, String.class })
-	public void AppendPostData(Object formData, String name, String value)
+	@LuaFunction(manual = false, methodName = "appendPostData", arguments = { Object.class, String.class, String.class })
+	public void appendPostData(Object formData, String name, String value)
 	{
 		LuaObjectStore los = (LuaObjectStore)formData;
 		@SuppressWarnings("unchecked")
@@ -125,8 +125,8 @@ public class LuaHttpClient implements LuaInterface
 	 * @param name id of the data.
 	 * @param file data of the file.
 	 */
-	@LuaFunction(manual = false, methodName = "AppendFileData", arguments = { Object.class, String.class, String.class })
-	public void AppendFileData(Object formData, String name, Object file)
+	@LuaFunction(manual = false, methodName = "appendFileData", arguments = { Object.class, String.class, String.class })
+	public void appendFileData(Object formData, String name, Object file)
 	{
 		LuaObjectStore los = (LuaObjectStore)formData;
 		@SuppressWarnings("unchecked")
@@ -146,8 +146,8 @@ public class LuaHttpClient implements LuaInterface
 	 * Finishes the form data created.
 	 * @param formData Form data created by StartForm.
 	 */
-	@LuaFunction(manual = false, methodName = "EndForm", arguments = { Object.class })
-	public void EndForm(Object formData)
+	@LuaFunction(manual = false, methodName = "endForm", arguments = { Object.class })
+	public void endForm(Object formData)
 	{
 	}
 
@@ -157,8 +157,8 @@ public class LuaHttpClient implements LuaInterface
 	 * @param formData Form data finished by EndForm.
 	 * @param tag tag that is used to identify connection.
 	 */
-	@LuaFunction(manual = false, methodName = "StartAsyncLoadForm", arguments = { String.class, Object.class, String.class })
-	public void StartAsyncLoadForm(String url, Object formData, String tag)
+	@LuaFunction(manual = false, methodName = "startAsyncLoadForm", arguments = { String.class, Object.class, String.class })
+	public void startAsyncLoadForm(String url, Object formData, String tag)
 	{
 		LuaObjectStore los = (LuaObjectStore)formData;
 		@SuppressWarnings("unchecked")
@@ -233,9 +233,9 @@ public class LuaHttpClient implements LuaInterface
 			protected void onPostExecute(String result)
 			{
 				if(errorText != null)
-					onFail.CallIn(resultString, errorText);
+					onFail.callIn(resultString, errorText);
 				else
-					onComplete.CallIn(resultString);
+					onComplete.callIn(resultString);
 			}
 		};
 		try
@@ -254,8 +254,8 @@ public class LuaHttpClient implements LuaInterface
 	 * @param data post data string.
 	 * @param tag tag that is used to identify connection.
 	 */
-	@LuaFunction(manual = false, methodName = "StartAsyncLoad", arguments = { String.class, String.class, String.class })
-	public void StartAsyncLoad(String url, String data, String tag)
+	@LuaFunction(manual = false, methodName = "startAsyncLoad", arguments = { String.class, String.class, String.class })
+	public void startAsyncLoad(String url, String data, String tag)
 	{
 		URLConnection connection = null;
 		try
@@ -326,9 +326,9 @@ public class LuaHttpClient implements LuaInterface
 			protected void onPostExecute(String result)
 			{
 				if(errorText != null && onFail != null)
-					onFail.CallIn(resultString, errorText);
+					onFail.callIn(resultString, errorText);
 				else if(errorText == null && onComplete != null)
-					onComplete.CallIn(resultString);
+					onComplete.callIn(resultString);
 			}
 		};
 		try
@@ -346,8 +346,8 @@ public class LuaHttpClient implements LuaInterface
 	 * @param url url to send.
 	 * @param tag tag that is used to identify connection.
 	 */
-	@LuaFunction(manual = false, methodName = "StartAsyncLoadGet", arguments = { String.class, String.class })
-	public void StartAsyncLoadGet(String url, String tag)
+	@LuaFunction(manual = false, methodName = "startAsyncLoadGet", arguments = { String.class, String.class })
+	public void startAsyncLoadGet(String url, String tag)
 	{
 		URLConnection connection = null;
 		try
@@ -400,9 +400,9 @@ public class LuaHttpClient implements LuaInterface
 			protected void onPostExecute(String result)
 			{
 				if(errorText != null)
-					onFail.CallIn(resultString, errorText);
+					onFail.callIn(resultString, errorText);
 				else
-					onComplete.CallIn(resultString);
+					onComplete.callIn(resultString);
 			}
 		};
 		try
@@ -421,8 +421,8 @@ public class LuaHttpClient implements LuaInterface
 	 * @param data post data string.
 	 * @return String value of returned data.
 	 */
-	@LuaFunction(manual = false, methodName = "StartLoad", arguments = { String.class, String.class })
-	public String StartLoad(String url, String data)
+	@LuaFunction(manual = false, methodName = "startLoad", arguments = { String.class, String.class })
+	public String startLoad(String url, String data)
 	{
 		URLConnection connection = null;
 		try
@@ -483,8 +483,8 @@ public class LuaHttpClient implements LuaInterface
 	 * @param url url to send.
 	 * @return String value of returned data.
 	 */
-	@LuaFunction(manual = false, methodName = "StartLoadGet", arguments = { String.class })
-	public String StartLoadGet(String url)
+	@LuaFunction(manual = false, methodName = "startLoadGet", arguments = { String.class })
+	public String startLoadGet(String url)
 	{
 		URLConnection connection = null;
 		try
@@ -526,8 +526,8 @@ public class LuaHttpClient implements LuaInterface
 	 * Set timeout of connection
 	 * @param timeout timeout value seconds
 	 */
-	@LuaFunction(manual = false, methodName = "SetTimeout", arguments = { Integer.class })
-	public void SetTimeout(Integer timeout)
+	@LuaFunction(manual = false, methodName = "setTimeout", arguments = { Integer.class })
+	public void setTimeout(Integer timeout)
 	{
 		Integer timeoutMs = new Integer(timeout * 1000);
 		httpClient.setReadTimeout(timeoutMs);
@@ -538,8 +538,8 @@ public class LuaHttpClient implements LuaInterface
 	 * Sets combo changed listener
 	 * @param lt +fun(client: LuaHttpClient, context: LuaContext, resultString: string):void
 	 */
-	@LuaFunction(manual = false, methodName = "SetOnFinishListener", arguments = { LuaTranslator.class })
-	public void SetOnFinishListener(final LuaTranslator lt)
+	@LuaFunction(manual = false, methodName = "setOnFinishListener", arguments = { LuaTranslator.class })
+	public void setOnFinishListener(final LuaTranslator lt)
 	{
 		onComplete = lt;
 	}
@@ -548,8 +548,8 @@ public class LuaHttpClient implements LuaInterface
 	 * Sets combo changed listener
 	 * @param lt +fun(client: LuaHttpClient, context: LuaContext, resultString: string, error: string):void
 	 */
-	@LuaFunction(manual = false, methodName = "SetOnFailListener", arguments = { LuaTranslator.class })
-	public void SetOnFailListener(final LuaTranslator lt)
+	@LuaFunction(manual = false, methodName = "setOnFailListener", arguments = { LuaTranslator.class })
+	public void setOnFailListener(final LuaTranslator lt)
 	{
 		onFail = lt;
 	}

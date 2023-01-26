@@ -4,7 +4,7 @@ public class LuaObject <T>
 {
     public T obj;
 
-    public void PushObject(T ptr)
+    public void pushObject(T ptr)
     {
         obj = ptr;
     }

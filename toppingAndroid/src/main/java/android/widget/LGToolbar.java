@@ -2,21 +2,15 @@ package android.widget;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
 
-import androidx.annotation.XmlRes;
-import androidx.appcompat.app.AppCompatViewInflater;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 
-import dev.topping.android.LuaStream;
 import dev.topping.android.LuaTranslator;
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
@@ -85,9 +79,9 @@ public class LGToolbar extends LGView implements LuaInterface
     public void Setup(Context context, AttributeSet attrs, int defStyle)
     {
         if(attrs != null)
-            view = lc.GetLayoutInflater().createView(context, "Toolbar", attrs);
+            view = lc.getLayoutInflater().createView(context, "Toolbar", attrs);
         else
-            view = lc.GetLayoutInflater().createView(context, "Toolbar");
+            view = lc.getLayoutInflater().createView(context, "Toolbar");
         if(view == null) {
             if(attrs instanceof XmlResourceParser)
             {
@@ -119,8 +113,8 @@ public class LGToolbar extends LGView implements LuaInterface
      * Sets the toolbar menu
      * @param ref
      */
-    @LuaFunction(manual = false, methodName = "SetMenu", arguments = { LuaRef.class })
-    public void SetMenu(LuaRef ref)
+    @LuaFunction(manual = false, methodName = "setMenu", arguments = { LuaRef.class })
+    public void setMenu(LuaRef ref)
     {
         ((Toolbar)view).inflateMenu(ref.getRef());
     }
@@ -129,8 +123,8 @@ public class LGToolbar extends LGView implements LuaInterface
      * Sets the toolbar logo
      * @param logo
      */
-    @LuaFunction(manual = false, methodName = "SetLogo", arguments = { LuaRef.class })
-    public void SetLogo(LuaRef logo)
+    @LuaFunction(manual = false, methodName = "setLogo", arguments = { LuaRef.class })
+    public void setLogo(LuaRef logo)
     {
         ((Toolbar)view).setLogo(ResourcesCompat.getDrawable(view.getContext().getResources(), logo.getRef(), view.getContext().getTheme()));
     }
@@ -139,8 +133,8 @@ public class LGToolbar extends LGView implements LuaInterface
      * Sets the toolbar navigation icon
      * @param icon
      */
-    @LuaFunction(manual = false, methodName = "SetNavigationIcon", arguments = { LuaRef.class })
-    public void SetNavigationIcon(LuaRef icon)
+    @LuaFunction(manual = false, methodName = "setNavigationIcon", arguments = { LuaRef.class })
+    public void setNavigationIcon(LuaRef icon)
     {
         ((Toolbar)view).setNavigationIcon(ResourcesCompat.getDrawable(view.getContext().getResources(), icon.getRef(), view.getContext().getTheme()));
     }
@@ -149,8 +143,8 @@ public class LGToolbar extends LGView implements LuaInterface
      * Sets the toolbar overflow icon
      * @param icon
      */
-    @LuaFunction(manual = false, methodName = "SetOverflowIcon", arguments = { LuaRef.class })
-    public void SetOverflowIcon(LuaRef icon)
+    @LuaFunction(manual = false, methodName = "setOverflowIcon", arguments = { LuaRef.class })
+    public void setOverflowIcon(LuaRef icon)
     {
         ((Toolbar)view).setOverflowIcon(ResourcesCompat.getDrawable(view.getContext().getResources(), icon.getRef(), view.getContext().getTheme()));
     }
@@ -159,8 +153,8 @@ public class LGToolbar extends LGView implements LuaInterface
      * Gets the toolbar title
      * @return String
      */
-    @LuaFunction(manual = false, methodName = "GetTitle")
-    public String GetTitle()
+    @LuaFunction(manual = false, methodName = "getTitle")
+    public String getTitle()
     {
         return ((Toolbar)view).getTitle().toString();
     }
@@ -169,8 +163,8 @@ public class LGToolbar extends LGView implements LuaInterface
      * Sets the toolbar title
      * @param text
      */
-    @LuaFunction(manual = false, methodName = "SetTitle", arguments = { String.class })
-    public void SetTitleInternal(String text)
+    @LuaFunction(manual = false, methodName = "setTitle", arguments = { String.class })
+    public void setTitleInternal(String text)
     {
         ((Toolbar)view).setTitle(text);
     }
@@ -179,8 +173,8 @@ public class LGToolbar extends LGView implements LuaInterface
      * Sets the toolbar title
      * @param ref
      */
-    @LuaFunction(manual = false, methodName = "SetTitleRef", arguments = { LuaRef.class })
-    public void SetTitle(LuaRef ref)
+    @LuaFunction(manual = false, methodName = "setTitleRef", arguments = { LuaRef.class })
+    public void setTitle(LuaRef ref)
     {
         ((Toolbar)view).setTitle(ref.getRef());
     }
@@ -189,8 +183,8 @@ public class LGToolbar extends LGView implements LuaInterface
      * Sets the toolbar title text color
      * @param ref
      */
-    @LuaFunction(manual = false, methodName = "SetTitleTextColor", arguments = { LuaRef.class })
-    public void SetTitleTextColor(LuaRef ref)
+    @LuaFunction(manual = false, methodName = "setTitleTextColor", arguments = { LuaRef.class })
+    public void setTitleTextColor(LuaRef ref)
     {
         ((Toolbar)view).setTitleTextColor(view.getResources().getColor(ref.getRef()));
     }
@@ -199,48 +193,48 @@ public class LGToolbar extends LGView implements LuaInterface
      * Sets the toolbar title text appearance
      * @param ref
      */
-    @LuaFunction(manual = false, methodName = "SetTitleTextAppearance", arguments = { LuaRef.class })
-    public void SetTitleTextAppearance(LuaRef ref)
+    @LuaFunction(manual = false, methodName = "setTitleTextAppearance", arguments = { LuaRef.class })
+    public void setTitleTextAppearance(LuaRef ref)
     {
-        ((Toolbar)view).setTitleTextAppearance(lc.GetContext(), ref.getRef());
+        ((Toolbar)view).setTitleTextAppearance(lc.getContext(), ref.getRef());
     }
 
-    @LuaFunction(manual = false, methodName = "GetSubtitle")
-    public String GetSubtitle()
+    @LuaFunction(manual = false, methodName = "getSubtitle")
+    public String getSubtitle()
     {
         return ((Toolbar)view).getSubtitle().toString();
     }
 
-    @LuaFunction(manual = false, methodName = "SetSubtitle", arguments = { String.class })
-    public void SetSubtitleInternal(String text)
+    @LuaFunction(manual = false, methodName = "setSubtitle", arguments = { String.class })
+    public void setSubtitleInternal(String text)
     {
         ((Toolbar)view).setSubtitle(text);
     }
 
-    @LuaFunction(manual = false, methodName = "SetSubtitleRef", arguments = { LuaRef.class })
-    public void SetSubtitle(LuaRef ref)
+    @LuaFunction(manual = false, methodName = "setSubtitleRef", arguments = { LuaRef.class })
+    public void setSubtitle(LuaRef ref)
     {
         ((Toolbar)view).setSubtitle(ref.getRef());
     }
 
-    @LuaFunction(manual = false, methodName = "SetSubtitleTextColor", arguments = { LuaRef.class })
-    public void SetSubtitleTextColor(LuaRef ref)
+    @LuaFunction(manual = false, methodName = "setSubtitleTextColor", arguments = { LuaRef.class })
+    public void setSubtitleTextColor(LuaRef ref)
     {
         ((Toolbar)view).setSubtitleTextColor(view.getResources().getColor(ref.getRef()));
     }
 
-    @LuaFunction(manual = false, methodName = "SetSubtitleTextApperance", arguments = { LuaRef.class })
-    public void SetSubtitleTextApperance(LuaRef ref)
+    @LuaFunction(manual = false, methodName = "setSubtitleTextApperance", arguments = { LuaRef.class })
+    public void setSubtitleTextApperance(LuaRef ref)
     {
-        ((Toolbar)view).setSubtitleTextAppearance(lc.GetContext(), ref.getRef());
+        ((Toolbar)view).setSubtitleTextAppearance(lc.getContext(), ref.getRef());
     }
 
     /**
      * Sets the toolbar navigation listener
-     * @param lt
+     * @param lt +fun(toolbar: LGToolbar):void
      */
-    @LuaFunction(manual = false, methodName = "SetNavigationOnClickListener", arguments = { LuaTranslator.class })
-    public void SetNavigationOnClickListener(LuaTranslator lt)
+    @LuaFunction(manual = false, methodName = "setNavigationOnClickListener", arguments = { LuaTranslator.class })
+    public void setNavigationOnClickListener(LuaTranslator lt)
     {
         if(lt == null)
         {
@@ -252,17 +246,17 @@ public class LGToolbar extends LGView implements LuaInterface
             @Override
             public void onClick(View view)
             {
-                lt.CallIn();
+                lt.callIn();
             }
         });
     }
 
     /**
      * Sets the toolbar menu item listener
-     * @param lt
+     * @param lt +fun(toolbar: LGToolbar):void
      */
-    @LuaFunction(manual = false, methodName = "SetMenuItemClickListener", arguments = { LuaTranslator.class })
-    public void SetMenuItemClickListener(LuaTranslator lt)
+    @LuaFunction(manual = false, methodName = "setMenuItemClickListener", arguments = { LuaTranslator.class })
+    public void setMenuItemClickListener(LuaTranslator lt)
     {
         if(lt == null)
         {
@@ -274,7 +268,7 @@ public class LGToolbar extends LGView implements LuaInterface
             @Override
             public boolean onMenuItemClick(MenuItem item)
             {
-                lt.CallIn(item.getItemId());
+                lt.callIn(item.getItemId());
                 return true;
             }
         });

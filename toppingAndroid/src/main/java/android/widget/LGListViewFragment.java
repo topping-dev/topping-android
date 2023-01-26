@@ -39,7 +39,7 @@ public class LGListViewFragment extends ListFragment
 			{
 				LGAdapterView la = (LGAdapterView)getListAdapter();
 				if(la != null)
-					la.DoExternalClick(position, view);
+					la.doExternalClick(position, view);
 			}
 		});
 		getListView().setLayoutParams(lp);

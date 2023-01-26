@@ -63,12 +63,12 @@ public class LGViewPager extends LGViewGroup {
     @Override
     public void Setup(Context context, AttributeSet attrs, int defStyle) {
         if(attrs == null) {
-            view = lc.GetLayoutInflater().createView(context, "ViewPager");
+            view = lc.getLayoutInflater().createView(context, "ViewPager");
             if (view == null)
                 view = new ViewPager2(context);
         }
         else {
-            view = lc.GetLayoutInflater().createView(context, "ViewPager", attrs);
+            view = lc.getLayoutInflater().createView(context, "ViewPager", attrs);
             if (view == null)
                 view = new ViewPager2(context, attrs);
         }
@@ -78,8 +78,8 @@ public class LGViewPager extends LGViewGroup {
      * Set pager adapter
      * @param adapter
      */
-    @LuaFunction(manual = false, methodName = "SetAdapter", arguments = { LGFragmentStateAdapter.class })
-    public void SetAdapter(LGFragmentStateAdapter adapter) {
+    @LuaFunction(manual = false, methodName = "setAdapter", arguments = { LGFragmentStateAdapter.class })
+    public void setAdapter(LGFragmentStateAdapter adapter) {
         ((ViewPager2)view).setAdapter(adapter);
     }
 
@@ -88,10 +88,10 @@ public class LGViewPager extends LGViewGroup {
      * @param tabLayout
      * @param ltTab +fun(viewPager: LGViewPager, position: number):LuaTab
      */
-    @LuaFunction(manual = false, methodName = "SetTabLayout", arguments = { LGTabLayout.class, LuaTranslator.class })
-    public void SetTabLayout(LGTabLayout tabLayout, LuaTranslator ltTab) {
+    @LuaFunction(manual = false, methodName = "setTabLayout", arguments = { LGTabLayout.class, LuaTranslator.class })
+    public void setTabLayout(LGTabLayout tabLayout, LuaTranslator ltTab) {
         new TabLayoutMediator((TabLayout) tabLayout.view, (ViewPager2) view, (tab, position) -> {
-            LuaTab luaTab = (LuaTab) ltTab.CallIn(position);
+            LuaTab luaTab = (LuaTab) ltTab.callIn(position);
             luaTab.createTab(tab);
         }).attach();
     }

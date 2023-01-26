@@ -19,7 +19,7 @@ open class LuaCoroutineScope(private val scope: CoroutineScope) {
     )
     fun launch(lt: LuaTranslator): LuaJob {
         return LuaJob(scope.launch {
-            lt.CallIn()
+            lt.callIn()
         })
     }
 
@@ -49,7 +49,7 @@ open class LuaCoroutineScope(private val scope: CoroutineScope) {
                 Dispatchers.Default
             }
         }) {
-            lt.CallIn()
+            lt.callIn()
         })
     }
 }

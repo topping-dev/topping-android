@@ -21,27 +21,27 @@ public class LuaMenu implements LuaInterface
 		this.context = context;
 	}
 
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LuaMenu.class)
-	public static LuaMenu Create(LuaContext context) {
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LuaMenu.class)
+	public static LuaMenu create(LuaContext context) {
 		return new LuaMenu(context);
 	}
 
-	@LuaFunction(manual = false, methodName = "SetTitle", arguments = { String.class })
-	public void SetTitle(String text) {
+	@LuaFunction(manual = false, methodName = "setTitle", arguments = { String.class })
+	public void setTitle(String text) {
 		title = text;
 	}
 
-	@LuaFunction(manual = false, methodName = "SetTitleRef", arguments = { LuaRef.class })
-	public void SetTitleRef(LuaRef text) {
-		title = context.GetContext().getResources().getResourceEntryName(text.getRef());
+	@LuaFunction(manual = false, methodName = "setTitleRef", arguments = { LuaRef.class })
+	public void setTitleRef(LuaRef text) {
+		title = context.getContext().getResources().getResourceEntryName(text.getRef());
 	}
 
-	@LuaFunction(manual = false, methodName = "SetIcon", arguments = { LuaRef.class })
-	public void SetIcon(LuaRef icon) {
+	@LuaFunction(manual = false, methodName = "setIcon", arguments = { LuaRef.class })
+	public void setIcon(LuaRef icon) {
 		iconRes = icon;
 	}
 
-	public void SetIntent(LuaTranslator lt) {
+	public void setIntent(LuaTranslator lt) {
 
 	}
 

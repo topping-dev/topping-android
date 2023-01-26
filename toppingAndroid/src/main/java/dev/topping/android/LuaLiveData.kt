@@ -40,7 +40,7 @@ open class LuaLiveData {
             observerMap[lt]?.let { liveData.removeObserver(it) }
             observerMap.remove(lt)
         }
-        observerMap[lt] = Observer<Any?> { t -> lt.CallIn(t) }
+        observerMap[lt] = Observer<Any?> { t -> lt.callIn(t) }
         liveData.observe(owner.getLifecycleOwner(), observerMap[lt]!!)
     }
 

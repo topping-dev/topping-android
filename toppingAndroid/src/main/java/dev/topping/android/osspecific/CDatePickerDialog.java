@@ -29,7 +29,7 @@ public class CDatePickerDialog extends DatePickerDialog
 	{
 		super.onDateChanged(view, year, month, day);
 		if(ltOnDateChanged != null)
-			ltOnDateChanged.CallIn(dialog, day, month + 1, year);
+			ltOnDateChanged.callIn(dialog, day, month + 1, year);
 	}
 	
 }

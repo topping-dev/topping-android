@@ -24,10 +24,10 @@ class LuaViewModel : ViewModel() {
      */
     @LuaFunction(
         manual = false,
-        methodName = "SetObject",
+        methodName = "setObject",
         arguments = [String::class, Any::class]
     )
-    fun SetObject(key: String, obj: Any?) {
+    fun setObject(key: String, obj: Any?) {
         objectMap[key] = obj
     }
 
@@ -38,10 +38,10 @@ class LuaViewModel : ViewModel() {
      */
     @LuaFunction(
         manual = false,
-        methodName = "GetObject",
+        methodName = "getObject",
         arguments = [String::class]
     )
-    fun GetObject(key: String) : Any? {
+    fun getObject(key: String) : Any? {
         return objectMap[key]
     }
 
@@ -51,7 +51,7 @@ class LuaViewModel : ViewModel() {
      */
     @LuaFunction(
         manual = false,
-        methodName = "GetViewModelScope",
+        methodName = "getLuaViewModelScope",
         arguments = []
     )
     fun getLuaViewModelScope(): LuaCoroutineScope {

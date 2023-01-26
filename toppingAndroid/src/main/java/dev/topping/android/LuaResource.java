@@ -30,10 +30,10 @@ public class LuaResource implements LuaInterface
 	 * @return LuaStream of resource
 	 */
 	@LuaFunction(manual = false, methodName = "GetResourceAssetSd", self = LuaResource.class, arguments = { String.class, String.class })
-	public static LuaStream GetResourceAssetSd(String path, String resName)
+	public static LuaStream getResourceAssetSd(String path, String resName)
 	{
 		LuaStream ls = new LuaStream();
-		ls.SetStream(Defines.GetResourceAssetSd(path, resName));
+		ls.setStream(Defines.GetResourceAssetSd(path, resName));
 		return ls;
 	}
 	
@@ -43,11 +43,11 @@ public class LuaResource implements LuaInterface
 	 * @param resName resource name to search
 	 * @return LuaStream of resource
 	 */
-	@LuaFunction(manual = false, methodName = "GetResourceSdAsset", self = LuaResource.class, arguments = { String.class, String.class })
-	public static LuaStream GetResourceSdAsset(String path, String resName)
+	@LuaFunction(manual = false, methodName = "getResourceSdAsset", self = LuaResource.class, arguments = { String.class, String.class })
+	public static LuaStream getResourceSdAsset(String path, String resName)
 	{
 		LuaStream ls = new LuaStream();
-		ls.SetStream(Defines.GetResourceSdAsset(path, resName));
+		ls.setStream(Defines.GetResourceSdAsset(path, resName));
 		return ls;
 	}
 	
@@ -57,11 +57,11 @@ public class LuaResource implements LuaInterface
 	 * @param resName resource name to search
 	 * @return LuaStream of resource
 	 */
-	@LuaFunction(manual = false, methodName = "GetResourceAsset", self = LuaResource.class, arguments = { String.class, String.class })
-	public static LuaStream GetResourceAsset(String path, String resName)
+	@LuaFunction(manual = false, methodName = "getResourceAsset", self = LuaResource.class, arguments = { String.class, String.class })
+	public static LuaStream getResourceAsset(String path, String resName)
 	{
 		LuaStream ls = new LuaStream();
-		ls.SetStream(Defines.GetResourceAsset(path, resName));
+		ls.setStream(Defines.GetResourceAsset(path, resName));
 		return ls;
 	}
 	
@@ -71,11 +71,11 @@ public class LuaResource implements LuaInterface
 	 * @param resName resource name to search
 	 * @return LuaStream of resource
 	 */
-	@LuaFunction(manual = false, methodName = "GetResourceSd", self = LuaResource.class, arguments = { String.class, String.class })
-	public static LuaStream GetResourceSd(String path, String resName)
+	@LuaFunction(manual = false, methodName = "getResourceSd", self = LuaResource.class, arguments = { String.class, String.class })
+	public static LuaStream getResourceSd(String path, String resName)
 	{
 		LuaStream ls = new LuaStream();
-		ls.SetStream(Defines.GetResourceSd(path, resName));
+		ls.setStream(Defines.GetResourceSd(path, resName));
 		return ls;
 	}
 	
@@ -85,34 +85,34 @@ public class LuaResource implements LuaInterface
 	 * @param resName resource name to search
 	 * @return LuaStream of resource
 	 */
-	public static LuaStream GetResource(String path, String resName)
+	public static LuaStream getResource(String path, String resName)
 	{
 		//String scriptsRoot = LuaEngine.getInstance().GetScriptsRoot();
-		int primaryLoad = ToppingEngine.getInstance().GetPrimaryLoad();
+		int primaryLoad = ToppingEngine.getInstance().getPrimaryLoad();
 		switch(primaryLoad)
 		{
 			case ToppingEngine.EXTERNAL_DATA:
 			{
 				LuaStream ls = new LuaStream();
-				ls.SetStream(Defines.GetResourceSdAsset(path + "/", resName.toString()));
+				ls.setStream(Defines.GetResourceSdAsset(path + "/", resName.toString()));
 				return ls;
 			}
 			case ToppingEngine.INTERNAL_DATA:
 			{
 				LuaStream ls = new LuaStream();
-				ls.SetStream(Defines.GetResourceInternalAsset(path + "/", resName.toString()));
+				ls.setStream(Defines.GetResourceInternalAsset(path + "/", resName.toString()));
 				return ls;
 			}
 			case ToppingEngine.RESOURCE_DATA:
 			{
 				LuaStream ls = new LuaStream();
-				ls.SetStream(Defines.GetResourceAsset(path + "/", resName.toString()));
+				ls.setStream(Defines.GetResourceAsset(path + "/", resName.toString()));
 				return ls;
 			}
 			default:
 			{
 				LuaStream ls = new LuaStream();
-				ls.SetStream(Defines.GetResourceAsset(path + "/", resName.toString()));
+				ls.setStream(Defines.GetResourceAsset(path + "/", resName.toString()));
 				return ls;
 			}
 		}
@@ -123,11 +123,11 @@ public class LuaResource implements LuaInterface
 	 * @param ref LuaRef resource reference
 	 * @return LuaStream of resource
 	 */
-	@LuaFunction(manual = false, methodName = "GetResourceRef", self = LuaResource.class, arguments = { LuaRef.class })
-	public static LuaStream GetResourceRef(LuaRef ref)
+	@LuaFunction(manual = false, methodName = "getResourceRef", self = LuaResource.class, arguments = { LuaRef.class })
+	public static LuaStream getResourceRef(LuaRef ref)
 	{
 		LuaStream ls = new LuaStream();
-		Context context = ToppingEngine.getInstance().GetContext();
+		Context context = ToppingEngine.getInstance().getContext();
 		String resourceTypeName = context.getResources().getResourceTypeName(ref.getRef());
 		if(resourceTypeName.equals("drawable"))
 		{
@@ -141,7 +141,7 @@ public class LuaResource implements LuaInterface
 				byte[] imageInByte = stream.toByteArray();
 				System.out.println("........length......" + imageInByte);
 				ByteArrayInputStream bis = new ByteArrayInputStream(imageInByte);
-				ls.SetStream(bis);
+				ls.setStream(bis);
 			}
 		}
 		return ls;

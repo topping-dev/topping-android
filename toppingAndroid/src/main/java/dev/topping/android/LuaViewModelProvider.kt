@@ -14,11 +14,11 @@ class LuaViewModelProvider private constructor(private val provider: ViewModelPr
          */
         @LuaFunction(
             manual = false,
-            methodName = "OfFragment",
+            methodName = "ofFragment",
             arguments = [LuaFragment::class],
             self = LuaViewModelProvider::class
         )
-        fun OfFragment(fragment: LuaFragment): LuaViewModelProvider {
+        fun ofFragment(fragment: LuaFragment): LuaViewModelProvider {
             return LuaViewModelProvider(ViewModelProvider(fragment))
         }
 
@@ -29,11 +29,11 @@ class LuaViewModelProvider private constructor(private val provider: ViewModelPr
          */
         @LuaFunction(
             manual = false,
-            methodName = "OfForm",
+            methodName = "ofForm",
             arguments = [LuaForm::class],
             self = LuaViewModelProvider::class
         )
-        fun OfForm(form: LuaForm): LuaViewModelProvider {
+        fun ofForm(form: LuaForm): LuaViewModelProvider {
             return LuaViewModelProvider(ViewModelProvider(form))
         }
     }
@@ -45,10 +45,10 @@ class LuaViewModelProvider private constructor(private val provider: ViewModelPr
      */
     @LuaFunction(
         manual = false,
-        methodName = "Get",
+        methodName = "get",
         arguments = [String::class]
     )
-    fun Get(tag: String): LuaViewModel {
+    fun get(tag: String): LuaViewModel {
         return provider.get(tag, LuaViewModel::class.java)
     }
 }

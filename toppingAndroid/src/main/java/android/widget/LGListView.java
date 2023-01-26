@@ -23,8 +23,8 @@ public class LGListView extends LGAbsListView implements LuaInterface
 	private LGListViewFragment llvf;
 	public LuaFragment lf;
 
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGListView.class)
-	public static LGListView Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGListView.class)
+	public static LGListView create(LuaContext lc)
 	{
 		return new LGListView(lc);
 	}
@@ -93,7 +93,7 @@ public class LGListView extends LGAbsListView implements LuaInterface
 //			view = general;
 //		}
 //		else
-		view = lc.GetLayoutInflater().createView(context, "ListView");
+		view = lc.getLayoutInflater().createView(context, "ListView");
 		if(view == null)
 			view = new ListView(context);//ft.ReplaceFragment(R.id.generalDataListViewLinearLayout, gdlf, false);
 
@@ -131,7 +131,7 @@ public class LGListView extends LGAbsListView implements LuaInterface
 //			view = general;
 //		}
 //		else
-		view = lc.GetLayoutInflater().createView(context, "ListView", attrs);
+		view = lc.getLayoutInflater().createView(context, "ListView", attrs);
 		if(view == null)
 			view = new ListView(context, attrs);
 	}
@@ -168,7 +168,7 @@ public class LGListView extends LGAbsListView implements LuaInterface
 //			view = general;
 //		}
 //		else
-		view = lc.GetLayoutInflater().createView(context, "ListView", attrs);
+		view = lc.getLayoutInflater().createView(context, "ListView", attrs);
 		if(view == null)
 			view = new ListView(context, attrs, defStyle);
 	}
@@ -177,8 +177,8 @@ public class LGListView extends LGAbsListView implements LuaInterface
 	 * Gets the LGAdapterView of listview
 	 * @return LGAdapterView
 	 */
-	@LuaFunction(manual = false, methodName = "GetAdapter", arguments = { })
-	public LGAdapterView GetAdapter()
+	@LuaFunction(manual = false, methodName = "getAdapter", arguments = { })
+	public LGAdapterView getAdapter()
 	{
 		int rotation = view.getContext().getResources().getConfiguration().orientation;
 		if(DisplayMetrics.isTablet && (rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) && llvf != null)
@@ -191,8 +191,8 @@ public class LGListView extends LGAbsListView implements LuaInterface
 	 * Sets the LGAdapterView of listview
 	 * @param adapter
 	 */
-	@LuaFunction(manual = false, methodName = "SetAdapter", arguments = { LGAdapterView.class })
-	public void SetAdapter(LGAdapterView adapter)
+	@LuaFunction(manual = false, methodName = "setAdapter", arguments = { LGAdapterView.class })
+	public void setAdapter(LGAdapterView adapter)
 	{
 		int rotation = view.getContext().getResources().getConfiguration().orientation;
 		if(DisplayMetrics.isTablet && (rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) && llvf != null)
@@ -206,10 +206,10 @@ public class LGListView extends LGAbsListView implements LuaInterface
 	 * Gets the tablet mode status
 	 * @return boolean
 	 */
-	@LuaFunction(manual = false, methodName = "IsUseTabletModeIfNecessaryEnabled", arguments = { })
-	public boolean IsUseTabletModeIfNecessaryEnabled()
+	@LuaFunction(manual = false, methodName = "isUseTabletModeIfNecessaryEnabled", arguments = { })
+	public boolean isUseTabletModeIfNecessaryEnabled()
 	{
-		return useTabletModeIfNecessary == true;
+		return useTabletModeIfNecessary;
 	}
 
 	/**
@@ -217,8 +217,8 @@ public class LGListView extends LGAbsListView implements LuaInterface
 	 * If this value is set false, classic mode will be used.
 	 * @param tabletMode
 	 */
-	@LuaFunction(manual = false, methodName = "SetUseTabletModeIfNecessary", arguments = { Boolean.class })
-	public void SetUseTabletModeIfNecessary(boolean tabletMode)
+	@LuaFunction(manual = false, methodName = "setUseTabletModeIfNecessary", arguments = { Boolean.class })
+	public void setUseTabletModeIfNecessary(boolean tabletMode)
 	{
 		useTabletModeIfNecessary = tabletMode;
 	}
@@ -227,8 +227,8 @@ public class LGListView extends LGAbsListView implements LuaInterface
 	 * Returns the selected cell color
 	 * @return int
 	 */
-	@LuaFunction(manual = false, methodName = "GetSelectedCellColor")
-	public Integer GetSelectedCellColor()
+	@LuaFunction(manual = false, methodName = "getSelectedCellColor")
+	public Integer getSelectedCellColor()
 	{
 		return selectionColor;
 	}
@@ -237,8 +237,8 @@ public class LGListView extends LGAbsListView implements LuaInterface
 	 * Sets the selected cell color.
 	 * @param color
 	 */
-	@LuaFunction(manual = false, methodName = "SetSelectedCellColor", arguments = { Integer.class })
-	public void SetSelectedCellColor(int color)
+	@LuaFunction(manual = false, methodName = "setSelectedCellColor", arguments = { Integer.class })
+	public void setSelectedCellColor(int color)
 	{
 		selectionColor = color;
 	}
@@ -246,7 +246,7 @@ public class LGListView extends LGAbsListView implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public LuaFragment GetDetailFragment()
+	public LuaFragment getDetailFragment()
 	{
 		return lf;
 	}

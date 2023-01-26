@@ -32,7 +32,7 @@ import java.util.*
  * User interface controller
  */
 @LuaClass(className = "LuaForm", isKotlin = true)
-open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
+open class LuaForm : AppCompatActivity(), LuaLifecycleOwner, LuaInterface {
     protected var luaContext: LuaContext? = null
     protected var luaId: String? = "LuaForm"
     protected var ui: LuaRef? = null
@@ -55,12 +55,12 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
          */
         @LuaFunction(
             manual = false,
-            methodName = "Create",
+            methodName = "create",
             self = LuaForm::class,
             arguments = [LuaContext::class, LuaRef::class]
         )
-        fun Create(lc: LuaContext, luaId: LuaRef?) : LuaFormIntent {
-            val intent = Intent(lc.GetContext(), LuaForm::class.java)
+        fun create(lc: LuaContext, luaId: LuaRef?) : LuaFormIntent {
+            val intent = Intent(lc.getContext(), LuaForm::class.java)
             intent.putExtra("LUA_ID_RUED", luaId)
             return LuaFormIntent(intent)
         }
@@ -75,12 +75,12 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
          */
         @LuaFunction(
             manual = false,
-            methodName = "CreateWithUI",
+            methodName = "createWithUI",
             self = LuaForm::class,
             arguments = [LuaContext::class, LuaRef::class, LuaRef::class]
         )
-        fun CreateWithUI(lc: LuaContext, luaId: LuaRef?, ui: LuaRef?) : LuaFormIntent {
-            val intent = Intent(lc.GetContext(), LuaForm::class.java)
+        fun createWithUI(lc: LuaContext, luaId: LuaRef?, ui: LuaRef?) : LuaFormIntent {
+            val intent = Intent(lc.getContext(), LuaForm::class.java)
             intent.putExtra("LUA_ID_RUED", luaId)
             intent.putExtra("LUA_UI_RUED", ui)
             return LuaFormIntent(intent)
@@ -90,12 +90,15 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
          * Gets Active LuaForm
          * @return LuaForm
          */
-        @LuaFunction(manual = false, methodName = "GetActiveForm", self = LuaForm::class)
-        fun GetActiveForm(): LuaForm? {
+        @LuaFunction(manual = false, methodName = "getActiveForm", self = LuaForm::class)
+        fun getActiveForm(): LuaForm? {
             return activeForm
         }
 
-        fun SetActiveForm(form: LuaForm?) {
+        /**
+         * (Ignore)
+         */
+        fun setActiveForm(form: LuaForm?) {
             activeForm = form
         }
     }
@@ -104,8 +107,8 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
      * Gets LuaContext value of form
      * @return LuaContext
      */
-    @LuaFunction(manual = false, methodName = "GetContext")
-    fun GetContext(): LuaContext? {
+    @LuaFunction(manual = false, methodName = "getContext")
+    fun getContext(): LuaContext? {
         return luaContext
     }
 
@@ -113,26 +116,27 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
      * Gets the view of form.
      * @return LGView
      */
-    @LuaFunction(manual = false, methodName = "GetViewById", arguments = [LuaRef::class])
-    fun GetViewById(lId: LuaRef): LGView {
-        return view!!.GetViewById(lId)
+    @LuaFunction(manual = false, methodName = "getViewById", arguments = [LuaRef::class])
+    fun getViewById(lId: LuaRef): LGView {
+        return view!!.getViewById(lId)
     }
 
     /**
      * Gets the view bindings
      * @return HashMap
      */
-    @LuaFunction(manual = false, methodName = "GetBindings", arguments = [])
-    fun GetBindings(): HashMap<String, LGView>? {
-        return if (view is LGViewGroup) (view as LGViewGroup).GetBindings() else null
+    @LuaFunction(manual = false, methodName = "getBindings", arguments = [])
+    fun getBindings(): HashMap<String, LGView>? {
+        return if (view is LGViewGroup) (view as LGViewGroup).getBindings() else null
     }
 
     /**
      * Gets the view.
      * @return LGView
      */
-    @LuaFunction(manual = false, methodName = "GetView")
-    fun GetView(): LGView? {
+    @JvmName("getViewIn")
+    @LuaFunction(manual = false, methodName = "getView")
+    fun getView(): LGView? {
         return view
     }
 
@@ -140,8 +144,9 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
      * Sets the view to render.
      * @param v
      */
-    @LuaFunction(manual = false, methodName = "SetView", arguments = [LGView::class])
-    fun SetView(v: LGView?) {
+    @JvmName("setViewIn")
+    @LuaFunction(manual = false, methodName = "setView", arguments = [LGView::class])
+    fun setView(v: LGView?) {
         view = v
     }
 
@@ -149,10 +154,10 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
      * Sets the xml file of the view to render.
      * @param xml
      */
-    @LuaFunction(manual = false, methodName = "SetViewXML", arguments = [LuaRef::class])
-    fun SetViewXML(xml: LuaRef?) {
+    @LuaFunction(manual = false, methodName = "setViewXML", arguments = [LuaRef::class])
+    fun setViewXML(xml: LuaRef?) {
         val inflater = LuaViewInflator(luaContext)
-        view = inflater.Inflate(xml, null)
+        view = inflater.inflate(xml, null)
         setContentView(view?.view)
     }
 
@@ -160,8 +165,8 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
      * Sets the title of the screen.
      * @param str
      */
-    @LuaFunction(manual = false, methodName = "SetTitle", arguments = [String::class])
-    fun SetTitle(str: String?) {
+    @LuaFunction(manual = false, methodName = "setTitle", arguments = [String::class])
+    fun setTitle(str: String?) {
         title = str
     }
 
@@ -169,25 +174,25 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
      * Sets the title of the screen.
      * @param ref
      */
-    @LuaFunction(manual = false, methodName = "SetTitleRef", arguments = [String::class])
-    fun SetTitleRef(ref: LuaRef) {
+    @LuaFunction(manual = false, methodName = "setTitleRef", arguments = [String::class])
+    fun setTitleRef(ref: LuaRef) {
         setTitle(ref.ref)
     }
 
     /**
      * Closes the form
      */
-    @LuaFunction(manual = false, methodName = "Close")
-    fun Close() {
+    @LuaFunction(manual = false, methodName = "close")
+    fun close() {
         finishActivity(-1)
     }
 
     /**
      * Get lifecycle
      */
-    @LuaFunction(manual = false, methodName = "GetLifecycle")
-    fun GetLifecycle() : LuaLifecycle {
-        return LuaLifecycle.Create(this)
+    @LuaFunction(manual = false, methodName = "getLifecycle")
+    fun getLuaLifecycle() : LuaLifecycle {
+        return LuaLifecycle.create(this)
     }
 
     /**
@@ -221,7 +226,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
      * (Ignore)
      */
     @SuppressLint("NewApi")
-    fun SetNfc(adapter: NfcAdapter?, pi: PendingIntent?) {
+    fun setNfc(adapter: NfcAdapter?, pi: PendingIntent?) {
         if (Defines.CheckPermission(this, Manifest.permission.NFC)) {
             if (mNfcAdapter != null) mNfcAdapter!!.disableForegroundDispatch(this)
             mNfcAdapter = adapter
@@ -277,8 +282,8 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
         if (savedInstanceState == null) {
             extras = intent.extras
             if (extras == null) {
-                luaId = LuaRef.WithValue(View.NO_ID)
-                ui = LuaRef.WithValue(View.NO_ID)
+                luaId = LuaRef.withValue(View.NO_ID)
+                ui = LuaRef.withValue(View.NO_ID)
             } else {
                 luaId = extras.getSerializable("LUA_ID_RUED") as LuaRef?
                 ui = extras.getSerializable("LUA_UI_RUED") as LuaRef?
@@ -288,14 +293,14 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
             ui = savedInstanceState.getSerializable("LUA_UI_RUED") as LuaRef?
         }
         this.luaId = if(luaId?.ref != View.NO_ID) resources.getResourceEntryName(luaId?.ref!!) else "LuaForm"
-        luaContext = LuaContext.CreateLuaContext(this)
+        luaContext = LuaContext.createLuaContext(this)
         if (ui == null || ui!!.ref == View.NO_ID) {
-            LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_CREATE, luaContext)
-            kotlinInterface = LuaEvent.GetFormInstance(GetId(), this)
-            kotlinInterface?.ltOnCreate?.CallIn()
+            LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_CREATE, luaContext)
+            kotlinInterface = LuaEvent.getFormInstance(GetId(), this)
+            kotlinInterface?.ltOnCreate?.callIn()
         } else {
             val inflater = LuaViewInflator(luaContext)
-            view = inflater.Inflate(ui, null)
+            view = inflater.inflate(ui, null)
             setContentView(view?.view)
         }
     }
@@ -325,7 +330,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
                             val highLevel = Message(p)
                             for (r in highLevel) {
                                 if (r is UriRecord) {
-                                    LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_NFC, luaContext, r.uri.toString())
+                                    LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_NFC, luaContext, r.uri.toString())
                                 }
                             }
                         } catch (_: FormatException) {
@@ -334,8 +339,8 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
                 }
             }
         }
-        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_RESUME, luaContext)
-        kotlinInterface?.ltOnResume?.CallIn()
+        LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_RESUME, luaContext)
+        kotlinInterface?.ltOnResume?.callIn()
         if (Defines.CheckPermission(this, Manifest.permission.NFC)) {
             if (mNfcAdapter != null) mNfcAdapter!!.enableForegroundDispatch(
                 this,
@@ -355,8 +360,8 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
     @SuppressLint("NewApi")
     override fun onPause() {
         super.onPause()
-        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_PAUSE, luaContext)
-        kotlinInterface?.ltOnPause?.CallIn()
+        LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_PAUSE, luaContext)
+        kotlinInterface?.ltOnPause?.callIn()
         if (Defines.CheckPermission(this, Manifest.permission.NFC)) {
             if (mNfcAdapter != null) mNfcAdapter!!.disableForegroundDispatch(this)
         }
@@ -370,8 +375,8 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
      */
     override fun onDestroy() {
         super.onDestroy()
-        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_DESTROY, luaContext)
-        kotlinInterface?.ltOnDestroy?.CallIn()
+        LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_DESTROY, luaContext)
+        kotlinInterface?.ltOnDestroy?.callIn()
         //Move destroy event to subviews
         if (view != null) {
             view!!.onDestroy()
@@ -419,7 +424,7 @@ open class LuaForm : AppCompatActivity(), LuaInterface, LuaLifecycleOwner {
                                         nfcData[count++] = record
                                     }
                                 }
-                                LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_NFC, luaContext, nfcData)
+                                LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_NFC, luaContext, nfcData)
                             } catch (e: FormatException) {
                             }
                         }

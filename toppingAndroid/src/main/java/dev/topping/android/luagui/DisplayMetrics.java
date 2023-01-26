@@ -16,7 +16,7 @@ public class DisplayMetrics {
 	
 	public static boolean isTablet = false;
 	
-	public static synchronized int GetRotation(Context context) 
+	public static synchronized int getRotation(Context context)
 	{
 		/*WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 	    Display display = wm.getDefaultDisplay();

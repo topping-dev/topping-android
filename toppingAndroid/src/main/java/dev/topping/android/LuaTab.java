@@ -88,7 +88,7 @@ public class LuaTab extends LGView implements LuaInterface {
             text = (String) ti.text;
             icon = ti.icon;
             if(ti.customLayout != View.NO_ID)
-                customView = LuaViewInflator.Create(lc).Inflate(LuaRef.WithValue(ti.customLayout), null);
+                customView = LuaViewInflator.create(lc).inflate(LuaRef.withValue(ti.customLayout), null);
 
             TabLayout.Tab tab = new TabLayout.Tab();
             tabLayout.addTab(createTab(tab));
@@ -99,8 +99,8 @@ public class LuaTab extends LGView implements LuaInterface {
      * Create LuaTab
      * @return LuaTab
      */
-    @LuaFunction(manual = false, methodName = "Create", self = LuaTab.class)
-    public static LuaTab Create() {
+    @LuaFunction(manual = false, methodName = "create", self = LuaTab.class)
+    public static LuaTab create() {
         return new LuaTab(new LuaContext());
     }
 
@@ -108,8 +108,8 @@ public class LuaTab extends LGView implements LuaInterface {
      * Set tab title
      * @param text
      */
-    @LuaFunction(manual = false, methodName = "SetText", arguments = { String.class })
-    public void SetText(String text) {
+    @LuaFunction(manual = false, methodName = "setText", arguments = { String.class })
+    public void setText(String text) {
         this.text = text;
     }
 
@@ -117,8 +117,8 @@ public class LuaTab extends LGView implements LuaInterface {
      * Set tab title
      * @param text
      */
-    @LuaFunction(manual = false, methodName = "SetTextRef", arguments = { LuaRef.class })
-    public void SetTextRef(LuaRef text) {
+    @LuaFunction(manual = false, methodName = "setTextRef", arguments = { LuaRef.class })
+    public void setTextRef(LuaRef text) {
         textRef = text;
     }
 
@@ -126,8 +126,8 @@ public class LuaTab extends LGView implements LuaInterface {
      * Set tab icon
      * @param icon
      */
-    @LuaFunction(manual = false, methodName = "SetIcon", arguments = { LuaRef.class })
-    public void SetIcon(LuaRef icon) {
+    @LuaFunction(manual = false, methodName = "setIcon", arguments = { LuaRef.class })
+    public void setIcon(LuaRef icon) {
         iconRef = icon;
     }
 
@@ -135,9 +135,9 @@ public class LuaTab extends LGView implements LuaInterface {
      * Set tab icon
      * @param icon
      */
-    @LuaFunction(manual = false, methodName = "SetIconStream", arguments = { LuaStream.class })
-    public void SetIconStream(LuaStream icon) {
-        InputStream is = (InputStream)icon.GetStreamInternal();
+    @LuaFunction(manual = false, methodName = "setIconStream", arguments = { LuaStream.class })
+    public void setIconStream(LuaStream icon) {
+        InputStream is = (InputStream)icon.getStreamInternal();
         this.icon = new BitmapDrawable(is);
     }
 
@@ -145,8 +145,8 @@ public class LuaTab extends LGView implements LuaInterface {
      * Set tab custom view
      * @param view
      */
-    @LuaFunction(manual = false, methodName = "SetCustomView", arguments = { LGView.class })
-    public void SetCustomView(LGView view) {
+    @LuaFunction(manual = false, methodName = "setCustomView", arguments = { LGView.class })
+    public void setCustomView(LGView view) {
         this.customView = view;
     }
 

@@ -26,8 +26,8 @@ public class LGWebView extends LGTextView implements LuaInterface
 	 * @param lc
 	 * @return LGWebView
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGWebView.class)
-	public static LGWebView Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGWebView.class)
+	public static LGWebView create(LuaContext lc)
 	{
 		return new LGWebView(lc);
 	}
@@ -69,7 +69,7 @@ public class LGWebView extends LGTextView implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = lc.GetLayoutInflater().createView(context, "WebView");
+		view = lc.getLayoutInflater().createView(context, "WebView");
 		if(view == null)
 			view = new WebView(context);
 	}
@@ -79,7 +79,7 @@ public class LGWebView extends LGTextView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = lc.GetLayoutInflater().createView(context, "WebView", attrs);
+		view = lc.getLayoutInflater().createView(context, "WebView", attrs);
 		if(view == null)
 			view = new WebView(context, attrs);
 	}
@@ -89,7 +89,7 @@ public class LGWebView extends LGTextView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = lc.GetLayoutInflater().createView(context, "WebView", attrs);
+		view = lc.getLayoutInflater().createView(context, "WebView", attrs);
 		if(view == null)
 			view = new WebView(context, attrs, defStyle);
 	}
@@ -107,7 +107,7 @@ public class LGWebView extends LGTextView implements LuaInterface
 				if(ltRequestAction == null)
 					return super.shouldOverrideUrlLoading(view, request);
 				else {
-					return (boolean) ltRequestAction.CallIn(request.getUrl().toString());
+					return (boolean) ltRequestAction.callIn(request.getUrl().toString());
 				}
 			}
 		});
@@ -119,8 +119,8 @@ public class LGWebView extends LGTextView implements LuaInterface
 	 * @param enableJavascript
 	 * @param enableDomStorage
 	 */
-	@LuaFunction(manual = false, methodName = "SetConfiguration", arguments = { Boolean.class, Boolean.class })
-	public void SetConfiguration(boolean enableJavascript, boolean enableDomStorage) {
+	@LuaFunction(manual = false, methodName = "setConfiguration", arguments = { Boolean.class, Boolean.class })
+	public void setConfiguration(boolean enableJavascript, boolean enableDomStorage) {
 		((WebView)view).getSettings().setJavaScriptEnabled(enableJavascript);
 		((WebView)view).getSettings().setDomStorageEnabled(enableDomStorage);
 	}
@@ -129,8 +129,8 @@ public class LGWebView extends LGTextView implements LuaInterface
 	 * Load url
 	 * @param url
 	 */
-	@LuaFunction(manual = false, methodName = "Load", arguments = { String.class })
-	public void Load(String url) {
+	@LuaFunction(manual = false, methodName = "load", arguments = { String.class })
+	public void load(String url) {
 		((WebView)view).loadUrl(url);
 	}
 
@@ -141,16 +141,16 @@ public class LGWebView extends LGTextView implements LuaInterface
 	 * @param encoding
 	 * @param baseUrl
 	 */
-	@LuaFunction(manual = false, methodName = "LoadData", arguments = { String.class, String.class, String.class, String.class })
-	public void LoadData(String data, String mimeType, String encoding, String baseUrl) {
+	@LuaFunction(manual = false, methodName = "loadData", arguments = { String.class, String.class, String.class, String.class })
+	public void loadData(String data, String mimeType, String encoding, String baseUrl) {
 		((WebView)view).loadDataWithBaseURL(baseUrl, data, mimeType, encoding, null);
 	}
 
 	/**
 	 * Stops loading
 	 */
-	@LuaFunction(manual = false, methodName = "StopLoading", arguments = { })
-	public void StopLoading() {
+	@LuaFunction(manual = false, methodName = "stopLoading", arguments = { })
+	public void stopLoading() {
 		((WebView)view).stopLoading();
 	}
 
@@ -158,8 +158,8 @@ public class LGWebView extends LGTextView implements LuaInterface
 	 * Check is loading
 	 * @return boolean
 	 */
-	@LuaFunction(manual = false, methodName = "IsLoading", arguments = { })
-	public boolean IsLoading() {
+	@LuaFunction(manual = false, methodName = "isLoading", arguments = { })
+	public boolean isLoading() {
 		return ((WebView)view).getProgress() != 100;
 	}
 
@@ -167,8 +167,8 @@ public class LGWebView extends LGTextView implements LuaInterface
 	 * Can go back
 	 * @return boolean
 	 */
-	@LuaFunction(manual = false, methodName = "CanGoBack", arguments = { })
-	public boolean CanGoBack() {
+	@LuaFunction(manual = false, methodName = "canGoBack", arguments = { })
+	public boolean canGoBack() {
 		return ((WebView)view).canGoBack();
 	}
 
@@ -176,24 +176,24 @@ public class LGWebView extends LGTextView implements LuaInterface
 	 * Can go forward
 	 * @return boolean
 	 */
-	@LuaFunction(manual = false, methodName = "CanGoForward", arguments = { })
-	public boolean CanGoForward() {
+	@LuaFunction(manual = false, methodName = "canGoForward", arguments = { })
+	public boolean canGoForward() {
 		return ((WebView)view).canGoForward();
 	}
 
 	/**
 	 * Go back
 	 */
-	@LuaFunction(manual = false, methodName = "GoBack", arguments = { })
-	public void GoBack() {
+	@LuaFunction(manual = false, methodName = "goBack", arguments = { })
+	public void goBack() {
 		((WebView)view).goBack();
 	}
 
 	/**
 	 * Go forward
 	 */
-	@LuaFunction(manual = false, methodName = "GoForward", arguments = { })
-	public void GoForward() {
+	@LuaFunction(manual = false, methodName = "goForward", arguments = { })
+	public void goForward() {
 		((WebView)view).goForward();
 	}
 
@@ -201,8 +201,8 @@ public class LGWebView extends LGTextView implements LuaInterface
 	 * Set request action before loading
 	 * @param lt +fun(webView: LGWebView, url: string):boolean
 	 */
-	@LuaFunction(manual = false, methodName = "SetRequestAction", arguments = { LuaTranslator.class })
-	public void SetRequestAction(LuaTranslator lt) {
+	@LuaFunction(manual = false, methodName = "setRequestAction", arguments = { LuaTranslator.class })
+	public void setRequestAction(LuaTranslator lt) {
 		this.ltRequestAction = lt;
 	}
 }

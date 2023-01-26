@@ -42,26 +42,26 @@ class LuaLifecycleObserver private constructor(private val lt: LuaTranslator) : 
     }
 
     override fun onCreate(owner: LifecycleOwner) {
-        lt.CallIn(LuaNativeObject(owner), ON_CREATE)
+        lt.callIn(LuaNativeObject(owner), ON_CREATE)
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
-        lt.CallIn(LuaNativeObject(owner), ON_DESTROY)
+        lt.callIn(LuaNativeObject(owner), ON_DESTROY)
     }
 
     override fun onResume(owner: LifecycleOwner) {
-        lt.CallIn(LuaNativeObject(owner), ON_RESUME)
+        lt.callIn(LuaNativeObject(owner), ON_RESUME)
     }
 
     override fun onPause(owner: LifecycleOwner) {
-        lt.CallIn(LuaNativeObject(owner), ON_PAUSE)
+        lt.callIn(LuaNativeObject(owner), ON_PAUSE)
     }
 
     override fun onStart(owner: LifecycleOwner) {
-        lt.CallIn(LuaNativeObject(owner), ON_START)
+        lt.callIn(LuaNativeObject(owner), ON_START)
     }
 
     override fun onStop(owner: LifecycleOwner) {
-        lt.CallIn(LuaNativeObject(owner), ON_STOP)
+        lt.callIn(LuaNativeObject(owner), ON_STOP)
     }
 }

@@ -1,6 +1,5 @@
 package android.widget;
 
-import android.content.Context;
 import android.util.AttributeSet;
 
 import dev.topping.android.backend.LuaClass;
@@ -23,7 +22,7 @@ public class LGAbsListView extends LGViewGroup implements LuaInterface
 	 * @return LGAbsListView
 	 */
 	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGAbsListView.class)
-	public static LGAbsListView Create(LuaContext lc)
+	public static LGAbsListView create(LuaContext lc)
 	{
 		return new LGAbsListView(lc);
 	}

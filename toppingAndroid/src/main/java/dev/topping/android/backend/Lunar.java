@@ -19,7 +19,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class Lunar
 
     }
 
-    public static String RemoveChar(String from, char w)
+    public static String removeChar(String from, char w)
     {
         char[] arr = from.toCharArray();
         StringBuilder sb = new StringBuilder();
@@ -88,10 +87,10 @@ public class Lunar
     public static HashMap<Class<?>, Method[]> methodMap = new HashMap<>();
 	public static HashMap<Class<?>, Field[]> fieldMap = new HashMap<>();
 	public static HashMap<Class<?>, KotlinCompanionObject> kotlinCompanionMap = new HashMap<>();
-	public static void Register(LuaState L, Class<?> cls) {
-		Register(L, cls, false);
+	public static void register(LuaState L, Class<?> cls) {
+		register(L, cls, false);
 	}
-    public static void Register(LuaState L, Class<?> cls, boolean loadAll)
+    public static void register(LuaState L, Class<?> cls, boolean loadAll)
     {
         //String name = RemoveChar(cls.getName(), '.');
 
@@ -286,7 +285,7 @@ public class Lunar
 					try
 					{
 						if(kp instanceof KProperty1)
-							ToppingEngine.getInstance().FillVariable(((KProperty1)kp).get(kotlinCompanionObject.instance));
+							ToppingEngine.getInstance().fillVariable(((KProperty1)kp).get(kotlinCompanionObject.instance));
 					}
 					catch (Exception e)
 					{
@@ -309,7 +308,7 @@ public class Lunar
 					Lua.lua_pushstring(L, f.getName());
 					try
 					{
-						ToppingEngine.getInstance().FillVariable(f.get(null));
+						ToppingEngine.getInstance().fillVariable(f.get(null));
 					}
 					catch (IllegalAccessException e)
 					{
@@ -488,9 +487,9 @@ public class Lunar
 	    return obj;
     }
 
-    public static Object ParseTable(long valTValue)
+    public static Object parseTable(long valTValue)
     {
-    	LuaState l = ToppingEngine.getInstance().GetLuaState();
+    	LuaState l = ToppingEngine.getInstance().getLuaState();
     	HashMap<Object, Object> map = new HashMap<Object, Object>();
     	long ot = Lua.hvalue(l, valTValue);
     	int size = Lua.sizenode(l, ot);
@@ -528,7 +527,7 @@ public class Lunar
 					valObject = Lua.nvalue(l, val);
 					break;
 				case Lua.LUA_TTABLE:
-					valObject = ParseTable(val);
+					valObject = parseTable(val);
 					break;
 				case Lua.LUA_TUSERDATA:
 				{
@@ -705,7 +704,7 @@ public class Lunar
 							{
 								long ot = (long)o; //table
 								HashMap<Object, Object> map = new HashMap<Object, Object>();
-								LuaState l = ToppingEngine.getInstance().GetLuaState();
+								LuaState l = ToppingEngine.getInstance().getLuaState();
 								int size = Lua.sizenode(l, ot);
 								for(int i = 0; i < size; i++)
 								{
@@ -739,7 +738,7 @@ public class Lunar
 											valObject = Lua.nvalue(l, val);
 											break;
 										case Lua.LUA_TTABLE:
-											valObject = ParseTable(val);
+											valObject = parseTable(val);
 											break;
 										case Lua.LUA_TUSERDATA:
 										{
@@ -812,13 +811,13 @@ public class Lunar
 				}
 
 	            if (retval == null)
-	                ((ToppingEngine) ToppingEngine.getInstance()).PushNIL();
+	                ((ToppingEngine) ToppingEngine.getInstance()).pushNIL();
 	            else
 	            {
 	            	String retName = retval.getClass().getName();
 	            	if(retName.compareTo("java.lang.Boolean") == 0
 							|| retval.getClass() == boolean.class)
-	            		((ToppingEngine) ToppingEngine.getInstance()).PushBool((Boolean)retval);
+	            		((ToppingEngine) ToppingEngine.getInstance()).pushBool((Boolean)retval);
 	            	else if(retName.compareTo("java.lang.Byte") == 0
 							|| retval.getClass() == byte.class
 	            		|| retName.compareTo("java.lang.Short") == 0
@@ -827,29 +826,29 @@ public class Lunar
 							|| retval.getClass() == int.class
 	            		|| retName.compareTo("java.lang.Long") == 0
 							|| retval.getClass() == long.class)
-	            		((ToppingEngine) ToppingEngine.getInstance()).PushInt((Integer)retval);
+	            		((ToppingEngine) ToppingEngine.getInstance()).pushInt((Integer)retval);
 	            	else if(retName.compareTo("java.lang.Float") == 0
 							|| retval.getClass() == float.class)
-	            		((ToppingEngine) ToppingEngine.getInstance()).PushFloat((Float)retval);
+	            		((ToppingEngine) ToppingEngine.getInstance()).pushFloat((Float)retval);
 	            	else if(retName.compareTo("java.lang.Double") == 0
 							|| retval.getClass() == double.class)
-	            		((ToppingEngine) ToppingEngine.getInstance()).PushDouble((Double)retval);
+	            		((ToppingEngine) ToppingEngine.getInstance()).pushDouble((Double)retval);
 	            	else if(retName.compareTo("java.lang.Char") == 0
 							|| retval.getClass() == char.class
 	            			|| retName.compareTo("java.lang.String") == 0)
-	            		((ToppingEngine) ToppingEngine.getInstance()).PushString((String)retval);
+	            		((ToppingEngine) ToppingEngine.getInstance()).pushString((String)retval);
 	            	else if(retName.compareTo("java.lang.Void") == 0
 						|| retval.getClass() == void.class
 						|| retval.getClass() == kotlin.Unit.class)
-	            		((ToppingEngine) ToppingEngine.getInstance()).PushInt(0);
+	            		((ToppingEngine) ToppingEngine.getInstance()).pushInt(0);
 	            	else if(retName.compareTo("java.util.HashMap") == 0)
 	            	{
-	            		((ToppingEngine) ToppingEngine.getInstance()).PushTable((HashMap<Object, Object>)retval);
+	            		((ToppingEngine) ToppingEngine.getInstance()).pushTable((HashMap<Object, Object>)retval);
 	            	}
 	            	else
 	            	{
 	                	ToppingEngine l = (ToppingEngine) ToppingEngine.getInstance();
-	                	Lunar.push(l.GetLuaState(), retval, false, true);
+	                	Lunar.push(l.getLuaState(), retval, false, true);
 	            	}
 	            }
 	        }
@@ -990,7 +989,7 @@ public class Lunar
 							{
 								long ot = (long)o; //table
 								HashMap<Object, Object> map = new HashMap<Object, Object>();
-								LuaState l = ToppingEngine.getInstance().GetLuaState();
+								LuaState l = ToppingEngine.getInstance().getLuaState();
 								int size = Lua.sizenode(l, ot);
 								for(int i = 0; i < size; i++)
 								{
@@ -1024,7 +1023,7 @@ public class Lunar
 										valObject = Lua.nvalue(l, val);
 										break;
 									case Lua.LUA_TTABLE:
-										valObject = ParseTable(val);
+										valObject = parseTable(val);
 										break;
 									case Lua.LUA_TUSERDATA:
 									{
@@ -1106,13 +1105,13 @@ public class Lunar
 
 
 	            if (retval == null)
-	                ((ToppingEngine) ToppingEngine.getInstance()).PushNIL();
+	                ((ToppingEngine) ToppingEngine.getInstance()).pushNIL();
 	            else
 	            {
 	            	String retName = retval.getClass().getName();
 	            	if(retName.compareTo("java.lang.Boolean") == 0
 							|| retval.getClass() == boolean.class)
-	            		((ToppingEngine) ToppingEngine.getInstance()).PushBool((Boolean)retval);
+	            		((ToppingEngine) ToppingEngine.getInstance()).pushBool((Boolean)retval);
 	            	else if(retName.compareTo("java.lang.Byte") == 0
 							|| retval.getClass() == byte.class
 	            			|| retName.compareTo("java.lang.Short") == 0
@@ -1121,29 +1120,29 @@ public class Lunar
 							|| retval.getClass() == int.class
 	            			|| retName.compareTo("java.lang.Long") == 0
 							|| retval.getClass() == long.class)
-	            		((ToppingEngine) ToppingEngine.getInstance()).PushInt((Integer)retval);
+	            		((ToppingEngine) ToppingEngine.getInstance()).pushInt((Integer)retval);
 	            	else if(retName.compareTo("java.lang.Float") == 0
 							|| retval.getClass() == float.class)
-	            		((ToppingEngine) ToppingEngine.getInstance()).PushFloat((Float)retval);
+	            		((ToppingEngine) ToppingEngine.getInstance()).pushFloat((Float)retval);
 	            	else if(retName.compareTo("java.lang.Double") == 0
 							|| retval.getClass() == double.class)
-	            		((ToppingEngine) ToppingEngine.getInstance()).PushDouble((Double)retval);
+	            		((ToppingEngine) ToppingEngine.getInstance()).pushDouble((Double)retval);
 	            	else if(retName.compareTo("java.lang.Char") == 0
 							|| retval.getClass() == char.class
 	            			|| retName.compareTo("java.lang.String") == 0)
-	            		((ToppingEngine) ToppingEngine.getInstance()).PushString((String)retval);
+	            		((ToppingEngine) ToppingEngine.getInstance()).pushString((String)retval);
 	            	else if(retName.compareTo("java.lang.Void") == 0
 							|| retval.getClass() == void.class
 							|| retval.getClass() == kotlin.Unit.class)
-	            		((ToppingEngine) ToppingEngine.getInstance()).PushInt(0);
+	            		((ToppingEngine) ToppingEngine.getInstance()).pushInt(0);
 	            	else if(retName.compareTo("java.util.HashMap") == 0)
 	            	{
-	            		((ToppingEngine) ToppingEngine.getInstance()).PushTable((HashMap<Object, Object>)retval);
+	            		((ToppingEngine) ToppingEngine.getInstance()).pushTable((HashMap<Object, Object>)retval);
 	            	}
 	            	else
 	            	{
 	                	ToppingEngine l = (ToppingEngine) ToppingEngine.getInstance();
-	                	Lunar.push(l.GetLuaState(), retval, false, true);
+	                	Lunar.push(l.getLuaState(), retval, false, true);
 	            	}
 	            }
 	        }
@@ -1173,7 +1172,7 @@ public class Lunar
 	    Lua.lua_getfield(L, Lua.LUA_REGISTRYINDEX, "DO NOT TRASH");
 	    if(Lua.lua_istable(L, -1))
 	    {
-	    	String name = RemoveChar(obj.getClass().getName(), '.');
+	    	String name = removeChar(obj.getClass().getName(), '.');
             Lua.lua_getfield(L, -1, name);
 		    if(Lua.lua_isnil(L,-1))
 		    {

@@ -19,8 +19,8 @@ public class LGFrameLayout extends LGViewGroup implements LuaInterface
 	 * @param lc
 	 * @return LGFrameLayout
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGFrameLayout.class)
-	public static LGFrameLayout Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGFrameLayout.class)
+	public static LGFrameLayout create(LuaContext lc)
 	{
 		return new LGFrameLayout(lc);
 	}
@@ -62,7 +62,7 @@ public class LGFrameLayout extends LGViewGroup implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = lc.GetLayoutInflater().createView(context, "FrameLayout");
+		view = lc.getLayoutInflater().createView(context, "FrameLayout");
 		if(view == null)
 			view = new FrameLayout(context);
 	}
@@ -72,7 +72,7 @@ public class LGFrameLayout extends LGViewGroup implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = lc.GetLayoutInflater().createView(context, "FrameLayout", attrs);
+		view = lc.getLayoutInflater().createView(context, "FrameLayout", attrs);
 		if(view == null)
 			view = new FrameLayout(context, attrs);
 	}
@@ -82,7 +82,7 @@ public class LGFrameLayout extends LGViewGroup implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = lc.GetLayoutInflater().createView(context, "FrameLayout", attrs);
+		view = lc.getLayoutInflater().createView(context, "FrameLayout", attrs);
 		if(view == null)
 			view = new FrameLayout(context, attrs, defStyle);
 	}

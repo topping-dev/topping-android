@@ -1,7 +1,6 @@
 package dev.topping.android.backend;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -50,7 +49,7 @@ public abstract class LuaLoadHandler extends Handler
 			}break;
 			case LOAD_MESSAGE:
 			{
-				ToppingEngine.getInstance().Startup(ctx);
+				ToppingEngine.getInstance().startup(ctx);
 				sendEmptyMessage(FINISH_MESSAGE);
 				
 			}break;
@@ -61,12 +60,12 @@ public abstract class LuaLoadHandler extends Handler
 					public void run()
 					{
 						//mDialog.dismiss();
-						OnFinished();
+						onFinished();
 					}
 				});
 				break;
 		}
 	}
 	
-	public abstract void OnFinished();
+	public abstract void onFinished();
 }

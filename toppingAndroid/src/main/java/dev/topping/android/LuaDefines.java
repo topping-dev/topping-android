@@ -23,8 +23,8 @@ public class LuaDefines implements LuaInterface
 	public static String TAG = "LuaDefines";
 
 	//TODO:Add lua date
-	@LuaFunction(manual = false, methodName = "GetHumanReadableDate", self = LuaDefines.class, arguments = { Integer.class })
-	public static String GetHumanReadableDate(Integer value)
+	@LuaFunction(manual = false, methodName = "getHumanReadableDate", self = LuaDefines.class, arguments = { Integer.class })
+	public static String getHumanReadableDate(Integer value)
 	{
 		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(System.currentTimeMillis());
@@ -37,10 +37,10 @@ public class LuaDefines implements LuaInterface
 		return day + "." + month + "." + year /*+ " " + hour + ":" + month + ":" + second*/;
 	}
 
-	@LuaFunction(manual = false, methodName = "RegisterAndConnectWifi", self = LuaDefines.class, arguments = { LuaContext.class, String.class, String.class })
-	public static void RegisterAndConnectWifi(LuaContext lc, String ssid, String password)
+	@LuaFunction(manual = false, methodName = "registerAndConnectWifi", self = LuaDefines.class, arguments = { LuaContext.class, String.class, String.class })
+	public static void registerAndConnectWifi(LuaContext lc, String ssid, String password)
 	{
-		connectToAP(lc.GetContext(), ssid, password);
+		connectToAP(lc.getContext(), ssid, password);
 	}
 
 	public static void connectToAP(Context ctx, String ssid, String passkey)

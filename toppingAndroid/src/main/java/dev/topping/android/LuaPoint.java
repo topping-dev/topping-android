@@ -16,8 +16,8 @@ public class LuaPoint extends PointF implements LuaInterface
 	 * Creates LuaPoint
 	 * @return LuaPoint
 	 */
-	@LuaFunction(manual = false, methodName = "CreatePoint", self = LuaPoint.class)
-	public static LuaPoint CreatePoint()
+	@LuaFunction(manual = false, methodName = "createPoint", self = LuaPoint.class)
+	public static LuaPoint createPoint()
 	{
 		return new LuaPoint();
 	}
@@ -28,11 +28,11 @@ public class LuaPoint extends PointF implements LuaInterface
 	 * @param y
 	 * @return LuaPoint
 	 */
-	@LuaFunction(manual = false, methodName = "CreatePointPar", self = LuaPoint.class, arguments = { Float.class, Float.class })
-	public static LuaPoint CreatePointPar(Float x, Float y)
+	@LuaFunction(manual = false, methodName = "createPointPar", self = LuaPoint.class, arguments = { Float.class, Float.class })
+	public static LuaPoint createPointPar(Float x, Float y)
 	{
 		LuaPoint lp = new LuaPoint();
-		lp.Set(x, y);
+		lp.set(x, y);
 		return lp;
 	}
 
@@ -41,8 +41,8 @@ public class LuaPoint extends PointF implements LuaInterface
 	 * @param x
 	 * @param y
 	 */
-	@LuaFunction(manual = false, methodName = "Set", arguments = { Float.class, Float.class })
-	public void Set(Float x, Float y)
+	@LuaFunction(manual = false, methodName = "set", arguments = { Float.class, Float.class })
+	public void set(Float x, Float y)
 	{
 		super.set(x.floatValue(), y.floatValue());
 	}
@@ -51,15 +51,15 @@ public class LuaPoint extends PointF implements LuaInterface
 	 * Gets the x value
 	 * @return float
 	 */
-	@LuaFunction(manual = false, methodName = "GetX")
-	public Float GetX() { return Float.valueOf(x); }
+	@LuaFunction(manual = false, methodName = "getX")
+	public Float getX() { return Float.valueOf(x); }
 
 	/**
 	 * Gets the y value
 	 * @return float
 	 */
-	@LuaFunction(manual = false, methodName = "GetY")
-	public Float GetY() { return Float.valueOf(y); }
+	@LuaFunction(manual = false, methodName = "getY")
+	public Float getY() { return Float.valueOf(y); }
 
 	/**
 	 * (Ignore)

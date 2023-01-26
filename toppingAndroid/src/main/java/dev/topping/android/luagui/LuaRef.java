@@ -137,7 +137,7 @@ public class LuaRef implements LuaInterface, Serializable
              * return LuaRef.WithValue(store[k]) */
             final int lc5 = lua_gettop(L);
             lua_getfield(L,LUA_ENVIRONINDEX,"LuaRef");
-            lua_pushliteral(L,"WithValue");
+            lua_pushliteral(L,"withValue");
             lua_gettable(L,-2);
             lua_remove(L,-2);
             lc_getupvalue(L,lua_upvalueindex(1),0,1);
@@ -216,7 +216,7 @@ public class LuaRef implements LuaInterface, Serializable
     /**
      * (Ignore)
      */
-    public static void ResourceLoader(Context ctx)
+    public static void resourceLoader(Context ctx)
     {
         /* function readOnlyTable (t)
          * 	local proxy = {}
@@ -226,7 +226,7 @@ public class LuaRef implements LuaInterface, Serializable
          * 		    if type(store[k]) == "table" then
          * 		        return store[k]
          * 		    else
-         * 		        return LuaRef.WithValue(store[k])
+         * 		        return LuaRef.withValue(store[k])
          * 		    end
          * 	    end,
          * 		__newindex = function (t,k,v)
@@ -236,7 +236,7 @@ public class LuaRef implements LuaInterface, Serializable
          * 	setmetatable(proxy, mt)
          * 	return proxy
          * end */
-        LuaState L = ToppingEngine.getInstance().GetLuaState();
+        LuaState L = ToppingEngine.getInstance().getLuaState();
         lua_pushcfunction(L, readOnlyTable);
         lua_setfield(L,LUA_GLOBALSINDEX,"readOnlyTable");
 
@@ -415,8 +415,8 @@ public class LuaRef implements LuaInterface, Serializable
     /**
      * (Ignore)
      */
-    @LuaFunction(manual = false, methodName = "WithValue", self = LuaRef.class, arguments = { Integer.class })
-    public static LuaRef WithValue(int val)
+    @LuaFunction(manual = false, methodName = "withValue", self = LuaRef.class, arguments = { Integer.class })
+    public static LuaRef withValue(int val)
     {
         return new LuaRef(val);
     }
@@ -427,10 +427,10 @@ public class LuaRef implements LuaInterface, Serializable
      * @param id
      * @return LuaRef
      */
-    @LuaFunction(manual = false, methodName = "GetRef", self = LuaRef.class, arguments = { LuaContext.class, String.class })
-    public static LuaRef GetRef(LuaContext ctx, String id)
+    @LuaFunction(manual = false, methodName = "getRef", self = LuaRef.class, arguments = { LuaContext.class, String.class })
+    public static LuaRef getRef(LuaContext ctx, String id)
     {
-        return new LuaRef(ctx.GetContext().getResources().getIdentifier(id, null, null));
+        return new LuaRef(ctx.getContext().getResources().getIdentifier(id, null, null));
     }
 
     @Override

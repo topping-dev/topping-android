@@ -68,11 +68,11 @@ public class LGBottomNavigationView extends LGFrameLayout implements LuaInterfac
     @Override
     public void Setup(Context context, AttributeSet attrs, int defStyle) {
         if(attrs == null) {
-            view = lc.GetLayoutInflater().createView(context, "BottomNavigationView", null);
+            view = lc.getLayoutInflater().createView(context, "BottomNavigationView", null);
             if (view == null)
                 view = new BottomNavigationView(context);
         } else {
-            view = lc.GetLayoutInflater().createView(context, "BottomNavigationView", attrs);
+            view = lc.getLayoutInflater().createView(context, "BottomNavigationView", attrs);
             if (view == null)
                 view = new BottomNavigationView(context, attrs);
         }
@@ -81,7 +81,7 @@ public class LGBottomNavigationView extends LGFrameLayout implements LuaInterfac
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if(ltTabSelectedListener != null) {
-                    ltTabSelectedListener.CallIn(tab.getPosition());
+                    ltTabSelectedListener.callIn(tab.getPosition());
                 }
             }
 
@@ -97,8 +97,8 @@ public class LGBottomNavigationView extends LGFrameLayout implements LuaInterfac
         });
     }
 
-    @LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGBottomNavigationView.class)
-    public static LGBottomNavigationView Create(LuaContext context) {
+    @LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGBottomNavigationView.class)
+    public static LGBottomNavigationView create(LuaContext context) {
         return new LGBottomNavigationView(context);
     }
 
@@ -106,8 +106,8 @@ public class LGBottomNavigationView extends LGFrameLayout implements LuaInterfac
      * Set tab selected listener
      * @param ltTabSelectedListener
      */
-    @LuaFunction(manual = false, methodName = "SetTabSelectedListener", arguments = { LuaTranslator.class })
-    public void SetTabSelectedListener(LuaTranslator ltTabSelectedListener) {
+    @LuaFunction(manual = false, methodName = "setTabSelectedListener", arguments = { LuaTranslator.class })
+    public void setTabSelectedListener(LuaTranslator ltTabSelectedListener) {
         this.ltTabSelectedListener = ltTabSelectedListener;
     }
 
@@ -115,8 +115,8 @@ public class LGBottomNavigationView extends LGFrameLayout implements LuaInterfac
      * Set can tab select listener
      * @param ltCanSelectTab
      */
-    @LuaFunction(manual = false, methodName = "SetCanSelectTab", arguments = { LuaTranslator.class })
-    public void SetCanSelectTab(LuaTranslator ltCanSelectTab) {
+    @LuaFunction(manual = false, methodName = "setCanSelectTab", arguments = { LuaTranslator.class })
+    public void setCanSelectTab(LuaTranslator ltCanSelectTab) {
         this.ltCanSelectTab = ltCanSelectTab;
     }
 

@@ -28,7 +28,7 @@ public class CTimePickerDialog extends TimePickerDialog
 	{
 		super.onTimeChanged(view, hourOfDay, minute);
 		if(ltOnTimeChanged != null)
-			ltOnTimeChanged.CallIn(dialog, hourOfDay, minute);
+			ltOnTimeChanged.callIn(dialog, hourOfDay, minute);
 	}
 
 }

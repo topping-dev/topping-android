@@ -20,8 +20,8 @@ public class LGConstraintLayout extends LGViewGroup implements LuaInterface
 	 * @param lc
 	 * @return LGConstraintLayout
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGConstraintLayout.class)
-	public static LGConstraintLayout Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGConstraintLayout.class)
+	public static LGConstraintLayout create(LuaContext lc)
 	{
 		return new LGConstraintLayout(lc);
 	}
@@ -55,7 +55,7 @@ public class LGConstraintLayout extends LGViewGroup implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = lc.GetLayoutInflater().createView(context, "ConstraintLayout");
+		view = lc.getLayoutInflater().createView(context, "ConstraintLayout");
 		if(view == null)
 			view = new ConstraintLayout(context);
 	}
@@ -65,7 +65,7 @@ public class LGConstraintLayout extends LGViewGroup implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = lc.GetLayoutInflater().createView(context, "ConstraintLayout", attrs);
+		view = lc.getLayoutInflater().createView(context, "ConstraintLayout", attrs);
 		if(view == null)
 			view = new ConstraintLayout(context, attrs);
 	}

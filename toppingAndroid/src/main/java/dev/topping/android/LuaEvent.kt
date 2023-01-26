@@ -123,47 +123,47 @@ class LuaEvent : LuaInterface {
         @JvmField
         var UI_EVENT_NFC = 14
 
-        fun OnUIEvent(self: LuaInterface, event: Int, lc: LuaContext?, vararg args: Any?): Any? {
+        fun onUIEvent(self: LuaInterface, event: Int, lc: LuaContext?, vararg args: Any?): Any? {
             var ltToCall: LuaTranslator? = null
             ltToCall = eventMap[self.GetId() + event]
             if (ltToCall != null) {
-                return if (args.isNotEmpty()) ltToCall.CallInSelf(self, lc, *args)
-                else ltToCall.CallInSelf(self, lc)
+                return if (args.isNotEmpty()) ltToCall.callInSelf(self, lc, *args)
+                else ltToCall.callInSelf(self, lc)
             }
             return null
         }
 
         /**
-         * Registers GUI event
+         * Registers UI event
          * @param luaId
          * @param event +"LuaFragment.FRAGMENT_EVENT_CREATE" | "LuaFragment.FRAGMENT_EVENT_CREATE_VIEW" | "LuaFragment.FRAGMENT_EVENT_VIEW_CREATED" | "LuaFragment.FRAGMENT_EVENT_RESUME" | "LuaFragment.FRAGMENT_EVENT_PAUSE" | "LuaFragment.FRAGMENT_EVENT_DESTROY"
          * @param lt +fun(fragment: LuaFragment, context: LuaContext):void
          */
         @LuaFunction(
             manual = false,
-            methodName = "RegisterUIEvent",
+            methodName = "registerUIEvent",
             self = LuaFragment::class,
             arguments = [LuaRef::class, Int::class, LuaTranslator::class]
         )
-        fun RegisterUIEvent(luaId: LuaRef, event: Int, lt: LuaTranslator) {
-            val strId = ToppingEngine.getInstance().GetContext().resources.getResourceEntryName(luaId.ref)
+        fun registerUIEvent(luaId: LuaRef, event: Int, lt: LuaTranslator) {
+            val strId = ToppingEngine.getInstance().getContext().resources.getResourceEntryName(luaId.ref)
             eventMap[strId + event] = lt
         }
 
-        fun RegisterForm(name: String, ltInit: LuaTranslator) {
+        fun registerForm(name: String, ltInit: LuaTranslator) {
             formMap[name] = ltInit
         }
 
-        fun GetFormInstance(name: String, luaForm: LuaForm) : ILuaForm? {
-            return formMap[name]?.CallIn(luaForm) as ILuaForm?
+        fun getFormInstance(name: String, luaForm: LuaForm) : ILuaForm? {
+            return formMap[name]?.callIn(luaForm) as ILuaForm?
         }
 
-        fun RegisterFragment(name: String, ltInit: LuaTranslator) {
+        fun registerFragment(name: String, ltInit: LuaTranslator) {
             fragmentMap[name] = ltInit
         }
 
-        fun GetFragmentInstance(name: String, luaFragment: LuaFragment) : ILuaFragment? {
-            return fragmentMap[name]?.CallIn(luaFragment) as ILuaFragment?
+        fun getFragmentInstance(name: String, luaFragment: LuaFragment) : ILuaFragment? {
+            return fragmentMap[name]?.callIn(luaFragment) as ILuaFragment?
         }
     }
 

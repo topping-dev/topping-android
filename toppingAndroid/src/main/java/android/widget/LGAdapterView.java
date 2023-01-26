@@ -153,13 +153,13 @@ public class LGAdapterView extends BaseAdapter implements Filterable, SpinnerAda
 
 			LGView vF;
 			if(ltOnAdapterView != null) {
-				vF = (LGView) ltOnAdapterView.CallIn(par, position, getItem(position), v, mLc);
-				int rot = mLc.GetContext().getResources().getConfiguration().orientation;
+				vF = (LGView) ltOnAdapterView.callIn(par, position, getItem(position), v, mLc);
+				int rot = mLc.getContext().getResources().getConfiguration().orientation;
 				if(DisplayMetrics.isTablet && rot == Surface.ROTATION_90 && position == lastPosition)
 				{
 					if(lastSelectedView == null)
 						lastSelectedView  = vF;
-					v.setBackgroundColor(par.GetSelectedCellColor());
+					v.setBackgroundColor(par.getSelectedCellColor());
 				}
 				else
 					v.setBackgroundColor(Color.TRANSPARENT);
@@ -169,7 +169,7 @@ public class LGAdapterView extends BaseAdapter implements Filterable, SpinnerAda
 			}
 			else
 			{
-				vF = LGView.Create(mLc);
+				vF = LGView.create(mLc);
 				vF.view = getDropDownView(position, convertView, parent);
 			}
 			v = vF.view;
@@ -260,18 +260,18 @@ public class LGAdapterView extends BaseAdapter implements Filterable, SpinnerAda
 	@Override
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
 		if(mInflater == null)
-			mInflater = LayoutInflater.from(mLc.GetContext());
+			mInflater = LayoutInflater.from(mLc.getContext());
 		return createViewFromResource(mInflater, position, convertView, parent, mDropDownResource);
 	}
 
 	/**
 	 * (Ignore)
 	 */
-	public void DoExternalClick(int pos, View view)
+	public void doExternalClick(int pos, View view)
 	{
 		if(ltItemChanged != null)
 		{
-			ltItemChanged.CallIn(par, pos, getItem(pos));
+			ltItemChanged.callIn(par, pos, getItem(pos));
 		}
 	}
 
@@ -280,8 +280,8 @@ public class LGAdapterView extends BaseAdapter implements Filterable, SpinnerAda
 	 * @param header of section
 	 * @param id of LGAdapterView
 	 */
-	@LuaFunction(manual = false, methodName = "AddSection", arguments = { String.class, String.class })
-	public LGAdapterView AddSection(String header, String id)
+	@LuaFunction(manual = false, methodName = "addSection", arguments = { String.class, String.class })
+	public LGAdapterView addSection(String header, String id)
 	{
 		LGAdapterView lgav = new LGAdapterView(mLc, id);
 		sectionsValues.add(header);
@@ -293,8 +293,8 @@ public class LGAdapterView extends BaseAdapter implements Filterable, SpinnerAda
 	 * Remove section
 	 * @param header value
 	 */
-	@LuaFunction(manual = false, methodName = "RemoveSection", arguments = { String.class })
-	public void RemoveSection(String header)
+	@LuaFunction(manual = false, methodName = "removeSection", arguments = { String.class })
+	public void removeSection(String header)
 	{
 		sectionsValues.remove(header);
 		sections.remove(header);
@@ -304,8 +304,8 @@ public class LGAdapterView extends BaseAdapter implements Filterable, SpinnerAda
 	 * Add Value to adapter
 	 * @param value
 	 */
-	@LuaFunction(manual = false, methodName = "AddValue", arguments = { Object.class })
-	public void AddValue(Object value)
+	@LuaFunction(manual = false, methodName = "addValue", arguments = { Object.class })
+	public void addValue(Object value)
 	{
 		values.add(value);
 		mOriginalValues.add(value);
@@ -315,8 +315,8 @@ public class LGAdapterView extends BaseAdapter implements Filterable, SpinnerAda
 	 * Remove Value from adapter
 	 * @param value
 	 */
-	@LuaFunction(manual = false, methodName = "RemoveValue", arguments = { Object.class })
-	public void RemoveValue(Object value)
+	@LuaFunction(manual = false, methodName = "removeValue", arguments = { Object.class })
+	public void removeValue(Object value)
 	{
 		values.remove(value);
 		mOriginalValues.remove(value);
@@ -326,13 +326,13 @@ public class LGAdapterView extends BaseAdapter implements Filterable, SpinnerAda
 	 * Set Values of adapter
 	 * @param values
 	 */
-	@LuaFunction(manual = false, methodName = "SetValues", arguments = { Object.class })
-	public void SetValues(Object values) {
+	@LuaFunction(manual = false, methodName = "setValues", arguments = { Object.class })
+	public void setValues(Object values) {
 		if(values instanceof ArrayList)
 		{
 			for(Object entry : ((ArrayList<Object>)values))
 			{
-				AddValue(entry);
+				addValue(entry);
 			}
 		}
 	}
@@ -340,8 +340,8 @@ public class LGAdapterView extends BaseAdapter implements Filterable, SpinnerAda
 	/**
 	 * Remove all values from adapter
 	 */
-	@LuaFunction(manual = false, methodName = "Clear")
-	public void Clear()
+	@LuaFunction(manual = false, methodName = "clear")
+	public void clear()
 	{
 		values.clear();
 		mOriginalValues.clear();
@@ -350,14 +350,14 @@ public class LGAdapterView extends BaseAdapter implements Filterable, SpinnerAda
 	/**
 	 * Notify data set changed
 	 */
-	@LuaFunction(manual = false, methodName = "Notify")
-	public void Notify()
+	@LuaFunction(manual = false, methodName = "notify")
+	public void notifyData()
 	{
 		notifyDataSetChanged();
 	}
 
-	@LuaFunction(manual = false, methodName = "SetDropdownResource", arguments = { LuaRef.class })
-	public void SetDropdownResource(LuaRef ref)
+	@LuaFunction(manual = false, methodName = "setDropdownResource", arguments = { LuaRef.class })
+	public void setDropdownResource(LuaRef ref)
 	{
 		mDropDownResource = ref.getRef();
 	}
@@ -366,8 +366,8 @@ public class LGAdapterView extends BaseAdapter implements Filterable, SpinnerAda
 	 * Used to set adapterview function
 	 * @param lt +fun(adapter: LGAdapterView, parent: LGView, position: number, object: userdata):void
 	 */
-	@LuaFunction(manual = false, methodName = "SetOnAdapterView", arguments = { LuaTranslator.class })
-	public void SetOnAdapterView(LuaTranslator lt)
+	@LuaFunction(manual = false, methodName = "setOnAdapterView", arguments = { LuaTranslator.class })
+	public void setOnAdapterView(LuaTranslator lt)
 	{
 		ltOnAdapterView = lt;
 	}

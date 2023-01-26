@@ -25,9 +25,9 @@ public class LuaStore implements LuaInterface
 	 * @param key 
 	 * @param value
 	 */
-	public static void SetString(String key, String value)
+	public static void setString(String key, String value)
 	{
-		Context ctx = LuaForm.Companion.GetActiveForm().GetContext().GetContext();
+		Context ctx = LuaForm.Companion.getActiveForm().getContext().getContext();
 		SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, 0);
 	    SharedPreferences.Editor editor = settings.edit();
 	    editor.putString(key, value);
@@ -39,9 +39,9 @@ public class LuaStore implements LuaInterface
 	 * @param key
 	 * @param value
 	 */
-	public static void SetNumber(String key, double value)
+	public static void setNumber(String key, double value)
 	{
-		Context ctx = LuaForm.Companion.GetActiveForm().GetContext().GetContext();
+		Context ctx = LuaForm.Companion.getActiveForm().getContext().getContext();
 		SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, 0);
 	    SharedPreferences.Editor editor = settings.edit();
 	    editor.putFloat(key, (float) value);
@@ -53,9 +53,9 @@ public class LuaStore implements LuaInterface
 	 * @param key
 	 * @return
 	 */
-	public static Object Get(String key)
+	public static Object get(String key)
 	{
-		Context ctx = LuaForm.Companion.GetActiveForm().GetContext().GetContext();
+		Context ctx = LuaForm.Companion.getActiveForm().getContext().getContext();
 		SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, 0);
 		try
 		{
@@ -63,7 +63,7 @@ public class LuaStore implements LuaInterface
 		}
 		catch (Exception e) 
 		{
-			return Double.valueOf(settings.getFloat(key, -1.0f));
+			return (double) settings.getFloat(key, -1.0f);
 		}
 	}
 	
@@ -72,9 +72,9 @@ public class LuaStore implements LuaInterface
 	 * @param key
 	 * @return String
 	 */
-	public static String GetString(String key)
+	public static String getString(String key)
 	{
-		Context ctx = LuaForm.Companion.GetActiveForm().GetContext().GetContext();
+		Context ctx = LuaForm.Companion.getActiveForm().getContext().getContext();
 		SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, 0);
 		try
 		{
@@ -91,11 +91,11 @@ public class LuaStore implements LuaInterface
 	 * @param key
 	 * @return double
 	 */
-	public static Double GetNumber(String key)
+	public static Double getNumber(String key)
 	{
-		Context ctx = LuaForm.Companion.GetActiveForm().GetContext().GetContext();
+		Context ctx = LuaForm.Companion.getActiveForm().getContext().getContext();
 		SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, 0);
-		return Double.valueOf(settings.getFloat(key, -1));
+		return (double) settings.getFloat(key, -1);
 	}
 	
 	/**
@@ -104,13 +104,13 @@ public class LuaStore implements LuaInterface
 	public static int Lua_Index(LuaState L)
 	{
 		String key = Lua.lua_tostring(L, 2).toString();
-		Object val = LuaStore.Get(key);
+		Object val = LuaStore.get(key);
 		if(val == null)
-			ToppingEngine.getInstance().PushNIL();
+			ToppingEngine.getInstance().pushNIL();
 		else if(val instanceof String)
-			ToppingEngine.getInstance().PushString((String) val);
+			ToppingEngine.getInstance().pushString((String) val);
 		else
-			ToppingEngine.getInstance().PushDouble((Double)val);
+			ToppingEngine.getInstance().pushDouble((Double)val);
 		return 1;
 	}
 
@@ -123,12 +123,12 @@ public class LuaStore implements LuaInterface
 		if(Lua.lua_isstring(L, 3) != 0)
 		{
 			String val = Lua.lua_tostring(L, 3).toString();
-			LuaStore.SetString(key, val);
+			LuaStore.setString(key, val);
 		}
 		else if(Lua.lua_isnumber(L, 3) != 0)
 		{
-			Double val = Lua.lua_tonumber(L, 3);
-			LuaStore.SetNumber(key, val);
+			double val = Lua.lua_tonumber(L, 3);
+			LuaStore.setNumber(key, val);
 		}
 		return 1;
 	}

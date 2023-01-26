@@ -23,8 +23,8 @@ public class LuaNativeCall implements LuaInterface
 	 * @param params
 	 * @return LuaObjectStore
 	 */
-	@LuaFunction(manual = false, methodName = "Call", arguments = { Object.class, String.class, ArrayList.class })
-	public static LuaObjectStore Call(Object obj, String func, ArrayList<Object> params)
+	@LuaFunction(manual = false, methodName = "call", arguments = { Object.class, String.class, ArrayList.class })
+	public static LuaObjectStore call(Object obj, String func, ArrayList<Object> params)
 	{
 		Method[] methods = obj.getClass().getMethods();
 		LuaObjectStore los = new LuaObjectStore();
@@ -52,8 +52,8 @@ public class LuaNativeCall implements LuaInterface
 	 * @param params
 	 * @return LuaObjectStore
 	 */
-	@LuaFunction(manual = false, methodName = "CallClass", arguments = { String.class, String.class, ArrayList.class })
-	public static LuaObjectStore CallClass(String cls, String func, ArrayList<Object> params)
+	@LuaFunction(manual = false, methodName = "callClass", arguments = { String.class, String.class, ArrayList.class })
+	public static LuaObjectStore callClass(String cls, String func, ArrayList<Object> params)
 	{
 		Class self = null;
 		try

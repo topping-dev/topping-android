@@ -18,12 +18,12 @@ class LuaLifecycle private constructor(
      * (Ignore)
      */
     companion object {
-        fun Create(form: LuaForm) : LuaLifecycle
+        fun create(form: LuaForm) : LuaLifecycle
         {
             return LuaLifecycle(form.lifecycle, LuaCoroutineScope(form.lifecycleScope))
         }
 
-        fun Create(fragment: LuaFragment) : LuaLifecycle
+        fun create(fragment: LuaFragment) : LuaLifecycle
         {
             return LuaLifecycle(fragment.lifecycle, LuaCoroutineScope(fragment.lifecycleScope))
         }

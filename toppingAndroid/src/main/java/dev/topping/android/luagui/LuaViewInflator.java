@@ -2,7 +2,6 @@ package dev.topping.android.luagui;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Xml;
@@ -44,7 +43,6 @@ import java.util.Locale;
 import java.util.Stack;
 
 import dev.topping.android.LuaEvent;
-import dev.topping.android.LuaForm;
 import dev.topping.android.LuaTab;
 import dev.topping.android.ToppingEngine;
 import dev.topping.android.backend.LuaClass;
@@ -67,11 +65,11 @@ public class LuaViewInflator implements LuaInterface
 	{
 		this.lgStack = new Stack<>();
 		this.ids = new Hashtable<>();
-		this.context = lc.GetContext();
+		this.context = lc.getContext();
 		this.lc = lc;
 		this.idg = 0;
 		android.util.DisplayMetrics metrics = new android.util.DisplayMetrics();
-		((Activity)lc.GetContext()).getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		((Activity)lc.getContext()).getWindowManager().getDefaultDisplay().getMetrics(metrics);
 		DisplayMetrics.density = metrics.density;
 		DisplayMetrics.xdpi = metrics.xdpi;
 		DisplayMetrics.ydpi = metrics.ydpi;
@@ -79,38 +77,12 @@ public class LuaViewInflator implements LuaInterface
 	}
 
 	/**
-	 * (Ignore)
-	 */
-	public static int parseColor(LuaContext lc, String val)
-	{
-		if(val == null)
-			return Color.WHITE;
-		else
-		{
-			if(val.startsWith("#"))
-				return Color.parseColor(val);
-			else
-			{
-				int identifier = lc.GetContext().getResources().getIdentifier(val, "color", lc.GetContext().getPackageName());
-				try
-				{
-					return lc.GetContext().getResources().getColor(identifier);
-				}
-				catch (Exception e)
-				{
-					return Integer.MAX_VALUE;
-				}
-			}
-		}
-	}
-
-	/**
 	 * Creates LuaViewInflater Object From Lua.
 	 * @param lc
 	 * @return LuaViewInflator
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LuaViewInflator.class)
-	public static LuaViewInflator Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LuaViewInflator.class)
+	public static LuaViewInflator create(LuaContext lc)
 	{
 		LuaViewInflator lvi = new LuaViewInflator(lc);
 		return lvi;
@@ -132,19 +104,19 @@ public class LuaViewInflator implements LuaInterface
 	 * @param parent
 	 * @return LGView
 	 */
-	@LuaFunction(manual = false, methodName = "ParseFile", arguments = { String.class, LGView.class })
-	public LGView ParseFile(String filename, LGView parent)
+	@LuaFunction(manual = false, methodName = "parseFile", arguments = { String.class, LGView.class })
+	public LGView parseFile(String filename, LGView parent)
 	{
 		XmlPullParser parse;
 		try {
 			String[] arr = filename.split("\\.");
 			String name = arr[0].toLowerCase(Locale.US);
-			parse = ToppingEngine.getInstance().GetContext().getResources().getLayout(getResourceId(ToppingEngine.getInstance().GetContext(), name, "layout", ToppingEngine.getInstance().GetContext().getPackageName()));
+			parse = ToppingEngine.getInstance().getContext().getResources().getLayout(getResourceId(ToppingEngine.getInstance().getContext(), name, "layout", ToppingEngine.getInstance().getContext().getPackageName()));
 
 			ArrayList<LGView> lgRoot = new ArrayList<LGView>();
 			LGView v = inflate(parse, lgRoot, parent);
-			if(!v.IsLoaded())
-				v.SetLoaded(LuaEvent.Companion.OnUIEvent(v, LuaEvent.UI_EVENT_VIEW_CREATE, lc));
+			if(!v.isLoaded())
+				v.setLoaded(LuaEvent.Companion.onUIEvent(v, LuaEvent.UI_EVENT_VIEW_CREATE, lc));
 			return v;
 		}
 		catch (XmlPullParserException ex) { Log.e("LuaViewInflator", ex.getMessage()); }
@@ -158,17 +130,17 @@ public class LuaViewInflator implements LuaInterface
 	 * @param parent
 	 * @return LGView
 	 */
-	@LuaFunction(manual = false, methodName = "Inflate", arguments = { LuaRef.class, LGView.class })
-	public LGView Inflate(LuaRef id, LGView parent)
+	@LuaFunction(manual = false, methodName = "inflate", arguments = { LuaRef.class, LGView.class })
+	public LGView inflate(LuaRef id, LGView parent)
 	{
 		XmlPullParser parse;
 		try {
-			parse = ToppingEngine.getInstance().GetContext().getResources().getLayout(id.getRef());
+			parse = ToppingEngine.getInstance().getContext().getResources().getLayout(id.getRef());
 
 			ArrayList<LGView> lgRoot = new ArrayList<LGView>();
 			LGView v = inflate(parse, lgRoot, parent);
-			if(!v.IsLoaded())
-				v.SetLoaded(LuaEvent.Companion.OnUIEvent(v, LuaEvent.UI_EVENT_VIEW_CREATE, lc));
+			if(!v.isLoaded())
+				v.setLoaded(LuaEvent.Companion.onUIEvent(v, LuaEvent.UI_EVENT_VIEW_CREATE, lc));
 			return v;
 		}
 		catch (XmlPullParserException ex) { Log.e("LuaViewInflator", ex.getMessage()); }
@@ -205,7 +177,7 @@ public class LuaViewInflator implements LuaInterface
 				if(lgStack.size() > 0)
 				{
 					LGView vParent = lgStack.peek();
-					vParent.AddSubview(v);
+					vParent.addSubview(v);
 					((ViewGroup)vParent.view).addView(v.view);
 				}
 				else
@@ -219,7 +191,7 @@ public class LuaViewInflator implements LuaInterface
 				}
 				else
 				{
-					v.SetLoaded(LuaEvent.Companion.OnUIEvent(v, LuaEvent.UI_EVENT_VIEW_CREATE, lc));
+					v.setLoaded(LuaEvent.Companion.onUIEvent(v, LuaEvent.UI_EVENT_VIEW_CREATE, lc));
 				}
 
 				if (root == null) {
@@ -233,7 +205,7 @@ public class LuaViewInflator implements LuaInterface
 				data.pop();
 				if(lgStack.size() > 0 && lgStack.peek().internalName.equalsIgnoreCase(parse.getName()))
 				{
-					lgStack.peek().SetLoaded(LuaEvent.Companion.OnUIEvent(lgStack.peek(), LuaEvent.UI_EVENT_VIEW_CREATE, lc));
+					lgStack.peek().setLoaded(LuaEvent.Companion.onUIEvent(lgStack.peek(), LuaEvent.UI_EVENT_VIEW_CREATE, lc));
 					lgStack.pop();
 				}
 			}
@@ -242,7 +214,7 @@ public class LuaViewInflator implements LuaInterface
 		return root;
 	}
 
-	private Class<LGView> ContainsPluginView(ArrayList<Class<?>> plugins, String name)
+	private Class<LGView> containsPluginView(ArrayList<Class<?>> plugins, String name)
 	{
 		for(Class cls : plugins)
 		{
@@ -373,7 +345,7 @@ public class LuaViewInflator implements LuaInterface
 		}
 		else if(name.equals("com.google.android.material.tabs.TabItem")
 				|| name.equals("LuaTab")) {
-			lgresult = LuaTab.Create();
+			lgresult = LuaTab.create();
 		}
 		else if(name.equals("androidx.viewpager2.widget.ViewPager2")
 				|| name.equals("android.support.v4.view.ViewPager")
@@ -388,7 +360,7 @@ public class LuaViewInflator implements LuaInterface
 				|| name.equals("LGWebView")) {
 			lgresult = new LGBottomNavigationView(lc, atts);
 		}
-		else if((pluginView = ContainsPluginView(ToppingEngine.GetViewPlugins(), name)) != null)
+		else if((pluginView = containsPluginView(ToppingEngine.getViewPlugins(), name)) != null)
 		{
 			try
 			{
@@ -409,7 +381,7 @@ public class LuaViewInflator implements LuaInterface
 
 		lgresult.internalName = name;
 		lgresult.view.setTag(lgresult);
-		lgresult.SetLuaId(luaId);
+		lgresult.setLuaId(luaId);
 
 		if (lgStack.size() > 0)
 		{

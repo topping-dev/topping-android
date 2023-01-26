@@ -22,8 +22,8 @@ public class LGRecyclerView extends LGView
      * @param lc
      * @return LGRecyclerView
      */
-    @LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGRecyclerView.class)
-    public static LGRecyclerView Create(LuaContext lc)
+    @LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGRecyclerView.class)
+    public static LGRecyclerView create(LuaContext lc)
     {
         return new LGRecyclerView(lc);
     }
@@ -65,7 +65,7 @@ public class LGRecyclerView extends LGView
      */
     public void Setup(Context context)
     {
-        view = lc.GetLayoutInflater().createView(context, "RecyclerView");
+        view = lc.getLayoutInflater().createView(context, "RecyclerView");
         if(view == null)
             view = new RecyclerView(context);
     }
@@ -73,7 +73,7 @@ public class LGRecyclerView extends LGView
     @Override
     public void Setup(Context context, AttributeSet attrs)
     {
-        view = lc.GetLayoutInflater().createView(context, "RecyclerView", attrs);
+        view = lc.getLayoutInflater().createView(context, "RecyclerView", attrs);
         if(view == null)
             view = new RecyclerView(context, attrs);
     }
@@ -81,7 +81,7 @@ public class LGRecyclerView extends LGView
     @Override
     public void Setup(Context context, AttributeSet attrs, int defStyle)
     {
-        view = lc.GetLayoutInflater().createView(context, "RecyclerView", attrs);
+        view = lc.getLayoutInflater().createView(context, "RecyclerView", attrs);
         if(view == null)
             view = new RecyclerView(context, attrs, defStyle);
     }
@@ -98,8 +98,8 @@ public class LGRecyclerView extends LGView
      * Gets the LGRecyclerViewAdapter of recyclerview
      * @return LGRecyclerViewAdapter
      */
-    @LuaFunction(manual = false, methodName = "GetAdapter", arguments = { })
-    public LGRecyclerViewAdapter GetAdapter()
+    @LuaFunction(manual = false, methodName = "getAdapter", arguments = { })
+    public LGRecyclerViewAdapter getAdapter()
     {
         return (LGRecyclerViewAdapter) ((RecyclerView)view).getAdapter();
     }
@@ -108,19 +108,19 @@ public class LGRecyclerView extends LGView
      * Sets the LGRecyclerViewAdapter of listview
      * @param adapter
      */
-    @LuaFunction(manual = false, methodName = "SetAdapter", arguments = { LGRecyclerViewAdapter.class })
-    public void SetAdapter(LGRecyclerViewAdapter adapter)
+    @LuaFunction(manual = false, methodName = "setAdapter", arguments = { LGRecyclerViewAdapter.class })
+    public void setAdapter(LGRecyclerViewAdapter adapter)
     {
         ((RecyclerView)view).setAdapter(adapter);
         adapter.parent = this;
     }
 
-    public void SetAdapter(LuaTranslator ltInit)
+    public void setAdapter(LuaTranslator ltInit)
     {
-        LGRecyclerViewAdapter adapter = LGRecyclerViewAdapter.Create(lc, "");
-        adapter.kotlinInterface = (ILGRecyclerViewAdapter)ltInit.CallIn(adapter);
-        adapter.SetOnCreateViewHolder(adapter.kotlinInterface.ltOnCreateViewHolder);
-        adapter.SetOnBindViewHolder(adapter.kotlinInterface.ltOnBindViewHolder);
-        adapter.SetGetItemViewType(adapter.kotlinInterface.ltGetItemViewType);
+        LGRecyclerViewAdapter adapter = LGRecyclerViewAdapter.create(lc, "");
+        adapter.kotlinInterface = (ILGRecyclerViewAdapter)ltInit.callIn(adapter);
+        adapter.setOnCreateViewHolder(adapter.kotlinInterface.ltOnCreateViewHolder);
+        adapter.setOnBindViewHolder(adapter.kotlinInterface.ltOnBindViewHolder);
+        adapter.setGetItemViewType(adapter.kotlinInterface.ltGetItemViewType);
     }
 }

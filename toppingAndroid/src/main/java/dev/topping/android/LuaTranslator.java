@@ -22,8 +22,8 @@ public class LuaTranslator implements LuaInterface
      * @param functionName
      * @return LuaTranslator
      */
-    @LuaFunction(manual = false, methodName = "Register", self = LuaTranslator.class, arguments = { Object.class, String.class })
-    public static LuaTranslator Register(Object obj, String functionName)
+    @LuaFunction(manual = false, methodName = "register", self = LuaTranslator.class, arguments = { Object.class, String.class })
+    public static LuaTranslator register(Object obj, String functionName)
     {
         return new LuaTranslator(obj, functionName);
     }
@@ -58,7 +58,7 @@ public class LuaTranslator implements LuaInterface
     /**
      * (Ignore)
      */
-    public Object CallIn(Object ... args)
+    public Object callIn(Object ... args)
     {
         if(kObj != null)
         {
@@ -68,14 +68,14 @@ public class LuaTranslator implements LuaInterface
                 return kObj.call(obj, args);
         }
         if(nobj != null)
-            return ToppingEngine.getInstance().OnNativeEvent(obj, nobj, args);
-        return ToppingEngine.getInstance().OnGuiEvent(obj, function, args);
+            return ToppingEngine.getInstance().onNativeEvent(obj, nobj, args);
+        return ToppingEngine.getInstance().onGuiEvent(obj, function, args);
     }
 
     /**
      * (Ignore)
      */
-    public Object CallInSelf(Object self, Object ... args)
+    public Object callInSelf(Object self, Object ... args)
     {
         if(kObj != null)
         {
@@ -86,16 +86,16 @@ public class LuaTranslator implements LuaInterface
             return kObj.call(obj, newArgs);
         }
         if(nobj != null)
-            return ToppingEngine.getInstance().OnNativeEvent(self, nobj, args);
-        return ToppingEngine.getInstance().OnGuiEvent(self, function, args);
+            return ToppingEngine.getInstance().onNativeEvent(self, nobj, args);
+        return ToppingEngine.getInstance().onGuiEvent(self, function, args);
     }
 
     /**
      * (Ignore)
      */
-    public Object Call(Object a, Object b)
+    public Object call(Object a, Object b)
     {
-        return CallIn(a, b);
+        return callIn(a, b);
     }
 
     /**

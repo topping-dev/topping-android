@@ -34,7 +34,7 @@ public class Defines
 	
 	public static InputStream GetResourceAssetSd(String path, String resName)
     {
-		Context context = ToppingEngine.getInstance().GetContext();
+		Context context = ToppingEngine.getInstance().getContext();
     	try
     	{
     		try
@@ -79,7 +79,7 @@ public class Defines
 	
 	public static String GetPathAssetSd(String path)
     {
-		Context context = ToppingEngine.getInstance().GetContext();
+		Context context = ToppingEngine.getInstance().getContext();
     	try
     	{
     		try
@@ -123,7 +123,7 @@ public class Defines
 	
 	public static InputStream GetResourceSdAsset(String path, String resName)
 	{
-		Context context = ToppingEngine.getInstance().GetContext();
+		Context context = ToppingEngine.getInstance().getContext();
     	try
     	{
     		try
@@ -173,7 +173,7 @@ public class Defines
 	
 	public static String GetPathSdAsset(String path)
 	{
-		Context context = ToppingEngine.getInstance().GetContext();
+		Context context = ToppingEngine.getInstance().getContext();
     	try
     	{
     		try
@@ -215,7 +215,7 @@ public class Defines
 	
 	public static InputStream GetResourceSd(String path, String resName)
 	{
-		Context context = ToppingEngine.getInstance().GetContext();
+		Context context = ToppingEngine.getInstance().getContext();
 		try
 		{
 			/*int resId = context.getResources().getIdentifier("app_name", "string", Common.pack);
@@ -251,7 +251,7 @@ public class Defines
 	
 	public static String GetPathSd(String path)
 	{
-		Context context = ToppingEngine.getInstance().GetContext();
+		Context context = ToppingEngine.getInstance().getContext();
 		try
 		{
 			/*int resId = context.getResources().getIdentifier("app_name", "string", Common.pack);
@@ -283,7 +283,7 @@ public class Defines
 	
 	public static InputStream GetResourceAsset(String path, String resName)
     {
-		Context context = ToppingEngine.getInstance().GetContext();
+		Context context = ToppingEngine.getInstance().getContext();
 		try
 		{
 			AssetManager assetManager = context.getAssets();
@@ -318,7 +318,7 @@ public class Defines
 	
 	public static InputStream GetResourceInternalAsset(String path,	String resName)
 	{
-		Context context = ToppingEngine.getInstance().GetContext();
+		Context context = ToppingEngine.getInstance().getContext();
 		try
 		{
 			try
@@ -353,7 +353,7 @@ public class Defines
 	
 	public static String GetPathInternalAsset(String path)
 	{
-		Context context = ToppingEngine.getInstance().GetContext();
+		Context context = ToppingEngine.getInstance().getContext();
 		try
 		{
 			try
@@ -377,8 +377,8 @@ public class Defines
 	
 	public static String GetPathForLua()
 	{
-		String scriptsRoot = ToppingEngine.getInstance().GetScriptsRoot();
-		int primaryLoad = ToppingEngine.getInstance().GetPrimaryLoad();
+		String scriptsRoot = ToppingEngine.getInstance().getScriptsRoot();
+		int primaryLoad = ToppingEngine.getInstance().getPrimaryLoad();
 		switch(primaryLoad)
 		{
 			case ToppingEngine.EXTERNAL_DATA:

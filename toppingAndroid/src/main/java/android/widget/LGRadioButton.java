@@ -19,8 +19,8 @@ public class LGRadioButton extends LGCompoundButton implements LuaInterface
 	 * @param lc
 	 * @return LGRadioButton
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGRadioButton.class)
-	public static LGRadioButton Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGRadioButton.class)
+	public static LGRadioButton create(LuaContext lc)
 	{
 		return new LGRadioButton(lc);
 	}
@@ -62,7 +62,7 @@ public class LGRadioButton extends LGCompoundButton implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = lc.GetLayoutInflater().createView(context, "RadioButton");
+		view = lc.getLayoutInflater().createView(context, "RadioButton");
 		if(view == null)
 			view = new RadioButton(context);
 	}
@@ -72,7 +72,7 @@ public class LGRadioButton extends LGCompoundButton implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = lc.GetLayoutInflater().createView(context, "RadioButton", attrs);
+		view = lc.getLayoutInflater().createView(context, "RadioButton", attrs);
 		if(view == null)
 			view = new RadioButton(context, attrs);
 	}
@@ -82,7 +82,7 @@ public class LGRadioButton extends LGCompoundButton implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = lc.GetLayoutInflater().createView(context, "RadioButton", attrs);
+		view = lc.getLayoutInflater().createView(context, "RadioButton", attrs);
 		if(view == null)
 			view = new RadioButton(context, attrs, defStyle);
 	}

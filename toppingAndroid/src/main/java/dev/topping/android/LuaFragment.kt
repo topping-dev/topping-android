@@ -41,12 +41,12 @@ open class LuaFragment : Fragment, LuaInterface {
          */
         @LuaFunction(
             manual = false,
-            methodName = "Create",
+            methodName = "create",
             self = LuaFragment::class,
             arguments = [LuaContext::class, LuaRef::class]
         )
-        fun Create(lc: LuaContext, luaId: LuaRef?): LuaFragment {
-            return LuaFragment(lc.GetContext(), luaId)
+        fun create(lc: LuaContext, luaId: LuaRef?): LuaFragment {
+            return LuaFragment(lc.getContext(), luaId)
         }
 
         /**
@@ -59,12 +59,12 @@ open class LuaFragment : Fragment, LuaInterface {
          */
         @LuaFunction(
             manual = false,
-            methodName = "Create",
+            methodName = "create",
             self = LuaFragment::class,
             arguments = [LuaContext::class, LuaRef::class, Map::class]
         )
-        fun Create(lc: LuaContext, luaId: LuaRef?, args: Map<String, Any>?): LuaFragment {
-            return LuaFragment(lc.GetContext(), luaId, null, args)
+        fun create(lc: LuaContext, luaId: LuaRef?, args: Map<String, Any>?): LuaFragment {
+            return LuaFragment(lc.getContext(), luaId, null, args)
         }
 
         /**
@@ -77,17 +77,17 @@ open class LuaFragment : Fragment, LuaInterface {
          */
         @LuaFunction(
             manual = false,
-            methodName = "CreateWithUI",
+            methodName = "createWithUI",
             self = LuaFragment::class,
             arguments = [LuaContext::class, LuaRef::class, LuaRef::class, Map::class]
         )
-        fun CreateWithUI(
+        fun createWithUI(
             lc: LuaContext,
             luaId: LuaRef?,
             ui: LuaRef?,
             args: Map<String, Any>?
         ): LuaFragment {
-            return LuaFragment(lc.GetContext(), luaId, ui, args)
+            return LuaFragment(lc.getContext(), luaId, ui, args)
         }
     }
 
@@ -95,8 +95,9 @@ open class LuaFragment : Fragment, LuaInterface {
      * Gets LuaContext value of fragment
      * @return LuaContext
      */
-    @LuaFunction(manual = false, methodName = "GetContext")
-    fun GetContext(): LuaContext? {
+    @JvmName("getLuaContextJava")
+    @LuaFunction(manual = false, methodName = "getLuaContext")
+    fun getLuaContext(): LuaContext? {
         return luaContext
     }
 
@@ -110,7 +111,7 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     constructor(c: Context?, luaId: LuaRef?) {
         luaContext = LuaContext()
-        luaContext!!.SetContext(c)
+        luaContext!!.setContext(c)
         this.luaId = c!!.resources.getResourceEntryName(luaId!!.ref)
     }
 
@@ -119,7 +120,7 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     constructor(c: Context?, luaId: LuaRef?, ui: LuaRef?, args: Map<String, Any>?) {
         luaContext = LuaContext()
-        luaContext!!.SetContext(c)
+        luaContext!!.setContext(c)
         this.luaId = c!!.resources.getResourceEntryName(luaId?.ref!!)
         this.ui = ui
         args?.let {
@@ -131,8 +132,8 @@ open class LuaFragment : Fragment, LuaInterface {
      * Checks that fragment is initialized or not.
      * @return boolean
      */
-    @LuaFunction(manual = false, methodName = "IsInitialized")
-    fun IsInitialized(): Boolean {
+    @LuaFunction(manual = false, methodName = "isInitialized")
+    fun isInitialized(): Boolean {
         return view != null
     }
 
@@ -142,17 +143,16 @@ open class LuaFragment : Fragment, LuaInterface {
      * @return LGView
      */
     @SuppressLint("UseRequireInsteadOfGet")
-    @LuaFunction(manual = false, methodName = "GetViewById", arguments = [LuaRef::class])
-    fun GetViewById(lId: LuaRef): LGView {
-        return view!!.GetViewById(lId)
+    @LuaFunction(manual = false, methodName = "getViewById", arguments = [LuaRef::class])
+    fun getViewById(lId: LuaRef): LGView {
+        return view!!.getViewById(lId)
     }
 
     /**
      * Gets the view of fragment.
      * @return LGView
      */
-    @LuaFunction(manual = false, methodName = "GetView")
-    fun GetView(): LGView? {
+    fun getLGView(): LGView? {
         return view
     }
 
@@ -160,21 +160,21 @@ open class LuaFragment : Fragment, LuaInterface {
      * Sets the view to render.
      * @param v
      */
-    @LuaFunction(manual = false, methodName = "SetView", arguments = [LGView::class])
-    fun SetView(v: LGView) {
+    @LuaFunction(manual = false, methodName = "setView", arguments = [LGView::class])
+    fun setLGView(v: LGView) {
         view = v
         rootView!!.removeAllViews()
-        rootView!!.addView(v.GetView())
+        rootView!!.addView(v.getView())
     }
 
     /**
      * Sets the xml file of the view to render.
      * @param xml
      */
-    @LuaFunction(manual = false, methodName = "SetViewXML", arguments = [LuaRef::class])
-    fun SetViewXML(xml: LuaRef?) {
+    @LuaFunction(manual = false, methodName = "setViewXML", arguments = [LuaRef::class])
+    fun setViewXML(xml: LuaRef?) {
         val inflater = LuaViewInflator(luaContext)
-        view = inflater.Inflate(xml, null)
+        view = inflater.inflate(xml, null)
         rootView!!.removeAllViews()
         rootView!!.addView(view?.view)
     }
@@ -183,8 +183,8 @@ open class LuaFragment : Fragment, LuaInterface {
      * Sets the luaid of the view to render.
      * @param luaId
      */
-    @LuaFunction(manual = false, methodName = "SetViewId", arguments = [String::class])
-    fun SetViewId(luaId: String?) {
+    @LuaFunction(manual = false, methodName = "setViewId", arguments = [String::class])
+    fun setViewId(luaId: String?) {
         this.luaId = luaId
     }
 
@@ -192,16 +192,16 @@ open class LuaFragment : Fragment, LuaInterface {
      * Sets the title of the screen.
      * @param str
      */
-    @LuaFunction(manual = false, methodName = "SetTitle", arguments = [String::class])
-    fun SetTitle(str: String?) {
+    @LuaFunction(manual = false, methodName = "setTitle", arguments = [String::class])
+    fun setTitle(str: String?) {
         requireActivity().title = str
     }
 
     /**
      * Closes the form
      */
-    @LuaFunction(manual = false, methodName = "Close")
-    fun Close() {
+    @LuaFunction(manual = false, methodName = "close")
+    fun close() {
         parentFragmentManager.beginTransaction().remove(this).commitAllowingStateLoss()
     }
 
@@ -232,16 +232,16 @@ open class LuaFragment : Fragment, LuaInterface {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        luaContext = LuaContext.CreateLuaContext(inflater.context)
+        luaContext = LuaContext.createLuaContext(inflater.context)
         if (ui == null) {
-            view = LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_FRAGMENT_CREATE_VIEW, luaContext, LuaViewInflator(luaContext), null, LuaBundle(savedInstanceState)) as LGView?
+            view = LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_FRAGMENT_CREATE_VIEW, luaContext, LuaViewInflator(luaContext), null, LuaBundle(savedInstanceState)) as LGView?
             if(view == null)
-                view = kotlinInterface?.ltOnCreateView?.CallIn(luaContext, LuaViewInflator(luaContext), null, LuaBundle(savedInstanceState)) as LGView?
+                view = kotlinInterface?.ltOnCreateView?.callIn(luaContext, LuaViewInflator(luaContext), null, LuaBundle(savedInstanceState)) as LGView?
         } else {
             val inflaterL = LuaViewInflator(luaContext)
-            view = inflaterL.Inflate(ui, null)
+            view = inflaterL.inflate(ui, null)
         }
-        return if (view != null) view!!.GetView() else {
+        return if (view != null) view!!.getView() else {
             rootView = LinearLayout(inflater.context)
             rootView!!.layoutParams =
                 ViewGroup.LayoutParams(
@@ -258,8 +258,8 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        kotlinInterface?.ltOnViewCreated?.CallIn(this.view, LuaBundle(savedInstanceState))
-        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_FRAGMENT_VIEW_CREATED, luaContext)
+        kotlinInterface?.ltOnViewCreated?.callIn(this.view, LuaBundle(savedInstanceState))
+        LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_FRAGMENT_VIEW_CREATED, luaContext)
     }
 
     /**
@@ -267,9 +267,9 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        kotlinInterface = LuaEvent.GetFragmentInstance(GetId(), this)
-        kotlinInterface?.ltOnCreate?.CallIn(LuaBundle(null))
-        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_CREATE, luaContext)
+        kotlinInterface = LuaEvent.getFragmentInstance(GetId(), this)
+        kotlinInterface?.ltOnCreate?.callIn(LuaBundle(null))
+        LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_CREATE, luaContext)
     }
 
     /**
@@ -277,8 +277,8 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onResume() {
         super.onResume()
-        kotlinInterface?.ltOnResume?.CallIn()
-        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_RESUME, luaContext)
+        kotlinInterface?.ltOnResume?.callIn()
+        LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_RESUME, luaContext)
     }
 
     /**
@@ -286,8 +286,8 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onPause() {
         super.onPause()
-        kotlinInterface?.ltOnPause?.CallIn()
-        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_PAUSE, luaContext)
+        kotlinInterface?.ltOnPause?.callIn()
+        LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_PAUSE, luaContext)
     }
 
     /**
@@ -295,8 +295,8 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     override fun onDestroy() {
         super.onDestroy()
-        kotlinInterface?.ltOnDestroy?.CallIn()
-        LuaEvent.OnUIEvent(this, LuaEvent.UI_EVENT_DESTROY, luaContext)
+        kotlinInterface?.ltOnDestroy?.callIn()
+        LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_DESTROY, luaContext)
     }
 
     /**

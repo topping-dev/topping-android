@@ -19,8 +19,8 @@ public class LGRelativeLayout extends LGViewGroup implements LuaInterface
 	 * @param lc
 	 * @return LGRelativeLayout
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGRelativeLayout.class)
-	public static LGRelativeLayout Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGRelativeLayout.class)
+	public static LGRelativeLayout create(LuaContext lc)
 	{
 		return new LGRelativeLayout(lc);
 	}
@@ -62,7 +62,7 @@ public class LGRelativeLayout extends LGViewGroup implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = lc.GetLayoutInflater().createView(context, "RelativeLayout");
+		view = lc.getLayoutInflater().createView(context, "RelativeLayout");
 		if(view == null)
 			view = new RelativeLayout(context);
 	}
@@ -72,7 +72,7 @@ public class LGRelativeLayout extends LGViewGroup implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = lc.GetLayoutInflater().createView(context, "RelativeLayout", attrs);
+		view = lc.getLayoutInflater().createView(context, "RelativeLayout", attrs);
 		if(view == null)
 			view = new RelativeLayout(context, attrs);
 	}
@@ -82,7 +82,7 @@ public class LGRelativeLayout extends LGViewGroup implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = lc.GetLayoutInflater().createView(context, "RelativeLayout", attrs);
+		view = lc.getLayoutInflater().createView(context, "RelativeLayout", attrs);
 		if(view == null)
 			view = new RelativeLayout(context, attrs, defStyle);
 	}

@@ -28,28 +28,28 @@ public class LGFragmentStateAdapter extends FragmentStateAdapter implements LuaI
      * Creates LGFragmentStateAdapter Object From Lua.
      * @return LGFragmentStateAdapter
      */
-    @LuaFunction(manual = false, methodName = "CreateFromForm", arguments = { LuaForm.class }, self = LGFragmentStateAdapter.class)
-    public static LGFragmentStateAdapter CreateFromForm(LuaForm form)
+    @LuaFunction(manual = false, methodName = "createFromForm", arguments = { LuaForm.class }, self = LGFragmentStateAdapter.class)
+    public static LGFragmentStateAdapter createFromForm(LuaForm form)
     {
-        return Create(form.GetContext(), form.getFragmentManagerInner(), form.GetLifecycle());
+        return create(form.getContext(), form.getFragmentManagerInner(), form.getLuaLifecycle());
     }
 
     /**
      * Creates LGFragmentStateAdapter Object From Lua.
      * @return LGFragmentStateAdapter
      */
-    @LuaFunction(manual = false, methodName = "CreateFromFragment", arguments = { LuaFragment.class }, self = LGFragmentStateAdapter.class)
-    public static LGFragmentStateAdapter CreateFromFragment(LuaFragment fragment)
+    @LuaFunction(manual = false, methodName = "createFromFragment", arguments = { LuaFragment.class }, self = LGFragmentStateAdapter.class)
+    public static LGFragmentStateAdapter createFromFragment(LuaFragment fragment)
     {
-        return Create(fragment.GetContext(), new LuaFragmentManager(fragment.getChildFragmentManager()), LuaLifecycle.Companion.Create(fragment));
+        return create(fragment.getLuaContextJava(), new LuaFragmentManager(fragment.getChildFragmentManager()), LuaLifecycle.Companion.create(fragment));
     }
 
     /**
      * Creates LGFragmentStateAdapter Object From Lua.
      * @return LGFragmentStateAdapter
      */
-    @LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class, LuaFragmentManager.class, LuaLifecycle.class }, self = LGFragmentStateAdapter.class)
-    public static LGFragmentStateAdapter Create(LuaContext context, LuaFragmentManager fragmentManager, LuaLifecycle lifecycle)
+    @LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class, LuaFragmentManager.class, LuaLifecycle.class }, self = LGFragmentStateAdapter.class)
+    public static LGFragmentStateAdapter create(LuaContext context, LuaFragmentManager fragmentManager, LuaLifecycle lifecycle)
     {
         return new LGFragmentStateAdapter(context, fragmentManager, lifecycle);
     }
@@ -71,8 +71,8 @@ public class LGFragmentStateAdapter extends FragmentStateAdapter implements LuaI
     @Override
     public Fragment createFragment(int position) {
         if(ltCreateFragment != null)
-            return (LuaFragment)ltCreateFragment.CallIn(position);
-        return LuaFragment.Companion.Create(mLc, LuaRef.WithValue(0));
+            return (LuaFragment)ltCreateFragment.callIn(position);
+        return LuaFragment.Companion.create(mLc, LuaRef.withValue(0));
     }
 
     /**
@@ -82,7 +82,7 @@ public class LGFragmentStateAdapter extends FragmentStateAdapter implements LuaI
     public int getItemCount()
     {
         if(ltGetItemCount != null)
-            return (int) ltGetItemCount.CallIn();
+            return (int) ltGetItemCount.callIn();
         return 0;
     }
 
@@ -91,8 +91,8 @@ public class LGFragmentStateAdapter extends FragmentStateAdapter implements LuaI
      * Used to create fragment
      * @param lt +fun(adapter: LGFragmentStateAdapter, position: number):LuaFragment
      */
-    @LuaFunction(manual = false, methodName = "SetCreateFragment", arguments = { LuaTranslator.class })
-    public void SetCreateFragment(LuaTranslator lt)
+    @LuaFunction(manual = false, methodName = "setCreateFragment", arguments = { LuaTranslator.class })
+    public void setCreateFragment(LuaTranslator lt)
     {
         ltCreateFragment = lt;
     }
@@ -102,8 +102,8 @@ public class LGFragmentStateAdapter extends FragmentStateAdapter implements LuaI
      * Used to return item count
      * @param lt +fun(adapter: LGFragmentStateAdapter):number
      */
-    @LuaFunction(manual = false, methodName = "SetGetItemCount", arguments = { LuaTranslator.class })
-    public void SetGetItemCount(LuaTranslator lt)
+    @LuaFunction(manual = false, methodName = "setGetItemCount", arguments = { LuaTranslator.class })
+    public void setGetItemCount(LuaTranslator lt)
     {
         ltGetItemCount = lt;
     }

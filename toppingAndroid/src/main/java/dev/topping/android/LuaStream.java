@@ -38,8 +38,8 @@ public class LuaStream implements LuaInterface
 	 * Get stream.
 	 * @return LuaObjectStore InputStream or OutputStream value. 
 	 */
-	@LuaFunction(manual = false, methodName = "GetStream")
-	public LuaObjectStore GetStream()
+	@LuaFunction(manual = false, methodName = "fetStream")
+	public LuaObjectStore getStream()
 	{
 		if(type == -1)
 		{
@@ -59,7 +59,7 @@ public class LuaStream implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public Object GetStreamInternal()
+	public Object getStreamInternal()
 	{
 		if(type == -1)
 		{
@@ -77,8 +77,8 @@ public class LuaStream implements LuaInterface
 	 * Set stream.
 	 * @param LuaObjectStore InputStream or OutputStream value.
 	 */
-	@LuaFunction(manual = false, methodName = "SetStream", arguments = { LuaObjectStore.class })
-	public void SetStream(LuaObjectStore stream)
+	@LuaFunction(manual = false, methodName = "setStream", arguments = { LuaObjectStore.class })
+	public void setStream(LuaObjectStore stream)
 	{
 		Object nativeStream = stream.obj;
 		if(nativeStream instanceof InputStream)
@@ -96,7 +96,7 @@ public class LuaStream implements LuaInterface
 	/**
 	 * (Ignore)
 	 */
-	public void SetStream(Object stream)
+	public void setStream(Object stream)
 	{
 		if(stream instanceof InputStream)
 		{
@@ -114,8 +114,8 @@ public class LuaStream implements LuaInterface
 	 * Reads a single byte from this stream and returns it as an integer in the range from 0 to 255. Returns -1 if the end of the stream has been reached. Blocks until one byte has been read, the end of the source stream is detected or an exception is thrown.
 	 * @return int value of byte.
 	 */
-	@LuaFunction(manual = false, methodName = "ReadOne")
-	public Integer ReadOne()
+	@LuaFunction(manual = false, methodName = "readOne")
+	public Integer readOne()
 	{
 		if(type == OUTPUTSTREAM)
 		{
@@ -140,8 +140,8 @@ public class LuaStream implements LuaInterface
 	 * @param offset offset to start.
 	 * @param length length to read.
 	 */
-	@LuaFunction(manual = false, methodName = "Read", arguments = { Object.class, Integer.class, Integer.class })
-	public void Read(LuaBuffer bufferO, Integer offset, Integer length)
+	@LuaFunction(manual = false, methodName = "read", arguments = { Object.class, Integer.class, Integer.class })
+	public void read(LuaBuffer bufferO, Integer offset, Integer length)
 	{
 		if(type == OUTPUTSTREAM)
 		{
@@ -149,7 +149,7 @@ public class LuaStream implements LuaInterface
 			return;
 		}
 		
-		byte[] buffer = bufferO.GetBuffer();
+		byte[] buffer = bufferO.getBuffer();
 		
 		try
 		{
@@ -165,8 +165,8 @@ public class LuaStream implements LuaInterface
 	 * Writes a single byte to this stream. Only the least significant byte of the integer oneByte is written to the stream.
 	 * @param oneByte byte value.
 	 */
-	@LuaFunction(manual = false, methodName = "WriteOne", arguments = { Integer.class })
-	public void WriteOne(Integer oneByte)
+	@LuaFunction(manual = false, methodName = "writeOne", arguments = { Integer.class })
+	public void writeOne(Integer oneByte)
 	{
 		if(type == INPUTSTREAM)
 		{
@@ -190,8 +190,8 @@ public class LuaStream implements LuaInterface
 	 * @param offset offset to start.
 	 * @param length length to write.
 	 */
-	@LuaFunction(manual = false, methodName = "Write", arguments = { Object.class, Integer.class, Integer.class })
-	public void Write(LuaBuffer bufferO, Integer offset, Integer length)
+	@LuaFunction(manual = false, methodName = "write", arguments = { Object.class, Integer.class, Integer.class })
+	public void write(LuaBuffer bufferO, Integer offset, Integer length)
 	{
 		if(type == INPUTSTREAM)
 		{
@@ -199,7 +199,7 @@ public class LuaStream implements LuaInterface
 			return;
 		}
 		
-		byte[] buffer = bufferO.GetBuffer();
+		byte[] buffer = bufferO.getBuffer();
 		
 		try
 		{

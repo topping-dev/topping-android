@@ -28,19 +28,19 @@ public class LuaNFC implements LuaInterface, CreateNdefMessageCallback
 	private List<NdefRecord> recordList = new ArrayList<NdefRecord>();
 	private final String HASH_TAG = "alng://";
 
-	private NfcAdapter GetAdapter()
+	private NfcAdapter getAdapter()
 	{
 		if(mNfcAdapter == null)
-			mNfcAdapter = NfcAdapter.getDefaultAdapter(context.GetContext());
+			mNfcAdapter = NfcAdapter.getDefaultAdapter(context.getContext());
 		return mNfcAdapter;
 	}
 
-	public void CreateMessage()
+	public void createMessage()
 	{
 
 	}
 
-	public void CreateCommonRecord(int type, byte[] payload)
+	public void createCommonRecord(int type, byte[] payload)
 	{
 		String val = HASH_TAG;
 
@@ -65,25 +65,25 @@ public class LuaNFC implements LuaInterface, CreateNdefMessageCallback
 		return msg;
 	}
 
-	@LuaFunction(manual = false, methodName = "IsAvailable")
-	public boolean IsAvailable()
+	@LuaFunction(manual = false, methodName = "isAvailable")
+	public boolean isAvailable()
 	{
 		//No nfc before 9
 		if(Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD)
 			return false;
-		return GetAdapter() != null;
+		return getAdapter() != null;
 	}
 
 	/**
 	 * Sets combo changed listener
 	 * @param lt +fun(context: LuaContext, tagdata: userdata):void
 	 */
-	@LuaFunction(manual = false, methodName = "SetOnTagReadListener", arguments = { LuaTranslator.class })
-	public void SetOnTagReadListener(final LuaTranslator lt)
+	@LuaFunction(manual = false, methodName = "setOnTagReadListener", arguments = { LuaTranslator.class })
+	public void setOnTagReadListener(final LuaTranslator lt)
 	{
 		ltTagRead = lt;
-		mPendingIntent = PendingIntent.getActivity(LuaForm.Companion.GetActiveForm(), 0, new Intent(LuaForm.Companion.GetActiveForm(), getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-		LuaForm.Companion.GetActiveForm().SetNfc(GetAdapter(), mPendingIntent);
+		mPendingIntent = PendingIntent.getActivity(LuaForm.Companion.getActiveForm(), 0, new Intent(LuaForm.Companion.getActiveForm(), getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+		LuaForm.Companion.getActiveForm().setNfc(getAdapter(), mPendingIntent);
 	}
 
 	@Override

@@ -19,8 +19,8 @@ public class LGProgressBar extends LGView implements LuaInterface
 	 * @param lc
 	 * @return LGProgressBar
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGProgressBar.class)
-	public static LGProgressBar Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGProgressBar.class)
+	public static LGProgressBar create(LuaContext lc)
 	{
 		return new LGProgressBar(lc);
 	}
@@ -62,7 +62,7 @@ public class LGProgressBar extends LGView implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = lc.GetLayoutInflater().createView(context, "ProgressBar");
+		view = lc.getLayoutInflater().createView(context, "ProgressBar");
 		if(view == null)
 			view = new ProgressBar(context);
 	}
@@ -72,7 +72,7 @@ public class LGProgressBar extends LGView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = lc.GetLayoutInflater().createView(context, "ProgressBar", attrs);
+		view = lc.getLayoutInflater().createView(context, "ProgressBar", attrs);
 		if(view == null)
 			view = new ProgressBar(context, attrs);
 	}
@@ -82,7 +82,7 @@ public class LGProgressBar extends LGView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = lc.GetLayoutInflater().createView(context, "ProgressBar", attrs);
+		view = lc.getLayoutInflater().createView(context, "ProgressBar", attrs);
 		if(view == null)
 			view = new ProgressBar(context, attrs, defStyle);
 	}
@@ -91,8 +91,8 @@ public class LGProgressBar extends LGView implements LuaInterface
 	 * Sets the progress
 	 * @param val
 	 */
-	@LuaFunction(manual = false, methodName = "SetProgress", arguments = { Integer.class })
-	public void SetProgress(Integer val)
+	@LuaFunction(manual = false, methodName = "setProgress", arguments = { Integer.class })
+	public void setProgress(Integer val)
 	{
 		((ProgressBar)view).setProgress(val);
 	}
@@ -101,8 +101,8 @@ public class LGProgressBar extends LGView implements LuaInterface
 	 * Sets the max progress
 	 * @param val
 	 */
-	@LuaFunction(manual = false, methodName = "SetMax", arguments = { Integer.class })
-	public void SetMax(Integer val)
+	@LuaFunction(manual = false, methodName = "setMax", arguments = { Integer.class })
+	public void setMax(Integer val)
 	{
 		((ProgressBar)view).setMax(val);
 	}
@@ -111,8 +111,8 @@ public class LGProgressBar extends LGView implements LuaInterface
 	 * Sets the indeterminate
 	 * @param val
 	 */
-	@LuaFunction(manual = false, methodName = "SetIndeterminate", arguments = { Boolean.class })
-	public void SetIndeterminate(Boolean val)
+	@LuaFunction(manual = false, methodName = "setIndeterminate", arguments = { Boolean.class })
+	public void setIndeterminate(Boolean val)
 	{
 		((ProgressBar)view).setIndeterminate(val);
 	}

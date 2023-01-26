@@ -76,7 +76,7 @@ public class ToppingEngine
 	private static List<Class<?>> plugins = new ArrayList<Class<?>>();
 	private static ArrayList<Class<?>> viewPlugins = new ArrayList<Class<?>>();
 
-	public static void AddLuaPlugin(Class<?> plugin)
+	public static void addLuaPlugin(Class<?> plugin)
 	{
 		plugins.add(plugin);
 		if(plugin.isAssignableFrom(LGView.class))
@@ -85,7 +85,7 @@ public class ToppingEngine
 		}
 	}
 
-	public static ArrayList<Class<?>> GetViewPlugins()
+	public static ArrayList<Class<?>> getViewPlugins()
 	{
 		return viewPlugins;
 	}
@@ -133,7 +133,7 @@ public class ToppingEngine
 	LuaTasker<Class<?>> tasker = new LuaTasker<Class<?>>()
 	{
 		@Override
-		public void DoJob(Class<?> val)
+		public void doJob(Class<?> val)
 		{
 			LuaClass lc = val.getAnnotation(LuaClass.class);
 			if(lc != null) {
@@ -176,7 +176,7 @@ public class ToppingEngine
 	};
 	Thread taskerThread;
 
-	public void Startup(Context context)
+	public void startup(Context context)
 	{
 		this.context = context;
 		Lua.primaryLoad = primaryLoad;
@@ -188,9 +188,9 @@ public class ToppingEngine
 		Lua.luaL_openlibs(L);
 		/*try
 		{*/
-		RegisterCoreFunctions();
-		RegisterGlobals();
-		LuaRef.ResourceLoader(context);
+		registerCoreFunctions();
+		registerGlobals();
+		LuaRef.resourceLoader(context);
 		/*}
 		catch (LuaException e)
 		{
@@ -219,13 +219,13 @@ public class ToppingEngine
 		//if(Lua.luaL_loadbuffer(L, buffer.toString(), s) != 0)
 		//if(Lua.LloadFile(s) != 0)
 		{
-			Report(L);
+			report(L);
 		}
 		else
 		{
 			if(Lua.lua_pcall(L, 0, 0, 0) != 0)
 			{
-				Report(L);
+				report(L);
 			}
 			else
 			{
@@ -325,10 +325,10 @@ public class ToppingEngine
 		}
 		Lua.lua_pop(L, 1);
 
-		StartupDefines();
+		startupDefines();
 	}
 
-	public void DeleteFolder(File path)
+	public void deleteFolder(File path)
 	{
 		File[] farr = path.listFiles();
 		if(farr != null)
@@ -337,7 +337,7 @@ public class ToppingEngine
 			{
 				if(f.isDirectory())
 				{
-					DeleteFolder(f);
+					deleteFolder(f);
 				}
 				else
 					f.delete();
@@ -346,7 +346,7 @@ public class ToppingEngine
 	}
 
 	@SuppressWarnings("unused")
-	public void StartupDefines()
+	public void startupDefines()
 	{
 		AssetManager assetManager = context.getAssets();
 
@@ -372,7 +372,7 @@ public class ToppingEngine
 				if(!scripts.exists())
 					scripts.mkdir();
 				else
-					DeleteFolder(scripts);
+					deleteFolder(scripts);
 				for(String s : rtn)
 				{
 					try
@@ -439,13 +439,13 @@ public class ToppingEngine
 					//if(Lua.luaL_loadstring(L, buffer.toString()) != 0)
 					if(Lua.luaL_loadstring(L, buffer.toString(), s) != 0)
 					{
-						Report(L);
+						report(L);
 					}
 					else
 					{
 						if(Lua.lua_pcall(L, 0, 0, 0) != 0)
 						{
-							Report(L);
+							report(L);
 						}
 						else
 						{
@@ -495,13 +495,13 @@ public class ToppingEngine
 					//if(Lua.luaL_loadstring(L, buffer.toString()) != 0)
 					if(Lua.luaL_loadfile(L, context, s) != 0)
 					{
-						Report(L);
+						report(L);
 					}
 					else
 					{
 						if(Lua.lua_pcall(L, 0, 0, 0) != 0)
 						{
-							Report(L);
+							report(L);
 						}
 						else
 						{
@@ -538,7 +538,7 @@ public class ToppingEngine
 				if(!scripts.exists())
 					scripts.mkdir();
 				else
-					DeleteFolder(scripts);
+					deleteFolder(scripts);
 				for(String s : rtn)
 				{
 					try
@@ -605,13 +605,13 @@ public class ToppingEngine
 					//if(Lua.luaL_loadstring(L, buffer.toString()) != 0)
 					if(Lua.luaL_loadfile(L, context, s) != 0)
 					{
-						Report(L);
+						report(L);
 					}
 					else
 					{
 						if(Lua.lua_pcall(L, 0, 0, 0) != 0)
 						{
-							Report(L);
+							report(L);
 						}
 						else
 						{
@@ -643,29 +643,29 @@ public class ToppingEngine
 		Log.i("LuaEngine", "Loaded " + cnt_uncomp + " Lua scripts.");
 	}
 
-	public void Startup(String root)
+	public void startup(String root)
 	{
 		L = Lua.lua_open();
 		pendingThreads = new HashSet<>();
 
-		LoadScripts(root);
+		loadScripts(root);
 	}
 
-	public void Startup(Context context, AssetManager assetManager, String root)
+	public void startup(Context context, AssetManager assetManager, String root)
 	{
 		L = Lua.lua_open();
 		pendingThreads = new HashSet<>();
 
-		LoadScriptsFromAsset(context, assetManager, root);
+		loadScriptsFromAsset(context, assetManager, root);
 	}
 
-	void ScriptLoadDir(String root, HashSet<String> rtn)
+	void scriptLoadDir(String root, HashSet<String> rtn)
 	{
 		File dir = new File(root);
 		if(dir.isDirectory())
 		{
 			for(File file : dir.listFiles())
-				ScriptLoadDir(file.getPath(), rtn);
+				scriptLoadDir(file.getPath(), rtn);
 		}
 		else
 		{
@@ -678,7 +678,7 @@ public class ToppingEngine
 		}
 	}
 
-	boolean SetScriptFromStream(Context context, String name, InputStream is)
+	boolean setScriptFromStream(Context context, String name, InputStream is)
 	{
 		try
 		{
@@ -715,7 +715,7 @@ public class ToppingEngine
 		return true;
 	}
 
-	void LoadScriptsFromAsset(Context context, AssetManager assetManager, String root)
+	void loadScriptsFromAsset(Context context, AssetManager assetManager, String root)
 	{
 		String[] rtn = null;
 		try
@@ -791,13 +791,13 @@ public class ToppingEngine
 				//if(Lua.luaL_loadbuffer(L, buffer.toString(), s) != 0)
 				//if(Lua.LloadFile(s) != 0)
 				{
-					Report(L);
+					report(L);
 				}
 				else
 				{
 					if(Lua.lua_pcall(L, 0, 0, 0) != 0)
 					{
-						Report(L);
+						report(L);
 					}
 					else
 					{
@@ -814,28 +814,28 @@ public class ToppingEngine
 		Log.i("LuaEngine", "Loaded " + cnt_uncomp + " Lua scripts.");
 	}
 
-	void LoadScripts(String root)
+	void loadScripts(String root)
 	{
 		HashSet<String> rtn = new HashSet<String>();
-		ScriptLoadDir(root, rtn);
+		scriptLoadDir(root, rtn);
 
 		int cnt_uncomp=0;
 
 		Lua.luaL_openlibs(L);
 
-		RegisterCoreFunctions();
+		registerCoreFunctions();
 
 		for(String s : rtn)
 		{
 			if(Lua.luaL_loadfile(L, context, s) != 0)
 			{
-				Report(L);
+				report(L);
 			}
 			else
 			{
 				if(Lua.lua_pcall(L, 0, 0, 0) != 0)
 				{
-					Report(L);
+					report(L);
 				}
 				else
 				{
@@ -847,7 +847,7 @@ public class ToppingEngine
 		Log.i("LuaEngine", "Loaded " + cnt_uncomp + " Lua scripts.");
 	}
 
-	public void Report(LuaState L)
+	public void report(LuaState L)
 	{
 		int count = 20;
 		String msgP = Lua.lua_tostring(L, -1);
@@ -867,38 +867,38 @@ public class ToppingEngine
 		}
 	}
 
-	public void FillVariable(Object val)
+	public void fillVariable(Object val)
 	{
 		if(val == null)
 		{
-			PushNIL();
+			pushNIL();
 			return;
 		}
 		Class name = val.getClass();
 		if(name == java.lang.Boolean.class)
-			PushBool((Boolean)val);
+			pushBool((Boolean)val);
 		else if(name == java.lang.Byte.class
 				|| name == java.lang.Short.class
 				|| name == java.lang.Integer.class)
-			PushInt(Integer.parseInt(val.toString()));
+			pushInt(Integer.parseInt(val.toString()));
 		else if(name == java.lang.Long.class)
-			PushLong(((Long)val).longValue());
+			pushLong(((Long)val).longValue());
 		else if(name == java.lang.Float.class)
-			PushFloat((Float)val);
+			pushFloat((Float)val);
 		else if(name == java.lang.Double.class)
-			PushDouble((Double)val);
+			pushDouble((Double)val);
 		else if(name == java.lang.Character.class
 				|| name == java.lang.String.class)
-			PushString(val.toString());
+			pushString(val.toString());
 		else if(name == java.lang.Void.class)
-			PushInt(0);
+			pushInt(0);
 		else if(name == java.util.HashMap.class)
-			PushTable((HashMap<Object, Object>) val);
+			pushTable((HashMap<Object, Object>) val);
 		else
 			Lunar.push(L, val, true, true);
 	}
 
-	public Object OnGuiEventResult()
+	public Object onGuiEventResult()
 	{
 		Object retVal = null;
 		if(Lua.lua_isnoneornil(L, -1))
@@ -970,7 +970,7 @@ public class ToppingEngine
 						valObject = Lua.nvalue(L, val);
 						break;
 					case Lua.LUA_TTABLE:
-						valObject = Lunar.ParseTable(val);
+						valObject = Lunar.parseTable(val);
 						break;
 					case Lua.LUA_TUSERDATA:
 					{
@@ -1020,35 +1020,35 @@ public class ToppingEngine
 		return retVal;
 	}
 
-	public Object OnGuiEvent(Object gui, Object ... arguments)
+	public Object onGuiEvent(Object gui, Object ... arguments)
 	{
 		Lunar.push(L, gui, false, true);
 
 		int j = 0;
 		for(Object type : arguments)
 		{
-			FillVariable(type);
+			fillVariable(type);
 			j++;
 		}
 
 		int r = Lua.lua_pcall(L, j + 1, Lua.LUA_MULTRET, 0);
 		if(r != 0)
 		{
-			Report(L);
+			report(L);
 			return null;
 		}
 
-		return OnGuiEventResult();
+		return onGuiEventResult();
 	}
 
-	public Object OnNativeEvent(Object gui, Integer ref, Object ... arguments)
+	public Object onNativeEvent(Object gui, Integer ref, Object ... arguments)
 	{
 		Lua.lua_rawgeti(L, Lua.LUA_REGISTRYINDEX, ref);
 
-		return OnGuiEvent(gui, arguments);
+		return onGuiEvent(gui, arguments);
 	}
 
-	public Object OnGuiEvent(Object gui, String FunctionName, Object ... arguments)
+	public Object onGuiEvent(Object gui, String FunctionName, Object ... arguments)
 	{
 		if(FunctionName == null || FunctionName.compareTo("") == 0)
 			return null;
@@ -1060,22 +1060,20 @@ public class ToppingEngine
 			return null;
 		}
 
-		return OnGuiEvent(gui, arguments);
+		return onGuiEvent(gui, arguments);
 	}
 
-	void RegisterCoreFunctions()
+	void registerCoreFunctions()
 	{
 		Lua.lua_register(L, "Log", new IDelegate() {
 
 			@Override
 			public Object invoke() {
-				// TODO Auto-generated method stub
 				return null;
 			}
 
 			@Override
 			public Object invoke(Object arg1, Object arg2) {
-				// TODO Auto-generated method stub
 				return null;
 			}
 
@@ -1212,18 +1210,18 @@ public class ToppingEngine
 		};
 
 		for(Class<?> cls : clsArr) {
-			tasker.AddToQueue(cls);
+			tasker.addToQueue(cls);
 		}
 
 		for(Class<?> cls : plugins)
-			tasker.AddToQueue(cls);
+			tasker.addToQueue(cls);
 
 		if(taskerThread == null && Lunar.methodMap.size() == 0)
 		{
 			taskerThread = new Thread(tasker);
 			taskerThread.start();
 
-			while(tasker.HasJob())
+			while(tasker.hasJob())
 			{
 				try
 				{
@@ -1234,7 +1232,7 @@ public class ToppingEngine
 					e.printStackTrace();
 				}
 			}
-			tasker.Exit();
+			tasker.exit();
 			try
 			{
 				taskerThread.join();
@@ -1248,11 +1246,11 @@ public class ToppingEngine
 		/*luaGlobalFunctions::Register(lu);*/
 
 		for(Class<?> cls : clsArr) {
-			Lunar.Register(L, cls);
+			Lunar.register(L, cls);
 		}
 
 		for(Class<?> cls : plugins)
-			Lunar.Register(L, cls);
+			Lunar.register(L, cls);
 
 		//set the suspendluathread a coroutine function
 		/*lua_getglobal(lu,"coroutine");
@@ -1266,7 +1264,7 @@ public class ToppingEngine
 		lua_pop(lu,1);*/
 	}
 
-	void RegisterGlobals()
+	void registerGlobals()
 	{
 		Lua.lua_pushstring(L, "Android");
 		Lua.lua_setglobal(L, "OS_TYPE");
@@ -1274,40 +1272,40 @@ public class ToppingEngine
 		Lua.lua_pushstring(L, String.valueOf(Build.VERSION.SDK_INT));
 		Lua.lua_setglobal(L, "OS_VERSION");
 
-		String s = GetContext().getResources().getString(R.string.deviceType);
+		String s = getContext().getResources().getString(R.string.deviceType);
 		dev.topping.android.luagui.DisplayMetrics.isTablet = (s.compareTo("Tablet") == 0);
 		Lua.lua_pushboolean(L, dev.topping.android.luagui.DisplayMetrics.isTablet);
 		Lua.lua_setglobal(L, "IS_TABLET");
 	}
 
-	public void Unload()
+	public void unload()
 	{
 		Lua.lua_close(L);
 	}
 
-	public void Restart(String root)
+	public void restart(String root)
 	{
-		Unload();
-		Startup(root);
+		unload();
+		startup(root);
 	}
 
-	public void Restart(Context context, AssetManager assetManager, String root)
+	public void restart(Context context, AssetManager assetManager, String root)
 	{
-		Unload();
-		Startup(context, assetManager, root);
+		unload();
+		startup(context, assetManager, root);
 	}
 
-	public LuaState GetLuaState() { return L; }
+	public LuaState getLuaState() { return L; }
 
-	public void PushBool(boolean value) { Lua.lua_pushboolean(L, value); }
-	public void PushNIL() { Lua.lua_pushnil(L); }
-	public void PushInt(int val) { Lua.lua_pushinteger(L, val); }
-	void PushLong(long val) { Lua.lua_pushnumber(L, (double)val); }
-	public void PushFloat(float val) { Lua.lua_pushnumber(L, val); }
-	public void PushDouble(double val) { Lua.lua_pushnumber(L, val); }
-	public void PushString(String val) { Lua.lua_pushstring(L, val); }
+	public void pushBool(boolean value) { Lua.lua_pushboolean(L, value); }
+	public void pushNIL() { Lua.lua_pushnil(L); }
+	public void pushInt(int val) { Lua.lua_pushinteger(L, val); }
+	void pushLong(long val) { Lua.lua_pushnumber(L, (double)val); }
+	public void pushFloat(float val) { Lua.lua_pushnumber(L, val); }
+	public void pushDouble(double val) { Lua.lua_pushnumber(L, val); }
+	public void pushString(String val) { Lua.lua_pushstring(L, val); }
 
-	public void PushTable(HashMap<Object, Object> retVal)
+	public void pushTable(HashMap<Object, Object> retVal)
 	{
 		Lua.lua_lock(L);
 		//Lua.lua_createtable(L, 0, retVal.size());
@@ -1319,7 +1317,7 @@ public class ToppingEngine
 			String retName = retval.getClass().getName();
 			if(retName.compareTo("java.lang.Boolean") == 0
 				|| retval.getClass() == boolean.class)
-				((ToppingEngine) ToppingEngine.getInstance()).PushBool((Boolean)retval);
+				((ToppingEngine) ToppingEngine.getInstance()).pushBool((Boolean)retval);
 			else if(retName.compareTo("java.lang.Byte") == 0
 					|| retval.getClass() == byte.class
 					|| retName.compareTo("java.lang.Short") == 0
@@ -1328,23 +1326,23 @@ public class ToppingEngine
 					|| retval.getClass() == int.class
 					|| retName.compareTo("java.lang.Long") == 0
 					|| retval.getClass() == long.class)
-				((ToppingEngine) ToppingEngine.getInstance()).PushInt((Integer)retval);
+				((ToppingEngine) ToppingEngine.getInstance()).pushInt((Integer)retval);
 			else if(retName.compareTo("java.lang.Float") == 0
 					|| retval.getClass() == float.class)
-				((ToppingEngine) ToppingEngine.getInstance()).PushFloat((Float)retval);
+				((ToppingEngine) ToppingEngine.getInstance()).pushFloat((Float)retval);
 			else if(retName.compareTo("java.lang.Double") == 0
 					|| retval.getClass() == double.class)
-				((ToppingEngine) ToppingEngine.getInstance()).PushDouble((Double)retval);
+				((ToppingEngine) ToppingEngine.getInstance()).pushDouble((Double)retval);
 			else if(retName.compareTo("java.lang.Char") == 0
 					|| retval.getClass() == char.class
 					|| retName.compareTo("java.lang.String") == 0)
-				((ToppingEngine) ToppingEngine.getInstance()).PushString((String)retval);
+				((ToppingEngine) ToppingEngine.getInstance()).pushString((String)retval);
 			else if(retName.compareTo("java.lang.Void") == 0
 					|| retval.getClass() == void.class)
-				((ToppingEngine) ToppingEngine.getInstance()).PushInt(0);
+				((ToppingEngine) ToppingEngine.getInstance()).pushInt(0);
 			else if(retName.compareTo("java.util.HashMap") == 0)
 			{
-				((ToppingEngine) ToppingEngine.getInstance()).PushTable((HashMap<Object, Object>)retval);
+				((ToppingEngine) ToppingEngine.getInstance()).pushTable((HashMap<Object, Object>)retval);
 			}
 			else if(retName.compareTo("java.util.ArrayList") == 0)
 			{
@@ -1354,12 +1352,12 @@ public class ToppingEngine
 				{
 					map.put(i, lst.get(i));
 				}
-				((ToppingEngine) ToppingEngine.getInstance()).PushTable(map);
+				((ToppingEngine) ToppingEngine.getInstance()).pushTable(map);
 			}
 			else
 			{
 				ToppingEngine l = (ToppingEngine) ToppingEngine.getInstance();
-				Lunar.push(l.GetLuaState(), retval, false, true);
+				Lunar.push(l.getLuaState(), retval, false, true);
 			}
 
 			//Lua.lua_setfield(L, -2, String.valueOf(entry.getKey()));
@@ -1391,7 +1389,7 @@ public class ToppingEngine
 	}
 
 	/*Custom variables*/
-	public UrlHttpClient GetHttpClient(String id)
+	public UrlHttpClient getHttpClient(String id)
 	{
 		if(httpClientMap.containsKey(id))
 			return httpClientMap.get(id);
@@ -1403,7 +1401,7 @@ public class ToppingEngine
 		}
 	}
 
-	public void DestroyHttpClient(Integer id)
+	public void destroyHttpClient(Integer id)
 	{
 		if(httpClientMap.containsKey(id))
 		{
@@ -1414,47 +1412,47 @@ public class ToppingEngine
 		}
 	}
 
-	public Context GetContext()
+	public Context getContext()
 	{
 		return context;
 	}
 
-	public void SetContext(Context context)
+	public void setContext(Context context)
 	{
 		this.context = context;
 	}
 
-	public String GetScriptsRoot()
+	public String getScriptsRoot()
 	{
 		return scriptsRoot;
 	}
 
-	public int GetPrimaryLoad()
+	public int getPrimaryLoad()
 	{
 		return primaryLoad;
 	}
 
-	public String GetUIRoot()
+	public String getUIRoot()
 	{
 		return uiRoot;
 	}
 
-	public String GetMainUI()
+	public String getMainUI()
 	{
 		return mainUI;
 	}
 
-	public String GetMainForm()
+	public String getMainForm()
 	{
 		return mainForm;
 	}
 
-	public boolean CatchExceptions()
+	public boolean catchExceptions()
 	{
 		return true;
 	}
 
-	public boolean ThrowExceptions()
+	public boolean throwExceptions()
 	{
 		return true;
 	}

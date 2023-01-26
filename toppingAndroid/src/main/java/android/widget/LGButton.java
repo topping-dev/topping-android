@@ -2,10 +2,6 @@ package android.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.view.LayoutInflaterCompat;
 
 import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
@@ -23,8 +19,8 @@ public class LGButton extends LGTextView implements LuaInterface
 	 * @param lc
 	 * @return LGButton
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGButton.class)
-	public static LGButton Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGButton.class)
+	public static LGButton create(LuaContext lc)
 	{
 		return new LGButton(lc);
 	}
@@ -66,7 +62,7 @@ public class LGButton extends LGTextView implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = lc.GetLayoutInflater().createView(context, "Button");
+		view = lc.getLayoutInflater().createView(context, "Button");
 		if(view == null)
 			view = new Button(context);
 	}
@@ -76,7 +72,7 @@ public class LGButton extends LGTextView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = lc.GetLayoutInflater().createView(context, "Button", attrs);
+		view = lc.getLayoutInflater().createView(context, "Button", attrs);
 		if(view == null)
 			view = new Button(context, attrs);
 	}
@@ -86,7 +82,7 @@ public class LGButton extends LGTextView implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = lc.GetLayoutInflater().createView(context, "Button", attrs);
+		view = lc.getLayoutInflater().createView(context, "Button", attrs);
 		if(view == null)
 			view = new Button(context, attrs, defStyle);
 	}

@@ -20,8 +20,8 @@ public class LuaJSONObject implements LuaInterface
 	 * @param str
 	 * return LuaJSONObject
 	 */
-	@LuaFunction(manual = false, methodName = "CreateJSOFromString", self = LuaJSONObject.class, arguments = { String.class })
-	public static LuaJSONObject CreateJSOFromString(String str)
+	@LuaFunction(manual = false, methodName = "createJSOFromString", self = LuaJSONObject.class, arguments = { String.class })
+	public static LuaJSONObject createJSOFromString(String str)
 	{
 		LuaJSONObject lso = new LuaJSONObject();
 		try
@@ -40,8 +40,8 @@ public class LuaJSONObject implements LuaInterface
 	 * @param name Name value.
 	 * @return LuaJSONObject
 	 */
-	@LuaFunction(manual = false, methodName = "GetJSONObject", arguments = { String.class })
-	public LuaJSONObject GetJSONObject(String name)
+	@LuaFunction(manual = false, methodName = "getJSONObject", arguments = { String.class })
+	public LuaJSONObject getJSONObject(String name)
 	{
 		LuaJSONObject lso = new LuaJSONObject();
 		try
@@ -60,8 +60,8 @@ public class LuaJSONObject implements LuaInterface
 	 * @param name Name value.
 	 * @return LuaJSONArray
 	 */
-	@LuaFunction(manual = false, methodName = "GetJSONArray", arguments = { String.class })
-	public LuaJSONArray GetJSONArray(String name)
+	@LuaFunction(manual = false, methodName = "getJSONArray", arguments = { String.class })
+	public LuaJSONArray getJSONArray(String name)
 	{
 		LuaJSONArray lsa = new LuaJSONArray();
 		try
@@ -80,8 +80,8 @@ public class LuaJSONObject implements LuaInterface
 	 * @param name Name value.
 	 * @return String value.
 	 */
-	@LuaFunction(manual = false, methodName = "GetString", arguments = { String.class })
-	public String GetString(String name)
+	@LuaFunction(manual = false, methodName = "getString", arguments = { String.class })
+	public String getString(String name)
 	{
 		try
 		{
@@ -98,8 +98,8 @@ public class LuaJSONObject implements LuaInterface
 	 * @param name Name value.
 	 * @return int value.
 	 */
-	@LuaFunction(manual = false, methodName = "GetInt", arguments = { String.class })
-	public Integer GetInt(String name)
+	@LuaFunction(manual = false, methodName = "getInt", arguments = { String.class })
+	public Integer getInt(String name)
 	{
 		try
 		{
@@ -116,8 +116,8 @@ public class LuaJSONObject implements LuaInterface
 	 * @param name Name value.
 	 * @return double value.
 	 */
-	@LuaFunction(manual = false, methodName = "GetDouble", arguments = { String.class })
-	public Double GetDouble(String name)
+	@LuaFunction(manual = false, methodName = "getDouble", arguments = { String.class })
+	public Double getDouble(String name)
 	{
 		try
 		{
@@ -134,8 +134,8 @@ public class LuaJSONObject implements LuaInterface
 	 * @param name Name value.
 	 * @return float value.
 	 */
-	@LuaFunction(manual = false, methodName = "GetFloat", arguments = { String.class })
-	public Float GetFloat(String name)
+	@LuaFunction(manual = false, methodName = "getFloat", arguments = { String.class })
+	public Float getFloat(String name)
 	{
 		try
 		{
@@ -152,8 +152,8 @@ public class LuaJSONObject implements LuaInterface
 	 * @param name Name value.
 	 * @return boolean value.
 	 */
-	@LuaFunction(manual = false, methodName = "GetBool", arguments = { String.class })
-	public Boolean GetBool(String name)
+	@LuaFunction(manual = false, methodName = "getBool", arguments = { String.class })
+	public Boolean getBool(String name)
 	{
 		try
 		{

@@ -19,8 +19,8 @@ public class LGHorizontalScrollView extends LGFrameLayout implements LuaInterfac
 	 * @param lc
 	 * @return LGHorizontalScrollView
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGHorizontalScrollView.class)
-	public static LGHorizontalScrollView Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGHorizontalScrollView.class)
+	public static LGHorizontalScrollView create(LuaContext lc)
 	{
 		return new LGHorizontalScrollView(lc);
 	}
@@ -62,7 +62,7 @@ public class LGHorizontalScrollView extends LGFrameLayout implements LuaInterfac
 	 */
 	public void Setup(Context context)
 	{
-		view = lc.GetLayoutInflater().createView(context, "HorizontalScrollView");
+		view = lc.getLayoutInflater().createView(context, "HorizontalScrollView");
 		if(view == null)
 			view = new HorizontalScrollView(context);
 	}
@@ -72,7 +72,7 @@ public class LGHorizontalScrollView extends LGFrameLayout implements LuaInterfac
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = lc.GetLayoutInflater().createView(context, "HorizontalScrollView", attrs);
+		view = lc.getLayoutInflater().createView(context, "HorizontalScrollView", attrs);
 		if(view == null)
 			view = new HorizontalScrollView(context, attrs);
 	}
@@ -82,7 +82,7 @@ public class LGHorizontalScrollView extends LGFrameLayout implements LuaInterfac
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = lc.GetLayoutInflater().createView(context, "HorizontalScrollView", attrs);
+		view = lc.getLayoutInflater().createView(context, "HorizontalScrollView", attrs);
 		if(view == null)
 			view = new HorizontalScrollView(context, attrs, defStyle);
 	}

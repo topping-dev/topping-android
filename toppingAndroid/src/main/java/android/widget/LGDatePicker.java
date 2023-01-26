@@ -29,8 +29,8 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	 * @param lc
 	 * @return LGDatePicker
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGDatePicker.class)
-	public static LGDatePicker Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGDatePicker.class)
+	public static LGDatePicker create(LuaContext lc)
 	{
 		return new LGDatePicker(lc);
 	}
@@ -72,7 +72,7 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = lc.GetLayoutInflater().createView(context, "DatePicker");
+		view = lc.getLayoutInflater().createView(context, "DatePicker");
 		if(view == null)
 			view = new DatePicker(context);
 	}
@@ -82,7 +82,7 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = lc.GetLayoutInflater().createView(context, "DatePicker", attrs);
+		view = lc.getLayoutInflater().createView(context, "DatePicker", attrs);
 		if(view == null)
 			view = new DatePicker(context, attrs);
 	}
@@ -92,7 +92,7 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = lc.GetLayoutInflater().createView(context, "DatePicker", attrs);
+		view = lc.getLayoutInflater().createView(context, "DatePicker", attrs);
 		if(view == null)
 			view = new DatePicker(context, attrs, defStyle);
 	}
@@ -119,7 +119,7 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 			public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth)
 			{
 				if(onDateChanged != null)
-					onDateChanged.CallIn(self, Integer.valueOf(dayOfMonth), Integer.valueOf(monthOfYear), Integer.valueOf(year));
+					onDateChanged.callIn(self, Integer.valueOf(dayOfMonth), Integer.valueOf(monthOfYear), Integer.valueOf(year));
 			}
 		});
 	}
@@ -128,8 +128,8 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	 * Gets the day value
 	 * @return int day
 	 */
-	@LuaFunction(manual = false, methodName = "GetDay")
-	public Integer GetDay()
+	@LuaFunction(manual = false, methodName = "getDay")
+	public Integer getDay()
 	{
 		return ((DatePicker)view).getDayOfMonth();
 	}
@@ -138,8 +138,8 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	 * Gets the month value
 	 * @return int month
 	 */
-	@LuaFunction(manual = false, methodName = "GetMonth")
-	public Integer GetMonth()
+	@LuaFunction(manual = false, methodName = "getMonth")
+	public Integer getMonth()
 	{
 		return ((DatePicker)view).getMonth();
 	}
@@ -148,8 +148,8 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	 * Gets the year value
 	 * @return int year
 	 */
-	@LuaFunction(manual = false, methodName = "GetYear")
-	public Integer GetYear()
+	@LuaFunction(manual = false, methodName = "getYear")
+	public Integer getYear()
 	{
 		return ((DatePicker)view).getYear();
 	}
@@ -160,8 +160,8 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	 * @param month
 	 * @param year
 	 */
-	@LuaFunction(manual = false, methodName = "GetYear", arguments = { Integer.class, Integer.class, Integer.class })
-	public void UpdateDate(Integer day, Integer month, Integer year)
+	@LuaFunction(manual = false, methodName = "updateDate", arguments = { Integer.class, Integer.class, Integer.class })
+	public void updateDate(Integer day, Integer month, Integer year)
 	{
 		((DatePicker)view).updateDate(year, month, day);
 	}
@@ -170,8 +170,8 @@ public class LGDatePicker extends LGFrameLayout implements LuaInterface
 	 * Sets on date changed listener
 	 * @param lt +fun(datePicker: LGDatePicker, day: number, month: number, year: number):void
 	 */
-	@LuaFunction(manual = false, methodName = "SetOnDateChangedListener", arguments = { LuaTranslator.class })
-	public void SetOnDateChangedListener(LuaTranslator lt)
+	@LuaFunction(manual = false, methodName = "setOnDateChangedListener", arguments = { LuaTranslator.class })
+	public void setOnDateChangedListener(LuaTranslator lt)
 	{
 		onDateChanged = lt;
 	}

@@ -32,8 +32,8 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	 * @param lc
 	 * @return LGComboBox
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class }, self = LGComboBox.class)
-	public static LGComboBox Create(LuaContext lc)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGComboBox.class)
+	public static LGComboBox create(LuaContext lc)
 	{
 		return new LGComboBox(lc);
 	}
@@ -75,7 +75,7 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	 */
 	public void Setup(Context context)
 	{
-		view = lc.GetLayoutInflater().createView(context, "Spinner");
+		view = lc.getLayoutInflater().createView(context, "Spinner");
 		if(view == null)
 			view = new Spinner(context);
 	}
@@ -85,7 +85,7 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs)
 	{
-		view = lc.GetLayoutInflater().createView(context, "Spinner", attrs);
+		view = lc.getLayoutInflater().createView(context, "Spinner", attrs);
 		if(view == null)
 			view = new Spinner(context, attrs);
 	}
@@ -95,7 +95,7 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	 */
 	public void Setup(Context context, AttributeSet attrs, int defStyle)
 	{
-		view = lc.GetLayoutInflater().createView(context, "Spinner", attrs);
+		view = lc.getLayoutInflater().createView(context, "Spinner", attrs);
 		if(view == null)
 			view = new Spinner(context, attrs, defStyle);
 	}
@@ -117,8 +117,8 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	 * @param id of combobox
 	 * @param tag
 	 */
-	@LuaFunction(manual = false, methodName = "AddItem", arguments = { String.class, Object.class })
-	public void AddItem(String id, Object tag)
+	@LuaFunction(manual = false, methodName = "addItem", arguments = { String.class, Object.class })
+	public void addItem(String id, Object tag)
 	{
 		ComboData cd = new ComboData();
 		cd.name = id;
@@ -127,18 +127,17 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	}
 
 	/**
-	 * Add combo item to combobox
-	 * @param id of combobox
-	 * @param tag
+	 * Set items
+	 * @param values
 	 */
-	@LuaFunction(manual = false, methodName = "SetItems", arguments = { Object.class })
-	public void SetItems(Object values)
+	@LuaFunction(manual = false, methodName = "setItems", arguments = { Object.class })
+	public void setItems(Object values)
 	{
 		if(values instanceof HashMap)
 		{
 			for(Map.Entry<Object, Object> entry : ((HashMap<Object, Object>)values).entrySet())
 			{
-				AddItem((String) entry.getKey(), entry.getValue());
+				addItem((String) entry.getKey(), entry.getValue());
 			}
 		}
 	}
@@ -147,8 +146,8 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	 * Show custom button
 	 * @param value
 	 */
-	@LuaFunction(manual = false, methodName = "ShowCustom", arguments = { Integer.class })
-	public void ShowCustom(Integer value)
+	@LuaFunction(manual = false, methodName = "showCustom", arguments = { Integer.class })
+	public void showCustom(Integer value)
 	{
 		if(value.intValue() == 1)
 		{
@@ -198,8 +197,8 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	 * Show delete button
 	 * @param value
 	 */
-	@LuaFunction(manual = false, methodName = "ShowDelete", arguments = { Integer.class })
-	public void ShowDelete(Integer value)
+	@LuaFunction(manual = false, methodName = "showDelete", arguments = { Integer.class })
+	public void showDelete(Integer value)
 	{
 		if(value.intValue() == 1)
 		{
@@ -249,8 +248,8 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	 * Set combobox editable
 	 * @param value (1 or 0)
 	 */
-    /*@LuaFunction(manual = false, methodName = "SetEditable", arguments = { Integer.class })
-    public void SetEditable(Integer value)
+    /*@LuaFunction(manual = false, methodName = "setEditable", arguments = { Integer.class })
+    public void setEditable(Integer value)
     {
     	((ComboBox)view).editable = value.intValue() == 1 ? true : false;
     	if(value == 0)
@@ -260,8 +259,8 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	/**
 	 * Sets the selected value
 	 */
-	@LuaFunction(manual = false, methodName = "SetSelected", arguments = { Integer.class })
-	public void SetSelected(int index)
+	@LuaFunction(manual = false, methodName = "setSelectedIndex", arguments = { Integer.class })
+	public void setSelectedIndex(int index)
 	{
 		((Spinner)view).setSelection(index);
 	}
@@ -269,8 +268,8 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	/**
 	 * Gets the selected name
 	 */
-	@LuaFunction(manual = false, methodName = "GetSelectedName")
-	public String GetSelectedName()
+	@LuaFunction(manual = false, methodName = "getSelectedName")
+	public String getSelectedName()
 	{
 		if(selectedData != null)
 			return selectedData.name;
@@ -281,8 +280,8 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	 * Gets the selected tag
 	 * @return tag value
 	 */
-	@LuaFunction(manual = false, methodName = "GetSelectedTag")
-	public Object GetSelectedTag()
+	@LuaFunction(manual = false, methodName = "getSelectedTag")
+	public Object getSelectedTag()
 	{
 		if(selectedData != null)
 			return selectedData.tag;
@@ -294,8 +293,8 @@ public class LGComboBox extends LGEditText implements LuaInterface
 	 * Sets combo changed listener
 	 * @param lt +fun(comboBox: LGComboBox, context: LuaContext, name: string, tag: userdata):void
 	 */
-	@LuaFunction(manual = false, methodName = "SetOnComboChangedListener", arguments = { LuaTranslator.class })
-	public void SetOnComboChangedListener(final LuaTranslator lt)
+	@LuaFunction(manual = false, methodName = "setOnComboChangedListener", arguments = { LuaTranslator.class })
+	public void setOnComboChangedListener(final LuaTranslator lt)
 	{
 		if(lt == null)
 		{
@@ -309,7 +308,7 @@ public class LGComboBox extends LGEditText implements LuaInterface
 			public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
 			{
 				selectedData = mAdapter.getItem(i);
-				lt.CallIn(lc, selectedData.name, selectedData.tag);
+				lt.callIn(lc, selectedData.name, selectedData.tag);
 			}
 
 			@Override

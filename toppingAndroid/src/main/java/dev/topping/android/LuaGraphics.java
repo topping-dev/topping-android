@@ -46,7 +46,7 @@ public class LuaGraphics implements LuaInterface
     /**
      * (Ignore)
      */
-    public static LuaGraphics FromGraphics(Canvas gr, Context c)
+    public static LuaGraphics fromGraphics(Canvas gr, Context c)
     {
         return new LuaGraphics(gr, c);
     }
@@ -57,8 +57,8 @@ public class LuaGraphics implements LuaInterface
      * @param g
      * @param b
      */
-    @LuaFunction(manual = false, methodName= "SetPen", arguments = { Integer.class, Integer.class, Integer.class })
-    public void SetPen(int r, int g, int b)
+    @LuaFunction(manual = false, methodName= "setPen", arguments = { Integer.class, Integer.class, Integer.class })
+    public void setPen(int r, int g, int b)
     {
         lastPen = new Paint();
         lastPen.setColor(Color.rgb(r, g, b));
@@ -71,8 +71,8 @@ public class LuaGraphics implements LuaInterface
      * @param b
      * @param width
      */
-    @LuaFunction(manual = false, methodName= "SetPenEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class })
-    public void SetPenEx(int r, int g, int b, float width)
+    @LuaFunction(manual = false, methodName= "setPenEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class })
+    public void setPenEx(int r, int g, int b, float width)
     {
         lastPen = new Paint();
         lastPen.setColor(Color.rgb(r, g, b));
@@ -86,8 +86,8 @@ public class LuaGraphics implements LuaInterface
      * @param g
      * @param b
      */
-    @LuaFunction(manual = false, methodName= "SetBrush", arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
-    public void SetBrush(int type, int r, int g, int b)
+    @LuaFunction(manual = false, methodName= "setBrush", arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
+    public void setBrush(int type, int r, int g, int b)
     {
         /*if (type == 0)
         {
@@ -107,8 +107,8 @@ public class LuaGraphics implements LuaInterface
      * @param width
      * @param height
      */
-    @LuaFunction(manual = false, methodName= "SetRectStore", arguments = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
-    public void SetRectStore(int id, int x, int y, int width, int height)
+    @LuaFunction(manual = false, methodName= "setRectStore", arguments = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
+    public void setRectStore(int id, int x, int y, int width, int height)
     {
         if (id == 0)
             rectStore1 = new Rect(x, y, x+width, y+height);
@@ -119,8 +119,8 @@ public class LuaGraphics implements LuaInterface
     /**
      * Draws an ellipse from rectangle store
      */
-    @LuaFunction(manual = false, methodName= "DrawEllipsePenRectCache", arguments = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
-    public void DrawEllipsePenRectCache()
+    @LuaFunction(manual = false, methodName= "drawEllipsePenRectCache", arguments = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
+    public void drawEllipsePenRectCache()
     {
     	gr.drawOval(new RectF(rectStore1), lastPen);
     }
@@ -131,8 +131,8 @@ public class LuaGraphics implements LuaInterface
      * @param g
      * @param b
      */
-    @LuaFunction(manual = false, methodName= "DrawEllipseRectCache", arguments = { Integer.class, Integer.class, Integer.class })
-    public void DrawEllipseRectCache(int r, int g, int b)
+    @LuaFunction(manual = false, methodName= "drawEllipseRectCache", arguments = { Integer.class, Integer.class, Integer.class })
+    public void drawEllipseRectCache(int r, int g, int b)
     {
     	Paint p = new Paint();
     	p.setColor(Color.rgb(r, g, b));
@@ -146,8 +146,8 @@ public class LuaGraphics implements LuaInterface
      * @param b
      * @param width
      */
-    @LuaFunction(manual = false, methodName= "DrawEllipseRectCacheEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class })
-    public void DrawEllipseRectCacheEx(int r, int g, int b, float width)
+    @LuaFunction(manual = false, methodName= "drawEllipseRectCacheEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class })
+    public void drawEllipseRectCacheEx(int r, int g, int b, float width)
     {
     	Paint p = new Paint();
     	p.setColor(Color.rgb(r, g, b));
@@ -162,8 +162,8 @@ public class LuaGraphics implements LuaInterface
      * @param width
      * @param height
      */
-    @LuaFunction(manual = false, methodName= "DrawEllipsePenCache", arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
-    public void DrawEllipsePenCache(int x, int y, int width, int height)
+    @LuaFunction(manual = false, methodName= "drawEllipsePenCache", arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
+    public void drawEllipsePenCache(int x, int y, int width, int height)
     {    	
         gr.drawOval(new RectF(x, y, width, height), lastPen);
     }
@@ -178,8 +178,8 @@ public class LuaGraphics implements LuaInterface
      * @param width
      * @param height
      */
-    @LuaFunction(manual = false, methodName= "DrawEllipse", arguments = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
-    public void DrawEllipse(int r, int g, int b, int x, int y, int width, int height)
+    @LuaFunction(manual = false, methodName= "drawEllipse", arguments = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
+    public void drawEllipse(int r, int g, int b, int x, int y, int width, int height)
     {
     	Paint p = new Paint();
     	p.setColor(Color.rgb(r, g, b));
@@ -197,8 +197,8 @@ public class LuaGraphics implements LuaInterface
      * @param width
      * @param height
      */
-    @LuaFunction(manual = false, methodName= "DrawEllipseEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class, Integer.class, Integer.class, Integer.class, Integer.class })
-    public void DrawEllipseEx(int r, int g, int b, float penWidth, int x, int y, int width, int height)
+    @LuaFunction(manual = false, methodName= "drawEllipseEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class, Integer.class, Integer.class, Integer.class, Integer.class })
+    public void drawEllipseEx(int r, int g, int b, float penWidth, int x, int y, int width, int height)
     {
     	Paint p = new Paint();
     	p.setColor(Color.rgb(r, g, b));
@@ -212,8 +212,8 @@ public class LuaGraphics implements LuaInterface
      * @param y
      * @param radius
      */
-    @LuaFunction(manual = false, methodName= "DrawCirclePenCache", arguments = { Integer.class, Integer.class, Integer.class })
-    public void DrawCirclePenCache(int x, int y, int radius)
+    @LuaFunction(manual = false, methodName= "drawCirclePenCache", arguments = { Integer.class, Integer.class, Integer.class })
+    public void drawCirclePenCache(int x, int y, int radius)
     {
     	gr.drawCircle(x, y, radius, lastPen);
     }
@@ -227,8 +227,8 @@ public class LuaGraphics implements LuaInterface
      * @param y
      * @param radius
      */
-    @LuaFunction(manual = false, methodName= "DrawCircle", arguments = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
-    public void DrawCircle(int r, int g, int b, int x, int y, int radius)
+    @LuaFunction(manual = false, methodName= "drawCircle", arguments = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
+    public void drawCircle(int r, int g, int b, int x, int y, int radius)
     {
     	Paint p = new Paint();
     	p.setColor(Color.rgb(r, g, b));
@@ -245,8 +245,8 @@ public class LuaGraphics implements LuaInterface
      * @param y
      * @param radius
      */
-    @LuaFunction(manual = false, methodName= "DrawCircleEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class, Integer.class, Integer.class, Integer.class })
-    public void DrawCircleEx(int r, int g, int b, float width, int x, int y, int radius)
+    @LuaFunction(manual = false, methodName= "drawCircleEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class, Integer.class, Integer.class, Integer.class })
+    public void drawCircleEx(int r, int g, int b, float width, int x, int y, int radius)
     {
     	Paint p = new Paint();
     	p.setColor(Color.rgb(r, g, b));
@@ -260,8 +260,8 @@ public class LuaGraphics implements LuaInterface
      * @param x
      * @param y
      */
-    @LuaFunction(manual = false, methodName= "DrawIcon", arguments = { String.class, Integer.class, Integer.class })
-    public void DrawIcon(String i, int x, int y)
+    @LuaFunction(manual = false, methodName= "drawIcon", arguments = { String.class, Integer.class, Integer.class })
+    public void drawIcon(String i, int x, int y)
     {
     	int id = c.getResources().getIdentifier(i, "drawable", c.getPackageName());
     	Bitmap b = ((BitmapDrawable)c.getResources().getDrawable(id)).getBitmap();
@@ -274,8 +274,8 @@ public class LuaGraphics implements LuaInterface
      * @param x
      * @param y
      */
-    @LuaFunction(manual = false, methodName= "DrawImage", arguments = { String.class, Integer.class, Integer.class })
-    public void DrawImage(String i, int x, int y)
+    @LuaFunction(manual = false, methodName= "drawImage", arguments = { String.class, Integer.class, Integer.class })
+    public void drawImage(String i, int x, int y)
     {
     	int id = c.getResources().getIdentifier(i, "drawable", c.getPackageName());
     	Bitmap b = ((BitmapDrawable)c.getResources().getDrawable(id)).getBitmap();
@@ -296,8 +296,8 @@ public class LuaGraphics implements LuaInterface
      * @param gH
      * @param bH
      */
-    @LuaFunction(manual = false, methodName= "DrawImageRectCacheEx", arguments = { String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
-    public void DrawImageRectCacheEx(String i, int srcX, int srcY, int srcWidth, int srcHeight, int rL, int gL, int bL, int rH, int gH, int bH)
+    @LuaFunction(manual = false, methodName= "drawImageRectCacheEx", arguments = { String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
+    public void drawImageRectCacheEx(String i, int srcX, int srcY, int srcWidth, int srcHeight, int rL, int gL, int bL, int rH, int gH, int bH)
     {
     	int id = c.getResources().getIdentifier(i, "drawable", c.getPackageName());
     	Bitmap b = ((BitmapDrawable)c.getResources().getDrawable(id)).getBitmap();
@@ -309,8 +309,8 @@ public class LuaGraphics implements LuaInterface
      * Draws image on rectangle cache
      * @param i
      */
-    @LuaFunction(manual = false, methodName= "DrawImageRectCache", arguments = { String.class })
-    public void DrawImageRectCache(String i)
+    @LuaFunction(manual = false, methodName= "drawImageRectCache", arguments = { String.class })
+    public void drawImageRectCache(String i)
     {
     	int id = c.getResources().getIdentifier(i, "drawable", c.getPackageName());
     	Bitmap b = ((BitmapDrawable)c.getResources().getDrawable(id)).getBitmap();
@@ -328,8 +328,8 @@ public class LuaGraphics implements LuaInterface
      * @param srcWidth
      * @param srcHeight
      */
-    @LuaFunction(manual = false, methodName= "DrawImageEx", arguments = { String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
-    public void DrawImageEx(String i, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight)
+    @LuaFunction(manual = false, methodName= "drawImageEx", arguments = { String.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
+    public void drawImageEx(String i, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight)
     {
     	int id = c.getResources().getIdentifier(i, "drawable", c.getPackageName());
     	Bitmap b = ((BitmapDrawable)c.getResources().getDrawable(id)).getBitmap();
@@ -347,8 +347,8 @@ public class LuaGraphics implements LuaInterface
      * @param x2
      * @param y2
      */
-    @LuaFunction(manual = false, methodName= "DrawLine", arguments = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
-    public void DrawLine(int r, int g, int b, int x1, int y1, int x2, int y2)
+    @LuaFunction(manual = false, methodName= "drawLine", arguments = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
+    public void drawLine(int r, int g, int b, int x1, int y1, int x2, int y2)
     {
     	Paint p = new Paint();
     	p.setColor(Color.rgb(r, g, b));    	
@@ -366,8 +366,8 @@ public class LuaGraphics implements LuaInterface
      * @param x2
      * @param y2
      */
-    @LuaFunction(manual = false, methodName= "DrawLineEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class, Integer.class, Integer.class, Integer.class, Integer.class })
-    public void DrawLineEx(int r, int g, int b, float width, int x1, int y1, int x2, int y2)
+    @LuaFunction(manual = false, methodName= "drawLineEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class, Integer.class, Integer.class, Integer.class, Integer.class })
+    public void drawLineEx(int r, int g, int b, float width, int x1, int y1, int x2, int y2)
     {
     	Paint p = new Paint();
     	p.setColor(Color.rgb(r, g, b));   
@@ -382,8 +382,8 @@ public class LuaGraphics implements LuaInterface
      * @param x2
      * @param y2
      */
-    @LuaFunction(manual = false, methodName= "DrawLinePenCache", arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
-    public void DrawLinePenCache(int x1, int y1, int x2, int y2)
+    @LuaFunction(manual = false, methodName= "drawLinePenCache", arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
+    public void drawLinePenCache(int x1, int y1, int x2, int y2)
     {
         gr.drawLine(x1, y1, x2, y2, lastPen);
     }
@@ -395,8 +395,8 @@ public class LuaGraphics implements LuaInterface
      * @param b
      * @param points
      */
-    @LuaFunction(manual = false, methodName= "DrawLines", arguments = { Integer.class, Integer.class, Integer.class, String.class })
-    public void DrawLines(int r, int g, int b, String points)
+    @LuaFunction(manual = false, methodName= "drawLines", arguments = { Integer.class, Integer.class, Integer.class, String.class })
+    public void drawLines(int r, int g, int b, String points)
     {
         String[] arr = points.split(",");
         float[] pointArr = new float[arr.length];
@@ -418,8 +418,8 @@ public class LuaGraphics implements LuaInterface
      * @param width
      * @param points
      */
-    @LuaFunction(manual = false, methodName= "DrawLinesEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class, String.class })
-    public void DrawLinesEx(int r, int g, int b, float width, String points)
+    @LuaFunction(manual = false, methodName= "drawLinesEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class, String.class })
+    public void drawLinesEx(int r, int g, int b, float width, String points)
     {
         String[] arr = points.split(",");
         float[] pointArr = new float[arr.length];
@@ -438,8 +438,8 @@ public class LuaGraphics implements LuaInterface
      * Draws lines from pen caches
      * @param points
      */
-    @LuaFunction(manual = false, methodName= "DrawLinesPenCache", arguments = { String.class })
-    public void DrawLinesPenCache(String points)
+    @LuaFunction(manual = false, methodName= "drawLinesPenCache", arguments = { String.class })
+    public void drawLinesPenCache(String points)
     {
         String[] arr = points.split(",");
         float[] pointArr = new float[arr.length];
@@ -459,8 +459,8 @@ public class LuaGraphics implements LuaInterface
      * @param b
      * @param points
      */
-    @LuaFunction(manual = false, methodName= "DrawPolygon", arguments = { Integer.class, Integer.class, Integer.class, String.class })
-    public void DrawPolygon(int r, int g, int b, String points)
+    @LuaFunction(manual = false, methodName= "drawPolygon", arguments = { Integer.class, Integer.class, Integer.class, String.class })
+    public void drawPolygon(int r, int g, int b, String points)
     {
         String[] arr = points.split(",");
         float[] pointArr = new float[arr.length];
@@ -482,8 +482,8 @@ public class LuaGraphics implements LuaInterface
      * @param width
      * @param points
      */
-    @LuaFunction(manual = false, methodName= "DrawPolygonEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class, String.class })
-    public void DrawPolygonEx(int r, int g, int b, float width, String points)
+    @LuaFunction(manual = false, methodName= "drawPolygonEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class, String.class })
+    public void drawPolygonEx(int r, int g, int b, float width, String points)
     {
         String[] arr = points.split(",");
         float[] pointArr = new float[arr.length];
@@ -502,8 +502,8 @@ public class LuaGraphics implements LuaInterface
      * Draws polygon from pen cache
      * @param points
      */
-    @LuaFunction(manual = false, methodName= "DrawPolygonPenCache", arguments = { String.class })
-    public void DrawPolygonPenCache(String points)
+    @LuaFunction(manual = false, methodName= "drawPolygonPenCache", arguments = { String.class })
+    public void drawPolygonPenCache(String points)
     {
         String[] arr = points.split(",");
         float[] pointArr = new float[arr.length];
@@ -525,8 +525,8 @@ public class LuaGraphics implements LuaInterface
      * @param width
      * @param height
      */
-    @LuaFunction(manual = false, methodName= "DrawRectangle", arguments = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
-    public void DrawRectangle(int r, int g, int b, int x, int y, int width, int height)
+    @LuaFunction(manual = false, methodName= "drawRectangle", arguments = { Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class, Integer.class })
+    public void drawRectangle(int r, int g, int b, int x, int y, int width, int height)
     {
     	Paint p = new Paint();
     	p.setColor(Color.rgb(r, g, b));
@@ -544,8 +544,8 @@ public class LuaGraphics implements LuaInterface
      * @param width
      * @param height
      */
-    @LuaFunction(manual = false, methodName= "DrawRectangleEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class, Integer.class, Integer.class, Integer.class, Integer.class })
-    public void DrawRectangleEx(int r, int g, int b, float widthP, int x, int y, int width, int height)
+    @LuaFunction(manual = false, methodName= "drawRectangleEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class, Integer.class, Integer.class, Integer.class, Integer.class })
+    public void drawRectangleEx(int r, int g, int b, float widthP, int x, int y, int width, int height)
     {
     	Paint p = new Paint();
     	p.setColor(Color.rgb(r, g, b));
@@ -559,8 +559,8 @@ public class LuaGraphics implements LuaInterface
      * @param g
      * @param b
      */
-    @LuaFunction(manual = false, methodName= "DrawRectangleRectCache", arguments = { Integer.class, Integer.class, Integer.class })
-    public void DrawRectangleRectCache(int r, int g, int b)
+    @LuaFunction(manual = false, methodName= "drawRectangleRectCache", arguments = { Integer.class, Integer.class, Integer.class })
+    public void drawRectangleRectCache(int r, int g, int b)
     {
     	Paint p = new Paint();
     	p.setColor(Color.rgb(r, g, b));
@@ -574,8 +574,8 @@ public class LuaGraphics implements LuaInterface
      * @param b
      * @param width
      */
-    @LuaFunction(manual = false, methodName= "DrawRectangleRectCacheEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class })
-    public void DrawRectangleRectCacheEx(int r, int g, int b, float width)
+    @LuaFunction(manual = false, methodName= "drawRectangleRectCacheEx", arguments = { Integer.class, Integer.class, Integer.class, Float.class })
+    public void drawRectangleRectCacheEx(int r, int g, int b, float width)
     {
     	Paint p = new Paint();
     	p.setColor(Color.rgb(r, g, b));
@@ -590,8 +590,8 @@ public class LuaGraphics implements LuaInterface
      * @param width
      * @param height
      */
-    @LuaFunction(manual = false, methodName= "DrawRectanglePenCache", arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
-    public void DrawRectanglePenCache(int x, int y, int width, int height)
+    @LuaFunction(manual = false, methodName= "drawRectanglePenCache", arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
+    public void drawRectanglePenCache(int x, int y, int width, int height)
     {
         gr.drawRect(new Rect(x, y, x+width, y+height), lastPen);
     }
@@ -599,8 +599,8 @@ public class LuaGraphics implements LuaInterface
     /**
      * Draws rectangle from rectangle store with pen cache
      */
-    @LuaFunction(manual = false, methodName="DrawRectanglePenRectCache")
-    public void DrawRectanglePenRectCache()
+    @LuaFunction(manual = false, methodName="drawRectanglePenRectCache")
+    public void drawRectanglePenRectCache()
     {
     	gr.drawRect(rectStore1, lastPen);
     }
@@ -617,8 +617,8 @@ public class LuaGraphics implements LuaInterface
      * @param halign
      * @param flags
      */
-    @LuaFunction(manual = false, methodName="DrawString", arguments = { String.class, String.class, Float.class, Integer.class, Float.class, Float.class, Integer.class, Integer.class, Integer.class })
-    public void DrawString(String s, String f, float size, int style, float x, float y, int valign, int halign, int flags)
+    @LuaFunction(manual = false, methodName="drawString", arguments = { String.class, String.class, Float.class, Integer.class, Float.class, Float.class, Integer.class, Integer.class, Integer.class })
+    public void drawString(String s, String f, float size, int style, float x, float y, int valign, int halign, int flags)
     {
     	/*
     	 *      // Summary:
@@ -684,8 +684,8 @@ public class LuaGraphics implements LuaInterface
      * @param width
      * @param height
      */
-    @LuaFunction(manual = false, methodName= "FillEllipse", arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
-    public void FillEllipse(int x, int y, int width, int height)
+    @LuaFunction(manual = false, methodName= "fillEllipse", arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
+    public void fillEllipse(int x, int y, int width, int height)
     {
     	Paint p = new Paint(lastBrush);
     	p.setStyle(Paint.Style.FILL);
@@ -696,8 +696,8 @@ public class LuaGraphics implements LuaInterface
      * Fill polygon
      * @param points
      */
-    @LuaFunction(manual = false, methodName= "FillPolygon", arguments = { String.class })
-    public void FillPolygon(String points)
+    @LuaFunction(manual = false, methodName= "fillPolygon", arguments = { String.class })
+    public void fillPolygon(String points)
     {
         String[] arr = points.split(",");
         float[] pointArr = new float[arr.length];
@@ -717,8 +717,8 @@ public class LuaGraphics implements LuaInterface
      * @param width
      * @param height
      */
-    @LuaFunction(manual = false, methodName= "FillRectangle", arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
-    public void FillRectangle(int x, int y, int width, int height)
+    @LuaFunction(manual = false, methodName= "fillRectangle", arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
+    public void fillRectangle(int x, int y, int width, int height)
     {
     	Paint p = new Paint(lastBrush);
     	p.setStyle(Paint.Style.FILL);
@@ -728,8 +728,8 @@ public class LuaGraphics implements LuaInterface
     /**
      * Fil region
      */
-    @LuaFunction(manual = false, methodName= "FillRegion", arguments = { })
-    public void FillRegion()
+    @LuaFunction(manual = false, methodName= "fillRegion", arguments = { })
+    public void fillRegion()
     {
     	Paint p = new Paint(lastBrush);
     	p.setStyle(Paint.Style.FILL);
@@ -742,8 +742,8 @@ public class LuaGraphics implements LuaInterface
      * @param green
      * @param blue
      */
-    @LuaFunction(manual = false, methodName= "Clear", arguments = { Integer.class, Integer.class, Integer.class })
-    public void Clear(int red, int green, int blue)
+    @LuaFunction(manual = false, methodName= "clear", arguments = { Integer.class, Integer.class, Integer.class })
+    public void clear(int red, int green, int blue)
     {
     	gr.drawColor(Color.rgb(red, green, blue));
     }
@@ -755,8 +755,8 @@ public class LuaGraphics implements LuaInterface
      * @param width
      * @param height
      */
-    @LuaFunction(manual = false, methodName= "SetClip", arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
-    public void SetClip(int x, int y, int width, int height)
+    @LuaFunction(manual = false, methodName= "setClip", arguments = { Integer.class, Integer.class, Integer.class, Integer.class })
+    public void setClip(int x, int y, int width, int height)
     {
     	gr.clipRect(x, y, x+width, y+width);
     }
