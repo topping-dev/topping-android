@@ -93,7 +93,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
     implementation "androidx.navigation:navigation-dynamic-features-fragment:2.3.5"
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.4.0'
     // For control over item selection of both touch and mouse driven selection
     //implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc03"
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.5.10'
