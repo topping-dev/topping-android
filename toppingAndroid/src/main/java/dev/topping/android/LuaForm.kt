@@ -462,6 +462,15 @@ open class LuaForm : AppCompatActivity(), LuaLifecycleOwner, LuaInterface {
     /**
      * (Ignore)
      */
+    fun afterInit() {
+        LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_CREATE, luaContext)
+        kotlinInterface = LuaEvent.getFormInstance(GetId(), this)
+        kotlinInterface?.ltOnCreate?.callIn()
+    }
+
+    /**
+     * (Ignore)
+     */
     override fun GetId(): String {
         return luaId ?: "LuaForm"
     }
