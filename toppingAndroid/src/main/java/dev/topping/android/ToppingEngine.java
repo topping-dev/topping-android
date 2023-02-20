@@ -24,6 +24,7 @@ import android.widget.LGFrameLayout;
 import android.widget.LGImageView;
 import android.widget.LGLinearLayout;
 import android.widget.LGListView;
+import android.widget.LGTextInputEditText;
 import android.widget.LGProgressBar;
 import android.widget.LGRadioButton;
 import android.widget.LGRadioGroup;
@@ -31,6 +32,7 @@ import android.widget.LGRecyclerView;
 import android.widget.LGRecyclerViewAdapter;
 import android.widget.LGScrollView;
 import android.widget.LGTabLayout;
+import android.widget.LGTextInputLayout;
 import android.widget.LGTextView;
 import android.widget.LGToolbar;
 import android.widget.LGView;
@@ -1144,6 +1146,7 @@ public class ToppingEngine
 			LGImageView.class,
 			LGLinearLayout.class,
 			LGListView.class,
+			LGTextInputEditText.class,
 			LGProgressBar.class,
 			LGRadioButton.class,
 			LGRadioGroup.class,
@@ -1151,6 +1154,7 @@ public class ToppingEngine
 			LGScrollView.class,
 			LGTabLayout.class,
 			LGTextView.class,
+			LGTextInputLayout.class,
 			LGView.class,
 			//LGViewGroup.class,
 			LGRecyclerView.class,

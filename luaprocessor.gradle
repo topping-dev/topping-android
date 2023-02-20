@@ -11,7 +11,6 @@ gradle.taskGraph.afterTask { task, state ->
     {
         def val = applicationId.replace(".", "/");
         println "${buildDir}/generated/source/r/" + val + "/"
-
     }
 }
 

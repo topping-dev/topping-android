@@ -20,6 +20,7 @@ import android.widget.LGHorizontalScrollView;
 import android.widget.LGImageView;
 import android.widget.LGLinearLayout;
 import android.widget.LGListView;
+import android.widget.LGTextInputEditText;
 import android.widget.LGProgressBar;
 import android.widget.LGRadioButton;
 import android.widget.LGRadioGroup;
@@ -27,6 +28,7 @@ import android.widget.LGRecyclerView;
 import android.widget.LGRelativeLayout;
 import android.widget.LGScrollView;
 import android.widget.LGTabLayout;
+import android.widget.LGTextInputLayout;
 import android.widget.LGTextView;
 import android.widget.LGToolbar;
 import android.widget.LGView;
@@ -359,6 +361,14 @@ public class LuaViewInflator implements LuaInterface
 		else if(name.equals("WebView")
 				|| name.equals("LGWebView")) {
 			lgresult = new LGBottomNavigationView(lc, atts);
+		}
+		else if(name.equals("com.google.android.material.textfield.TextInputLayout"))
+		{
+			lgresult = new LGTextInputLayout(lc, atts);
+		}
+		else if(name.equals("com.google.android.material.textfield.TextInputEditText"))
+		{
+			lgresult = new LGTextInputEditText(lc, atts);
 		}
 		else if((pluginView = containsPluginView(ToppingEngine.getViewPlugins(), name)) != null)
 		{
