@@ -11,6 +11,9 @@ import java.io.Closeable
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * View model
+ */
 @LuaClass(className = "LuaViewModel", isKotlin = true)
 class LuaViewModel : ViewModel() {
     private val mBagOfTags: MutableMap<String, Any> = mutableMapOf()
@@ -58,6 +61,9 @@ class LuaViewModel : ViewModel() {
         return viewModelScope
     }
 
+    /**
+     * (Ignore)
+     */
     override fun onCleared() {
         super.onCleared()
         mCleared = true
@@ -69,22 +75,37 @@ class LuaViewModel : ViewModel() {
         }
     }
 
+    /**
+     * (Ignore)
+     */
     interface Closable
     {
+        /**
+         * (Ignore)
+         */
         fun close()
     }
 
+    /**
+     * (Ignore)
+     */
     internal class ClosableCoroutineScope(context: CoroutineContext) : Closable, LuaCoroutineScope(
         CoroutineScope(context)
     ) {
         private val coroutineContext: CoroutineContext = context
 
+        /**
+         * (Ignore)
+         */
         override fun close() {
             return coroutineContext.cancel()
         }
     }
 
     private val JOB_KEY = "LuaViewModelScope.JOB_KEY"
+    /**
+     * (Ignore)
+     */
     public val viewModelScope: LuaCoroutineScope
         get() {
             val scope: LuaCoroutineScope? = this.getTag(JOB_KEY)
@@ -93,6 +114,9 @@ class LuaViewModel : ViewModel() {
             return setTagIfAbsent(JOB_KEY, ClosableCoroutineScope(SupervisorJob() + Dispatchers.Main.immediate))
         }
 
+    /**
+     * (Ignore)
+     */
     fun <T : Any> setTagIfAbsent(key: String, newValue: T): T {
         var previous: T?
         synchronized(mBagOfTags) {
@@ -111,10 +135,16 @@ class LuaViewModel : ViewModel() {
         return result
     }
 
+    /**
+     * (Ignore)
+     */
     fun <T> getTag(key: String): T? {
         synchronized(mBagOfTags) { return mBagOfTags[key] as T? }
     }
 
+    /**
+     * (Ignore)
+     */
     fun closeWithRuntimeExceptionMine(obj: Any) {
         if (obj is Closeable) {
             try {

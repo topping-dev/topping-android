@@ -93,7 +93,10 @@ public class LGEditText extends LGTextView implements LuaInterface
 		if(view == null)
 			view = new EditText(context, attrs, defStyle);
 	}
-	
+
+	/**
+	 * (Ignore)
+	 */
 	protected void initEvents()
 	{
 		((TextView)view).addTextChangedListener(new TextWatcher()

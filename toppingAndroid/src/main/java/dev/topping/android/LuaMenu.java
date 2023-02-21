@@ -17,30 +17,54 @@ public class LuaMenu implements LuaInterface
 	String title;
 	LuaRef iconRes;
 
+	/**
+	 * (Ignore)
+	 */
 	public LuaMenu(LuaContext context) {
 		this.context = context;
 	}
 
+	/**
+	 * Create lua menu
+	 * @param context
+	 * @return LuaMenu
+	 */
 	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LuaMenu.class)
 	public static LuaMenu create(LuaContext context) {
 		return new LuaMenu(context);
 	}
 
+	/**
+	 * Set title
+	 * @param text
+	 */
 	@LuaFunction(manual = false, methodName = "setTitle", arguments = { String.class })
 	public void setTitle(String text) {
 		title = text;
 	}
 
+	/**
+	 * Set title
+	 * @param text LuaRef
+	 */
 	@LuaFunction(manual = false, methodName = "setTitleRef", arguments = { LuaRef.class })
 	public void setTitleRef(LuaRef text) {
 		title = context.getContext().getResources().getResourceEntryName(text.getRef());
 	}
 
+	/**
+	 * Set icon
+	 * @param icon
+	 */
 	@LuaFunction(manual = false, methodName = "setIcon", arguments = { LuaRef.class })
 	public void setIcon(LuaRef icon) {
 		iconRes = icon;
 	}
 
+	/**
+	 * Set intent
+	 * @param lt
+	 */
 	public void setIntent(LuaTranslator lt) {
 
 	}

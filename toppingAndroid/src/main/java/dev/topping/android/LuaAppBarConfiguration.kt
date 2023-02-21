@@ -5,9 +5,23 @@ import dev.topping.android.backend.LuaClass
 import dev.topping.android.backend.LuaFunction
 import dev.topping.android.luagui.LuaRef
 
+/**
+ * App Bar Configuration
+ */
 @LuaClass(className = "LuaAppBarConfiguration", isKotlin = true)
 class LuaAppBarConfiguration(var appBarConfiguration: AppBarConfiguration) {
     companion object {
+        /**
+         * Create app bar configuration
+         * @param singleTop boolean
+         * @param popUpTo LuaRef
+         * @param popUpToInclusive LuaRef
+         * @param enterAnim LuaRef
+         * @param exitAnim LuaRef
+         * @param popEnterAnim LuaRef
+         * @param popExitAnim LuaRef
+         * @return LuaAppBarConfiguration
+         */
         @LuaFunction(
             manual = false,
             methodName = "create",
@@ -25,6 +39,10 @@ class LuaAppBarConfiguration(var appBarConfiguration: AppBarConfiguration) {
         }
     }
 
+    /**
+     * Set top level destinations
+     * @param ids array
+     */
     @LuaFunction(
         manual = false,
         methodName = "setTopLevelDestinations",

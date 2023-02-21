@@ -15,6 +15,9 @@ import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
 
+/**
+ * RecyclerView adapter
+ */
 @LuaClass(className = "LGRecyclerViewAdapter")
 public class LGRecyclerViewAdapter extends RecyclerView.Adapter implements LuaInterface
 {
@@ -106,6 +109,9 @@ public class LGRecyclerViewAdapter extends RecyclerView.Adapter implements LuaIn
         });
     }
 
+    /**
+     * (Ignore)
+     */
     @Override
     public int getItemViewType(int position)
     {

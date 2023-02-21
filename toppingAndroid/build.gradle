@@ -3,11 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'org.ysb33r.doxygen'
+apply plugin: 'org.jetbrains.dokka'
 
 android {
     compileSdkVersion 31
     buildToolsVersion '31.0.0'
-    ndkVersion "24.0.8215888"
+    ndkVersion '24.0.8215888'
 
     defaultConfig {
         minSdkVersion 21

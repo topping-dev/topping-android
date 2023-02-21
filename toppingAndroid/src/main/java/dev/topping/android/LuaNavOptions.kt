@@ -5,6 +5,9 @@ import dev.topping.android.backend.LuaClass
 import dev.topping.android.backend.LuaFunction
 import dev.topping.android.luagui.LuaRef
 
+/**
+ * Navigation options
+ */
 @LuaClass(className = "LuaNavOptions", isKotlin = true)
 class LuaNavOptions(val navOptions: NavOptions) {
     companion object {

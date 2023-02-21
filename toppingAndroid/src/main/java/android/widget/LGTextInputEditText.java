@@ -89,6 +89,9 @@ public class LGTextInputEditText extends LGEditText implements LuaInterface
 			view = new TextInputEditText(context, attrs, defStyle);
 	}
 
+	/**
+	 * (Ignore)
+	 */
 	@Override
 	public String GetId() {
 		return "LGTextInputEditText";

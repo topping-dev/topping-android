@@ -3,6 +3,9 @@ package dev.topping.android
 import dev.topping.android.backend.LuaClass
 import dev.topping.android.backend.LuaFunction
 
+/**
+ * Mutable live data
+ */
 @LuaClass(className = "LuaMutableLiveData", isKotlin = true)
 class LuaMutableLiveData : LuaLiveData() {
     companion object {

@@ -19,6 +19,9 @@ import dev.topping.android.luagui.LuaContext;
 import dev.topping.android.luagui.LuaRef;
 import dev.topping.android.osspecific.ClassCache;
 
+/**
+ * Toolbar
+ */
 @LuaClass(className = "LGToolbar")
 public class LGToolbar extends LGView implements LuaInterface
 {
@@ -199,30 +202,50 @@ public class LGToolbar extends LGView implements LuaInterface
         ((Toolbar)view).setTitleTextAppearance(lc.getContext(), ref.getRef());
     }
 
+    /**
+     * Get subtitle
+     * @return subtitle
+     */
     @LuaFunction(manual = false, methodName = "getSubtitle")
     public String getSubtitle()
     {
         return ((Toolbar)view).getSubtitle().toString();
     }
 
+    /**
+     * Set subtitle
+     * @param text
+     */
     @LuaFunction(manual = false, methodName = "setSubtitle", arguments = { String.class })
     public void setSubtitleInternal(String text)
     {
         ((Toolbar)view).setSubtitle(text);
     }
 
+    /**
+     * Set subtitle
+     * @param LuaRef
+     */
     @LuaFunction(manual = false, methodName = "setSubtitleRef", arguments = { LuaRef.class })
     public void setSubtitle(LuaRef ref)
     {
         ((Toolbar)view).setSubtitle(ref.getRef());
     }
 
+    /**
+     * Set subtitle text color
+     * @param LuaRef
+     */
     @LuaFunction(manual = false, methodName = "setSubtitleTextColor", arguments = { LuaRef.class })
     public void setSubtitleTextColor(LuaRef ref)
     {
         ((Toolbar)view).setSubtitleTextColor(view.getResources().getColor(ref.getRef()));
     }
 
+    /**
+     * Set subtitle text appearance
+     * @param LuaRef
+     */
     @LuaFunction(manual = false, methodName = "setSubtitleTextApperance", arguments = { LuaRef.class })
     public void setSubtitleTextApperance(LuaRef ref)
     {

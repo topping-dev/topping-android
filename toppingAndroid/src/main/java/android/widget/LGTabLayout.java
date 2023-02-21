@@ -11,6 +11,9 @@ import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
 
+/**
+ * Tab layout
+ */
 @LuaClass(className = "LGTabLayout")
 public class LGTabLayout extends LGScrollView implements LuaInterface {
 

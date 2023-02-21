@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModelProvider
 import dev.topping.android.backend.LuaClass
 import dev.topping.android.backend.LuaFunction
 
+/**
+ * View model provider
+ */
 @LuaClass(className = "LuaViewModelProvider", isKotlin = true)
 class LuaViewModelProvider private constructor(private val provider: ViewModelProvider){
     companion object {
