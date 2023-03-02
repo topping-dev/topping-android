@@ -8,6 +8,9 @@ import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
 
+/**
+ * Scroll view
+ */
 @LuaClass(className = "LGScrollView")
 public class LGScrollView extends LGFrameLayout implements LuaInterface
 {

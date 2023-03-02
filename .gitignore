@@ -6,6 +6,8 @@ toppingAndroid/build/
 toppingAndroid/doclua.zip
 toppingAndroid/doclua/
 toppingAndroid/docluaJson/
+toppingAndroid/docluaAndroid/
+toppingAndroid/docluaShared/
 local.properties
 *.gpg
 doxygen.exe

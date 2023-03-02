@@ -7,6 +7,9 @@ import dev.topping.android.backend.LuaClass
 import dev.topping.android.backend.LuaFunction
 import dev.topping.android.luagui.LuaRef
 
+/**
+ * Fragment manager
+ */
 @LuaClass(className = "LuaFragmentManager", isKotlin = true)
 class LuaFragmentManager(val fragmentManager: FragmentManager) {
 

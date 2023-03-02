@@ -13,17 +13,18 @@ import androidx.fragment.app.ListFragment;
  */
 public class LGListViewFragment extends ListFragment
 {
-	public LGListViewFragment()
-	{
-		super();
-	}
-
+	/**
+	 * (Ignore)
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 	}
 
+	/**
+	 * (Ignore)
+	 */
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
 	{

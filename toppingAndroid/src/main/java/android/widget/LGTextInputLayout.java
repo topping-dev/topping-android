@@ -9,17 +9,29 @@ import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
 
+/**
+ * Material Text Input Layout
+ */
 @LuaClass(className = "LGTextInputLayout")
 public class LGTextInputLayout extends LGViewGroup implements LuaInterface {
 
+    /**
+     * (Ignore)
+     */
     public LGTextInputLayout(LuaContext context) {
         super(context);
     }
 
+    /**
+     * (Ignore)
+     */
     public LGTextInputLayout(LuaContext context, String luaId) {
         super(context, luaId);
     }
 
+    /**
+     * (Ignore)
+     */
     public LGTextInputLayout(LuaContext context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -51,6 +63,9 @@ public class LGTextInputLayout extends LGViewGroup implements LuaInterface {
             view = new TextInputLayout(context, attrs, defStyle);
     }
 
+    /**
+     * (Ignore)
+     */
     @Override
     public String GetId() {
         return "LGTextInputLayout";

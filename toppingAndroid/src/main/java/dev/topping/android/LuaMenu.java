@@ -59,7 +59,7 @@ public class LuaMenu implements LuaInterface
 
 	/**
 	 * Set title
-	 * @param text
+	 * @param text LuaRef
 	 */
 	@LuaFunction(manual = false, methodName = "setTitleRef", arguments = { LuaRef.class })
 	public void setTitleRef(LuaRef text) {

@@ -13,6 +13,9 @@ import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.Lunar;
 import dev.topping.android.luagui.LuaRef;
 
+/**
+ * Nav Controller
+ */
 @LuaClass(className = "LuaNavController")
 public class LuaNavController {
 

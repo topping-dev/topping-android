@@ -14,7 +14,7 @@ import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
 
 /**
- * Button
+ * WebView
  */
 @LuaClass(className = "LGWebView")
 public class LGWebView extends LGTextView implements LuaInterface

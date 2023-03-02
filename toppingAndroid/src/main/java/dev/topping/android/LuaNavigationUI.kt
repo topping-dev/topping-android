@@ -13,10 +13,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * Navigation UI
+ */
 @LuaClass(className = "LuaNavigationUI", isKotlin = true)
 class LuaNavigationUI {
 
     companion object {
+        /**
+         * Navigate Up
+         */
         @LuaFunction(
             manual = false,
             methodName = "navigateUp",
@@ -30,6 +36,11 @@ class LuaNavigationUI {
             NavigationUI.navigateUp(luaNavController.navController, luaAppBarConfiguration.appBarConfiguration)
         }
 
+        /**
+         * Navigate Up
+         * @param luaNavController
+         * @param openableLayout
+         */
         @LuaFunction(
             manual = false,
             methodName = "navigateUpView",
@@ -43,6 +54,11 @@ class LuaNavigationUI {
             NavigationUI.navigateUp(luaNavController.navController, openableLayout.view as Openable)
         }
 
+        /**
+         * Setup with action bar
+         * @param luaForm
+         * @param luaNavController
+         */
         @LuaFunction(
             manual = false,
             methodName = "setupActionBarWithNavController",
@@ -56,6 +72,12 @@ class LuaNavigationUI {
             NavigationUI.setupActionBarWithNavController(luaForm, luaNavController.navController)
         }
 
+        /**
+         * Setup with action bar
+         * @param luaForm
+         * @param luaNavController
+         * @param openableLayout
+         */
         @LuaFunction(
             manual = false,
             methodName = "setupActionBarWithNavControllerView",
@@ -70,6 +92,11 @@ class LuaNavigationUI {
             NavigationUI.setupActionBarWithNavController(luaForm, luaNavController.navController, openableLayout.view as Openable)
         }
 
+        /**
+         * Setup with action bar
+         * @param luaForm
+         * @param luaAppBarConfiguration
+         */
         @LuaFunction(
             manual = false,
             methodName = "setupActionBarWithNavControllerConfiguration",
@@ -84,6 +111,11 @@ class LuaNavigationUI {
             NavigationUI.setupActionBarWithNavController(luaForm, luaNavController.navController, luaAppBarConfiguration.appBarConfiguration)
         }
 
+        /**
+         * Setup with toolbar
+         * @param lgToolbar
+         * @param luaNavController
+         */
         @LuaFunction(
             manual = false,
             methodName = "setupWithNavController",
@@ -97,6 +129,12 @@ class LuaNavigationUI {
             NavigationUI.setupWithNavController(lgToolbar.view as Toolbar, luaNavController.navController)
         }
 
+        /**
+         * Setup with toolbar
+         * @param lgToolbar
+         * @param luaNavController
+         * @param openableLayout
+         */
         @LuaFunction(
             manual = false,
             methodName = "setupWithNavControllerView",
@@ -111,6 +149,12 @@ class LuaNavigationUI {
             NavigationUI.setupWithNavController(lgToolbar.view as Toolbar, luaNavController.navController, openableLayout.view as Openable)
         }
 
+        /**
+         * Setup with toolbar
+         * @param lgToolbar
+         * @param luaNavController
+         * @param luaAppBarConfiguration
+         */
         @LuaFunction(
             manual = false,
             methodName = "setupWithNavControllerConfiguration",

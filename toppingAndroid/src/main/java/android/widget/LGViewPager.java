@@ -14,12 +14,11 @@ import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.luagui.LuaContext;
 
+/**
+ * ViewPager
+ */
 @LuaClass(className = "LGViewPager")
 public class LGViewPager extends LGViewGroup {
-    public LGViewPager(LuaContext context) {
-        super(context);
-    }
-
     /**
      * (Ignore)
      */

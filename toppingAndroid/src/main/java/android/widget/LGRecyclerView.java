@@ -12,6 +12,9 @@ import dev.topping.android.backend.LuaClass;
 import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.luagui.LuaContext;
 
+/**
+ * RecyclerView
+ */
 @LuaClass(className = "LGRecyclerView")
 public class LGRecyclerView extends LGView
 {
@@ -70,6 +73,9 @@ public class LGRecyclerView extends LGView
             view = new RecyclerView(context);
     }
 
+    /**
+     * (Ignore)
+     */
     @Override
     public void Setup(Context context, AttributeSet attrs)
     {
@@ -78,6 +84,9 @@ public class LGRecyclerView extends LGView
             view = new RecyclerView(context, attrs);
     }
 
+    /**
+     * (Ignore)
+     */
     @Override
     public void Setup(Context context, AttributeSet attrs, int defStyle)
     {
@@ -86,6 +95,9 @@ public class LGRecyclerView extends LGView
             view = new RecyclerView(context, attrs, defStyle);
     }
 
+    /**
+     * (Ignore)
+     */
     @Override
     public void AfterSetup(Context context)
     {
@@ -115,6 +127,9 @@ public class LGRecyclerView extends LGView
         adapter.parent = this;
     }
 
+    /**
+     * (Ignore)
+     */
     public void setAdapter(LuaTranslator ltInit)
     {
         LGRecyclerViewAdapter adapter = LGRecyclerViewAdapter.create(lc, "");

@@ -23,6 +23,11 @@ public class LGListView extends LGAbsListView implements LuaInterface
 	private LGListViewFragment llvf;
 	public LuaFragment lf;
 
+	/**
+	 * Create list view
+	 * @param lc
+	 * @return LGListView
+	 */
 	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGListView.class)
 	public static LGListView create(LuaContext lc)
 	{

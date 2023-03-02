@@ -12,6 +12,9 @@ import dev.topping.android.backend.LuaFunction;
 import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
 
+/**
+ * Bottom navigation view
+ */
 @LuaClass(className = "LGBottomNavigationView")
 public class LGBottomNavigationView extends LGFrameLayout implements LuaInterface {
 
@@ -97,6 +100,11 @@ public class LGBottomNavigationView extends LGFrameLayout implements LuaInterfac
         });
     }
 
+    /**
+     * Create bottom navigation view
+     * @param context
+     * @return LGBottomNavigationView
+     */
     @LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class }, self = LGBottomNavigationView.class)
     public static LGBottomNavigationView create(LuaContext context) {
         return new LGBottomNavigationView(context);

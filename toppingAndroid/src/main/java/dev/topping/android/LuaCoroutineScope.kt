@@ -6,6 +6,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * Coroutine scope
+ */
 @LuaClass(className = "LuaCoroutineScope", isKotlin = true)
 open class LuaCoroutineScope(private val scope: CoroutineScope) {
     /**
