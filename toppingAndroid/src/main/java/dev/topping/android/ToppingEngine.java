@@ -16,6 +16,7 @@ import android.widget.LGComboBox;
 import android.widget.LGCompoundButton;
 import android.widget.LGConstraintLayout;
 import android.widget.LGDatePicker;
+import android.widget.LGDrawerLayout;
 import android.widget.LGEditText;
 import androidx.fragment.app.LGFragmentContainerView;
 
@@ -24,6 +25,7 @@ import android.widget.LGFrameLayout;
 import android.widget.LGImageView;
 import android.widget.LGLinearLayout;
 import android.widget.LGListView;
+import android.widget.LGNavigationView;
 import android.widget.LGTextInputEditText;
 import android.widget.LGProgressBar;
 import android.widget.LGRadioButton;
@@ -1139,6 +1141,7 @@ public class ToppingEngine
 			LGCompoundButton.class,
 			LGConstraintLayout.class,
 			LGDatePicker.class,
+			LGDrawerLayout.class,
 			LGEditText.class,
 			LGFragmentContainerView.class,
 			LGFragmentStateAdapter.class,
@@ -1146,6 +1149,7 @@ public class ToppingEngine
 			LGImageView.class,
 			LGLinearLayout.class,
 			LGListView.class,
+			LGNavigationView.class,
 			LGTextInputEditText.class,
 			LGProgressBar.class,
 			LGRadioButton.class,

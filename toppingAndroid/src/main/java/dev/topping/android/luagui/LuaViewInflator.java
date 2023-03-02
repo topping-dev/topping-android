@@ -13,6 +13,7 @@ import android.widget.LGCheckBox;
 import android.widget.LGComboBox;
 import android.widget.LGConstraintLayout;
 import android.widget.LGDatePicker;
+import android.widget.LGDrawerLayout;
 import android.widget.LGEditText;
 import androidx.fragment.app.LGFragmentContainerView;
 import android.widget.LGFrameLayout;
@@ -20,6 +21,7 @@ import android.widget.LGHorizontalScrollView;
 import android.widget.LGImageView;
 import android.widget.LGLinearLayout;
 import android.widget.LGListView;
+import android.widget.LGNavigationView;
 import android.widget.LGTextInputEditText;
 import android.widget.LGProgressBar;
 import android.widget.LGRadioButton;
@@ -369,6 +371,15 @@ public class LuaViewInflator implements LuaInterface
 		else if(name.equals("com.google.android.material.textfield.TextInputEditText"))
 		{
 			lgresult = new LGTextInputEditText(lc, atts);
+		}
+		else if(name.equals("androidx.drawerlayout.widget.DrawerLayout"))
+		{
+			lgresult = new LGDrawerLayout(lc, atts);
+		}
+		else if(name.equals("android.support.design.widget.NavigationView")
+		|| name.equals("com.google.android.material.navigation.NavigationView"))
+		{
+			lgresult = new LGNavigationView(lc, atts);
 		}
 		else if((pluginView = containsPluginView(ToppingEngine.getViewPlugins(), name)) != null)
 		{
