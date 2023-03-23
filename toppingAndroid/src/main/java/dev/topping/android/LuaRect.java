@@ -13,8 +13,8 @@ public class LuaRect extends RectF implements LuaInterface
 	 * Creates LuaRect
 	 * @return LuaRect
 	 */
-	@LuaFunction(manual = false, methodName = "createRect", self = LuaRect.class)
-	public static LuaRect createRect()
+	@LuaFunction(manual = false, methodName = "create", self = LuaRect.class)
+	public static LuaRect create()
 	{
 		return new LuaRect();
 	}
@@ -27,8 +27,8 @@ public class LuaRect extends RectF implements LuaInterface
 	 * @param bottom
 	 * @return LuaRect
 	 */
-	@LuaFunction(manual = false, methodName = "createRectPar", self = LuaRect.class, arguments = { Float.class, Float.class ,Float.class, Float.class })
-	public static LuaRect createRectPar(Float left, Float top, Float right, Float bottom)
+	@LuaFunction(manual = false, methodName = "createPar", self = LuaRect.class, arguments = { Float.class, Float.class ,Float.class, Float.class })
+	public static LuaRect createPar(Float left, Float top, Float right, Float bottom)
 	{
 		LuaRect lr = new LuaRect();
 		lr.set(left.floatValue(), top.floatValue(), right.floatValue(), bottom.floatValue());

@@ -9,6 +9,9 @@ import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
 import dev.topping.android.luagui.LuaRef;
 
+/**
+ * TextView
+ */
 @LuaClass(className = "LGTextView")
 public class LGTextView extends LGView implements LuaInterface
 {

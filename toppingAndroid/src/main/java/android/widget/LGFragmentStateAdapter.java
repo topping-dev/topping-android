@@ -15,6 +15,9 @@ import dev.topping.android.backend.LuaInterface;
 import dev.topping.android.luagui.LuaContext;
 import dev.topping.android.luagui.LuaRef;
 
+/**
+ * Fragment state adapter
+ */
 @LuaClass(className = "LGFragmentStateAdapter")
 public class LGFragmentStateAdapter extends FragmentStateAdapter implements LuaInterface
 {
@@ -26,6 +29,7 @@ public class LGFragmentStateAdapter extends FragmentStateAdapter implements LuaI
 
     /**
      * Creates LGFragmentStateAdapter Object From Lua.
+     * @param form
      * @return LGFragmentStateAdapter
      */
     @LuaFunction(manual = false, methodName = "createFromForm", arguments = { LuaForm.class }, self = LGFragmentStateAdapter.class)
@@ -36,6 +40,7 @@ public class LGFragmentStateAdapter extends FragmentStateAdapter implements LuaI
 
     /**
      * Creates LGFragmentStateAdapter Object From Lua.
+     * @param fragment
      * @return LGFragmentStateAdapter
      */
     @LuaFunction(manual = false, methodName = "createFromFragment", arguments = { LuaFragment.class }, self = LGFragmentStateAdapter.class)
@@ -46,6 +51,9 @@ public class LGFragmentStateAdapter extends FragmentStateAdapter implements LuaI
 
     /**
      * Creates LGFragmentStateAdapter Object From Lua.
+     * @param lc
+     * @param fragmentManager
+     * @param lifecycle
      * @return LGFragmentStateAdapter
      */
     @LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class, LuaFragmentManager.class, LuaLifecycle.class }, self = LGFragmentStateAdapter.class)

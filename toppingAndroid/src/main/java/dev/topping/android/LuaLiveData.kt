@@ -12,7 +12,7 @@ open class LuaLiveData {
 
     companion object {
         /**
-         * Create mutable live data
+         * Create live data
          */
         @LuaFunction(
             manual = false,

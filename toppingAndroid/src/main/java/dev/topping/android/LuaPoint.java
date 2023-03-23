@@ -16,8 +16,8 @@ public class LuaPoint extends PointF implements LuaInterface
 	 * Creates LuaPoint
 	 * @return LuaPoint
 	 */
-	@LuaFunction(manual = false, methodName = "createPoint", self = LuaPoint.class)
-	public static LuaPoint createPoint()
+	@LuaFunction(manual = false, methodName = "create", self = LuaPoint.class)
+	public static LuaPoint create()
 	{
 		return new LuaPoint();
 	}
@@ -28,8 +28,8 @@ public class LuaPoint extends PointF implements LuaInterface
 	 * @param y
 	 * @return LuaPoint
 	 */
-	@LuaFunction(manual = false, methodName = "createPointPar", self = LuaPoint.class, arguments = { Float.class, Float.class })
-	public static LuaPoint createPointPar(Float x, Float y)
+	@LuaFunction(manual = false, methodName = "createPar", self = LuaPoint.class, arguments = { Float.class, Float.class })
+	public static LuaPoint createPar(Float x, Float y)
 	{
 		LuaPoint lp = new LuaPoint();
 		lp.set(x, y);

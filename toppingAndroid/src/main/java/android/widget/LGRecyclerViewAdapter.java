@@ -167,7 +167,7 @@ public class LGRecyclerViewAdapter extends RecyclerView.Adapter implements LuaIn
     }
 
     /**
-     * Remove all values from adapter
+     * Notify data change
      */
     @LuaFunction(manual = false, methodName = "notify")
     public void notifyData()
