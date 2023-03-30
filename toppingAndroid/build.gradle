@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-parcelize'
-apply plugin: 'org.ysb33r.doxygen'
 apply plugin: 'org.jetbrains.dokka'
 
 android {
@@ -39,46 +38,12 @@ android {
     }
 }
 
-doxygen
-{
-    generate_latex false
-    generate_html false
-    generate_xml true
-
-    source new File(projectDir,'src/main/java/android/widget')
-    source new File(projectDir,'src/main/java/dev/topping/')
-}
-
 /*def applicationId = ""
 project.afterEvaluate {
     project.android.applicationVariants.all { variant ->
         applicationId = [variant.mergedFlavor.applicationId, variant.buildType.applicationIdSuffix].findAll().join()
     }
 }*/
-
-gradle.taskGraph.afterTask { task, state ->
-    if(task.path.contains("doxygen"))
-    {
-        project.delete(files("${projectDir}doclua.zip"))
-        def os = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.currentOperatingSystem
-        String[] args = null
-        if(os.toFamilyName().equalsIgnoreCase("windows"))
-            args = ["cmd", "/c", "java -jar ${projectDir}/parser.jar 0 ${buildDir}/docs/doxygen/xml ${projectDir}/doclua && powershell Compress-Archive ${projectDir}/doclua/. ${projectDir}/doclua.zip"]
-        else
-            args = ["sh", "-c", "java -jar ${projectDir}/parser.jar 0 ${buildDir}/docs/doxygen/xml ${projectDir}/doclua | zip -r ${projectDir}/doclua.zip ${projectDir}/doclua/"]
-        println(args[2])
-        def proc = args.execute()
-        proc.in.eachLine {line -> println line}
-        //proc.err.eachLine {line -> println 'ERROR: ' + line}
-        proc.waitFor()
-        project.delete(files("${projectDir}/doclua"))
-        //print tasks.findByName("doxygen");
-        //tasks.findByName("doxygen").execute()
-        /*def val = applicationId.replace(".", "/");
-        println "${buildDir}/generated/source/r/" + val + "/"*/
-
-    }
-}
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.0'
@@ -102,6 +67,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation "androidx.fragment:fragment:1.3.5"
     implementation "androidx.fragment:fragment-ktx:1.3.5"
+    dokkaPlugin "dev.topping:topping-documentation:1.0.0"
 }
 
 //Maven publish

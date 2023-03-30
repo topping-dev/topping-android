@@ -10,12 +10,4 @@ toppingAndroid/docluaAndroid/
 toppingAndroid/docluaShared/
 local.properties
 *.gpg
-doxygen.exe
-doxyindexer.exe
-doxysearch.cgi.exe
-libclang.dll
-toppingAndroid/doxygen.exe
-toppingAndroid/doxyindexer.exe
-toppingAndroid/doxysearch.cgi.exe
-toppingAndroid/libclang.dll
 .DS_Store

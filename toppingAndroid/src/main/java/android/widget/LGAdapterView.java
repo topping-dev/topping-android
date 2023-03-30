@@ -53,8 +53,8 @@ public class LGAdapterView extends BaseAdapter implements Filterable, SpinnerAda
 	 * Creates LGAdapterView Object From Lua.
 	 * @return LGAdapterView
 	 */
-	@LuaFunction(manual = false, methodName = "Create", arguments = { LuaContext.class, String.class }, self = LGAdapterView.class)
-	public static LGAdapterView Create(LuaContext lc, String id)
+	@LuaFunction(manual = false, methodName = "create", arguments = { LuaContext.class, String.class }, self = LGAdapterView.class)
+	public static LGAdapterView create(LuaContext lc, String id)
 	{
 		LGAdapterView lgav = new LGAdapterView(lc, id);
 		return lgav;

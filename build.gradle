@@ -1,18 +1,15 @@
 buildscript {
     repositories {
         jcenter()
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
+        google()
         maven {
             url "https://plugins.gradle.org/m2/"
             name 'Gradle'
         }
+        mavenLocal()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.1'
-        classpath 'org.ysb33r.gradle:doxygen:0.6'
         classpath 'com.ydq.android.gradle.build.tool:nativeBundle:1.0.6'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.7.20"
@@ -23,11 +20,8 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
-
+        google()
+        mavenLocal()
     }
 }
 
