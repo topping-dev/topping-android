@@ -1,6 +1,6 @@
 # ToppingEngine
 
-[![](https://img.shields.io/maven-central/v/dev.topping/toppingandroid)](https://img.shields.io/maven-central/v/dev.topping/toppingandroid) [![](https://jitpack.io/v/topping-dev/topping-android.svg)](https://jitpack.io/#topping-dev/topping-android)
+[![](https://img.shields.io/maven-central/v/dev.topping/toppingandroid)](https://img.shields.io/maven-central/v/dev.topping/toppingandroid)
 
 ## Installation
 
@@ -8,13 +8,13 @@ Topping Engine is available through Maven Central. To install
 it, simply add the following line to your gradle:
 
 ```gradle
-implementation 'dev.topping:toppingandroid:0.1.x'
+implementation 'dev.topping:toppingandroid:x.x.x'
 ```
 
 or
 
 ```gradle
-implementation 'com.github.topping-dev:topping-android:v0.1.x'
+implementation 'com.github.topping-dev:topping-android:vx.x.x'
 ```
 
 Details are available at https://topping.dev
