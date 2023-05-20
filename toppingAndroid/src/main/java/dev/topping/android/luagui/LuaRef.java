@@ -218,198 +218,198 @@ public class LuaRef implements LuaInterface, Serializable
      */
     public static void resourceLoader(Context ctx)
     {
-        /* function readOnlyTable (t)
-         * 	local proxy = {}
-         * 	local store = t
-         * 	local mt = {       -- create metatable
-         * 		__index = function(t,k)
-         * 		    if type(store[k]) == "table" then
-         * 		        return store[k]
-         * 		    else
-         * 		        return LuaRef.withValue(store[k])
-         * 		    end
-         * 	    end,
-         * 		__newindex = function (t,k,v)
-         * 		  error("attempt to update a read-only table", 2)
-         * 		end
-         * 	}
-         * 	setmetatable(proxy, mt)
-         * 	return proxy
-         * end */
-        LuaState L = ToppingEngine.getInstance().getLuaState();
-        lua_pushcfunction(L, readOnlyTable);
-        lua_setfield(L,LUA_GLOBALSINDEX,"readOnlyTable");
-
-        Class rClass = null;
-        try
-        {
-            DexFile df = new DexFile(ctx.getPackageCodePath());
-            for (Enumeration<String> iter = df.entries(); iter.hasMoreElements(); )
-            {
-                String s = iter.nextElement();
-                if (s.startsWith(ctx.getPackageName()) && s.endsWith("R"))
-                {
-                    try
-                    {
-                        rClass = ClassCache.forName(s);
-                        break;
-                    }
-                    catch (ClassNotFoundException e)
-                    {
-
-                    }
-                }
-            }
-        }
-        catch (IOException e)
-        {
-            return;
-        }
-
-        if(rClass == null)
-            return;
-
-        Class<?>[] declaredClasses = rClass.getDeclaredClasses();
-
-        StringBuilder sb = new StringBuilder();
-        StringBuilder sb2 = new StringBuilder();
-        HashSet<String> reservedKeywordSet = new HashSet<>();
-        reservedKeywordSet.add("and");
-        reservedKeywordSet.add("end");
-        reservedKeywordSet.add("in");
-        reservedKeywordSet.add("repeat");
-        reservedKeywordSet.add("break");
-        reservedKeywordSet.add("do");
-        reservedKeywordSet.add("else");
-        reservedKeywordSet.add("false");
-        reservedKeywordSet.add("for");
-        reservedKeywordSet.add("function");
-        reservedKeywordSet.add("elseif");
-        reservedKeywordSet.add("if");
-        reservedKeywordSet.add("not");
-        reservedKeywordSet.add("local");
-        reservedKeywordSet.add("nil");
-        reservedKeywordSet.add("or");
-        reservedKeywordSet.add("return");
-        reservedKeywordSet.add("then");
-        reservedKeywordSet.add("true");
-        reservedKeywordSet.add("until");
-        reservedKeywordSet.add("while");
-
-        ArrayList<String> classArr = new ArrayList<>();
-        for (int d = 0; d < declaredClasses.length; d++)
-        {
-            Field[] declaredFields = declaredClasses[d].getDeclaredFields();
-
-            StringBuilder innerBuilder = new StringBuilder();
-            int arrayCount = 0;
-            int primitiveCount = 0;
-            HashMap<String, Object> map = new HashMap<>();
-            /* vXXXX = { abc=12345678, ... } */
-            for (int i = 0; i < declaredFields.length; i++)
-            {
-                String name = declaredFields[i].getName();
-                //ALT=2131165184,CTRL=2131165185,FUNCTION=2131165186,META=2131165187,SHIFT=2131165188,SYM=2131165189
-                if(name.equalsIgnoreCase("ALT")
-                || name.equalsIgnoreCase("CTRL")
-                || name.equalsIgnoreCase("FUNCTION")
-                || name.equalsIgnoreCase("META")
-                || name.equalsIgnoreCase("SHIFT")
-                || name.equalsIgnoreCase("SYM"))
-                    continue;
-
-                if(reservedKeywordSet.contains(name))
-                    name = name.toUpperCase(Locale.US);
-
-                Object o = null;
-                try
-                {
-                    o = declaredFields[i].get(null);
-                }
-                catch (IllegalAccessException e)
-                {
-
-                }
-
-                Type type = declaredFields[i].getType();
-
-                if (type instanceof Class && ((Class) type).isArray())
-                {
-                    int len = Array.getLength(o);
-                    if(len == 0)
-                        continue;
-
-                    arrayCount++;
-
-                    ArrayList<Object> arr = new ArrayList<>();
-                    for(int k = 0; k < len; ++k)
-                    {
-                        arr.add(Array.get(o, k));
-                    }
-                    map.put(name, arr);
-                }
-                else
-                {
-                    primitiveCount++;
-                    map.put(name, o);
-                }
-            }
-
-            lua_createtable(L, arrayCount, primitiveCount);
-            for(Map.Entry<String, Object> kvp : map.entrySet())
-            {
-                lua_pushliteral(L,kvp.getKey());
-                if(kvp.getValue() instanceof ArrayList)
-                {
-                    ArrayList lst = (ArrayList) kvp.getValue();
-                    lua_createtable(L, lst.size() - 1, 1);
-                    lua_pushnumber(L,0);
-                    lua_pushnumber(L, (int) lst.get(0));
-                    lua_rawset(L,-3);
-                    for(int i = 1; i < lst.size(); i++)
-                    {
-                        lua_pushnumber(L, (int) lst.get(i));
-                        lua_rawseti(L,-2,i);
-                    }
-                }
-                else
-                {
-                    lua_pushnumber(L, (int) kvp.getValue());
-                }
-                lua_rawset(L,-3);
-            }
-            lua_setfield(L,LUA_GLOBALSINDEX,"v" + declaredClasses[d].getSimpleName());
-
-            /* tXXXX= readOnlyTable(vXXXX) */
-            lua_getfield(L,LUA_GLOBALSINDEX,"readOnlyTable");
-            lua_getfield(L,LUA_GLOBALSINDEX,"v" + declaredClasses[d].getSimpleName());
-            lua_call(L,1,1);
-            lua_setfield(L,LUA_GLOBALSINDEX,"t" + declaredClasses[d].getSimpleName());
-
-            classArr.add(declaredClasses[d].getSimpleName());
-        }
-
-        /* tLR = { XXXX=tXXXX,YYYY=tYYYY } */
-        lua_createtable(L, 0, classArr.size());
-        for(int i = 0; i < classArr.size(); i++)
-        {
-            lua_pushliteral(L, classArr.get(i));
-            lua_getfield(L,LUA_GLOBALSINDEX,"t" + classArr.get(i));
-            lua_rawset(L,-3);
-        }
-
-        lua_setfield(L,LUA_GLOBALSINDEX,"tLR");
-
-        /* _G['LR'] = readOnlyTable(tLR) */
-        lua_getfield(L,LUA_GLOBALSINDEX,"readOnlyTable");
-        lua_getfield(L,LUA_GLOBALSINDEX,"tLR");
-        lua_call(L,1,1);
-        lua_getfield(L,LUA_GLOBALSINDEX,"_G");
-        lua_insert(L,-2);
-        lua_pushliteral(L,"LR");
-        lua_insert(L,-2);
-        lua_settable(L,-3);
-        lua_pop(L,1);
+//        /* function readOnlyTable (t)
+//         * 	local proxy = {}
+//         * 	local store = t
+//         * 	local mt = {       -- create metatable
+//         * 		__index = function(t,k)
+//         * 		    if type(store[k]) == "table" then
+//         * 		        return store[k]
+//         * 		    else
+//         * 		        return LuaRef.withValue(store[k])
+//         * 		    end
+//         * 	    end,
+//         * 		__newindex = function (t,k,v)
+//         * 		  error("attempt to update a read-only table", 2)
+//         * 		end
+//         * 	}
+//         * 	setmetatable(proxy, mt)
+//         * 	return proxy
+//         * end */
+//        LuaState L = ToppingEngine.getInstance().getLuaState();
+//        lua_pushcfunction(L, readOnlyTable);
+//        lua_setfield(L,LUA_GLOBALSINDEX,"readOnlyTable");
+//
+//        Class rClass = null;
+//        try
+//        {
+//            DexFile df = new DexFile(ctx.getPackageCodePath());
+//            for (Enumeration<String> iter = df.entries(); iter.hasMoreElements(); )
+//            {
+//                String s = iter.nextElement();
+//                if (s.startsWith(ctx.getPackageName()) && s.endsWith("R"))
+//                {
+//                    try
+//                    {
+//                        rClass = ClassCache.forName(s);
+//                        break;
+//                    }
+//                    catch (ClassNotFoundException e)
+//                    {
+//
+//                    }
+//                }
+//            }
+//        }
+//        catch (IOException e)
+//        {
+//            return;
+//        }
+//
+//        if(rClass == null)
+//            return;
+//
+//        Class<?>[] declaredClasses = rClass.getDeclaredClasses();
+//
+//        StringBuilder sb = new StringBuilder();
+//        StringBuilder sb2 = new StringBuilder();
+//        HashSet<String> reservedKeywordSet = new HashSet<>();
+//        reservedKeywordSet.add("and");
+//        reservedKeywordSet.add("end");
+//        reservedKeywordSet.add("in");
+//        reservedKeywordSet.add("repeat");
+//        reservedKeywordSet.add("break");
+//        reservedKeywordSet.add("do");
+//        reservedKeywordSet.add("else");
+//        reservedKeywordSet.add("false");
+//        reservedKeywordSet.add("for");
+//        reservedKeywordSet.add("function");
+//        reservedKeywordSet.add("elseif");
+//        reservedKeywordSet.add("if");
+//        reservedKeywordSet.add("not");
+//        reservedKeywordSet.add("local");
+//        reservedKeywordSet.add("nil");
+//        reservedKeywordSet.add("or");
+//        reservedKeywordSet.add("return");
+//        reservedKeywordSet.add("then");
+//        reservedKeywordSet.add("true");
+//        reservedKeywordSet.add("until");
+//        reservedKeywordSet.add("while");
+//
+//        ArrayList<String> classArr = new ArrayList<>();
+//        for (int d = 0; d < declaredClasses.length; d++)
+//        {
+//            Field[] declaredFields = declaredClasses[d].getDeclaredFields();
+//
+//            StringBuilder innerBuilder = new StringBuilder();
+//            int arrayCount = 0;
+//            int primitiveCount = 0;
+//            HashMap<String, Object> map = new HashMap<>();
+//            /* vXXXX = { abc=12345678, ... } */
+//            for (int i = 0; i < declaredFields.length; i++)
+//            {
+//                String name = declaredFields[i].getName();
+//                //ALT=2131165184,CTRL=2131165185,FUNCTION=2131165186,META=2131165187,SHIFT=2131165188,SYM=2131165189
+//                if(name.equalsIgnoreCase("ALT")
+//                || name.equalsIgnoreCase("CTRL")
+//                || name.equalsIgnoreCase("FUNCTION")
+//                || name.equalsIgnoreCase("META")
+//                || name.equalsIgnoreCase("SHIFT")
+//                || name.equalsIgnoreCase("SYM"))
+//                    continue;
+//
+//                if(reservedKeywordSet.contains(name))
+//                    name = name.toUpperCase(Locale.US);
+//
+//                Object o = null;
+//                try
+//                {
+//                    o = declaredFields[i].get(null);
+//                }
+//                catch (IllegalAccessException e)
+//                {
+//
+//                }
+//
+//                Type type = declaredFields[i].getType();
+//
+//                if (type instanceof Class && ((Class) type).isArray())
+//                {
+//                    int len = Array.getLength(o);
+//                    if(len == 0)
+//                        continue;
+//
+//                    arrayCount++;
+//
+//                    ArrayList<Object> arr = new ArrayList<>();
+//                    for(int k = 0; k < len; ++k)
+//                    {
+//                        arr.add(Array.get(o, k));
+//                    }
+//                    map.put(name, arr);
+//                }
+//                else
+//                {
+//                    primitiveCount++;
+//                    map.put(name, o);
+//                }
+//            }
+//
+//            lua_createtable(L, arrayCount, primitiveCount);
+//            for(Map.Entry<String, Object> kvp : map.entrySet())
+//            {
+//                lua_pushliteral(L,kvp.getKey());
+//                if(kvp.getValue() instanceof ArrayList)
+//                {
+//                    ArrayList lst = (ArrayList) kvp.getValue();
+//                    lua_createtable(L, lst.size() - 1, 1);
+//                    lua_pushnumber(L,0);
+//                    lua_pushnumber(L, (int) lst.get(0));
+//                    lua_rawset(L,-3);
+//                    for(int i = 1; i < lst.size(); i++)
+//                    {
+//                        lua_pushnumber(L, (int) lst.get(i));
+//                        lua_rawseti(L,-2,i);
+//                    }
+//                }
+//                else
+//                {
+//                    lua_pushnumber(L, (int) kvp.getValue());
+//                }
+//                lua_rawset(L,-3);
+//            }
+//            lua_setfield(L,LUA_GLOBALSINDEX,"v" + declaredClasses[d].getSimpleName());
+//
+//            /* tXXXX= readOnlyTable(vXXXX) */
+//            lua_getfield(L,LUA_GLOBALSINDEX,"readOnlyTable");
+//            lua_getfield(L,LUA_GLOBALSINDEX,"v" + declaredClasses[d].getSimpleName());
+//            lua_call(L,1,1);
+//            lua_setfield(L,LUA_GLOBALSINDEX,"t" + declaredClasses[d].getSimpleName());
+//
+//            classArr.add(declaredClasses[d].getSimpleName());
+//        }
+//
+//        /* tLR = { XXXX=tXXXX,YYYY=tYYYY } */
+//        lua_createtable(L, 0, classArr.size());
+//        for(int i = 0; i < classArr.size(); i++)
+//        {
+//            lua_pushliteral(L, classArr.get(i));
+//            lua_getfield(L,LUA_GLOBALSINDEX,"t" + classArr.get(i));
+//            lua_rawset(L,-3);
+//        }
+//
+//        lua_setfield(L,LUA_GLOBALSINDEX,"tLR");
+//
+//        /* _G['LR'] = readOnlyTable(tLR) */
+//        lua_getfield(L,LUA_GLOBALSINDEX,"readOnlyTable");
+//        lua_getfield(L,LUA_GLOBALSINDEX,"tLR");
+//        lua_call(L,1,1);
+//        lua_getfield(L,LUA_GLOBALSINDEX,"_G");
+//        lua_insert(L,-2);
+//        lua_pushliteral(L,"LR");
+//        lua_insert(L,-2);
+//        lua_settable(L,-3);
+//        lua_pop(L,1);
     }
 
     /**

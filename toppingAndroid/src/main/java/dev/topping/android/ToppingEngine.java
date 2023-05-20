@@ -168,7 +168,7 @@ public class ToppingEngine
 									}
 								}
 
-								Log.d("asd", nestedKClass.toString());
+								//Log.d("asd", nestedKClass.toString());
 							}
 						}
 					}
@@ -220,8 +220,6 @@ public class ToppingEngine
 			Log.e("LuaEngine.java", e.getMessage());
 		}
 		if(Lua.luaL_loadstring(L, buffer.toString(), "defines.lua") != 0)
-		//if(Lua.luaL_loadbuffer(L, buffer.toString(), s) != 0)
-		//if(Lua.LloadFile(s) != 0)
 		{
 			report(L);
 		}
@@ -234,6 +232,40 @@ public class ToppingEngine
 			else
 			{
 				Log.i("LuaEngine", "Script defines.lua loaded.");
+			}
+		}
+		buffer = new ByteArrayOutputStream();
+		try
+		{
+			InputStream is = context.getAssets().open("LR.lua");
+
+			int nRead;
+			byte[] data = new byte[16384];
+
+			while ((nRead = is.read(data, 0, data.length)) != -1) {
+				buffer.write(data, 0, nRead);
+			}
+
+			buffer.flush();
+			is.close();
+		}
+		catch (Exception e)
+		{
+			Log.e("LuaEngine.java", e.getMessage());
+		}
+		if(Lua.luaL_loadstring(L, buffer.toString(), "LR.lua") != 0)
+		{
+			report(L);
+		}
+		else
+		{
+			if(Lua.lua_pcall(L, 0, 0, 0) != 0)
+			{
+				report(L);
+			}
+			else
+			{
+				Log.i("LuaEngine", "Script LR.lua loaded.");
 			}
 		}
 

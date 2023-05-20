@@ -132,7 +132,7 @@ public class LGRecyclerViewAdapter extends RecyclerView.Adapter implements LuaIn
      */
     @Override
     public int getItemCount() {
-        if (kotlinInterface.ltGetItemCount != null)
+        if (kotlinInterface != null && kotlinInterface.ltGetItemCount != null)
             return (int) kotlinInterface.ltGetItemCount.callIn();
         return values.size();
     }
