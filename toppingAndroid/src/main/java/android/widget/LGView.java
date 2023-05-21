@@ -27,7 +27,7 @@ import dev.topping.android.luagui.LuaRef;
  * Base view class
  */
 @LuaClass(className = "LGView")
-public class LGView extends Object implements LuaInterface, Serializable
+public class LGView implements LuaInterface, Serializable
 {
 	/**
 	 *
