@@ -15,6 +15,8 @@ import android.view.WindowManager
 import android.widget.LGView
 import android.widget.LGViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.LifecycleOwner
 import dev.topping.android.backend.LuaClass
 import dev.topping.android.backend.LuaFunction
@@ -246,6 +248,17 @@ open class LuaForm : AppCompatActivity(), LuaLifecycleOwner, LuaInterface {
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportFragmentManager.fragmentFactory = object : FragmentFactory() {
+            override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
+                try {
+                    return super.instantiate(classLoader, className)
+                } catch (ex: Exception)
+                {
+                    val res = resources.getIdentifier(className, "id", packageName)
+                    return LuaFragment.create(this@LuaForm.luaContext!!, LuaRef.withValue(res), null)
+                }
+            }
+        }
         /*requestWindowFeature(Window.FEATURE_NO_TITLE);
 	    this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         if (Defines.CheckPermission(this, Manifest.permission.NFC)) {
@@ -260,22 +273,6 @@ open class LuaForm : AppCompatActivity(), LuaLifecycleOwner, LuaInterface {
             )
         }
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-        /*val pm = packageManager
-        val mainIntent = Intent(Intent.ACTION_MAIN, null)
-        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
-        val appList = pm.queryIntentActivities(mainIntent, 0)
-        Collections.sort(appList, ResolveInfo.DisplayNameComparator(pm))
-        for (temp in appList) {
-            Log.d("Lua Engine", "Launcher package and activity name = "
-                        + temp.activityInfo.packageName + "    "
-                        + temp.activityInfo.name
-            )
-            if (javaClass.simpleName.compareTo(temp.activityInfo.name) == 0) {
-                return
-            }
-        }*/
-        /*if(this.getClass() == MainActivity.class)
-			return;*/
         activeForm = this
         var luaId: LuaRef? = null
         var extras: Bundle? = null
