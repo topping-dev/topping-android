@@ -26,6 +26,7 @@ import dev.topping.android.LuaJavaFunction;
 import dev.topping.android.LuaNativeObject;
 import dev.topping.android.LuaTranslator;
 import dev.topping.android.ToppingEngine;
+import dev.topping.android.luagui.LuaRef;
 import kotlin.reflect.KFunction;
 import kotlin.reflect.KParameter;
 import kotlin.reflect.KProperty;
@@ -627,8 +628,19 @@ public class Lunar
 							|| c == short.class)
 	            		argList.add((short)(Lua.luaL_checkinteger(L, count)));
 	            	else if(name.compareTo("java.lang.Integer") == 0
-							|| c == int.class)
-	            		argList.add(Lua.luaL_checkinteger(L, count));
+							|| c == int.class) {
+						Object objudata = Lua.lua_getuserdata(L, count);
+						if(objudata == null && L.type(count) == LuaType.USERDATA)
+						{
+							objudata = Lua.lua_touserdata(L, count);
+						}
+						if(objudata != null && objudata.getClass() == LuaRef.class) {
+							argList.add(((LuaRef)objudata).getRef());
+						}
+						else {
+							argList.add(Lua.luaL_checkinteger(L, count));
+						}
+					}
 	            	else if(name.compareTo("java.lang.Long") == 0
 							|| c == long.class)
 	            		argList.add((Long)Lua.luaL_checklong(L, count));
@@ -913,7 +925,19 @@ public class Lunar
 	            		argList.add((short)(Lua.luaL_checkinteger(L, count)));
 	            	else if(name.compareTo("java.lang.Integer") == 0
 							|| c == int.class)
-	            		argList.add(Lua.luaL_checkinteger(L, count));
+					{
+						Object objudata = Lua.lua_getuserdata(L, count);
+						if(objudata == null && L.type(count) == LuaType.USERDATA)
+						{
+							objudata = Lua.lua_touserdata(L, count);
+						}
+						if(objudata != null && objudata.getClass() == LuaRef.class) {
+							argList.add(((LuaRef)objudata).getRef());
+						}
+						else {
+							argList.add(Lua.luaL_checkinteger(L, count));
+						}
+					}
 	            	else if(name.compareTo("java.lang.Long") == 0
 							|| c == long.class)
 	            		argList.add((Long)Lua.luaL_checklong(L, count));

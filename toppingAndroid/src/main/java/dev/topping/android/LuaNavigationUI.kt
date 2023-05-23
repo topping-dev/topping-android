@@ -26,7 +26,7 @@ class LuaNavigationUI {
         @LuaFunction(
             manual = false,
             methodName = "navigateUp",
-            arguments = [],
+            arguments = [LuaNavController::class, LuaAppBarConfiguration::class],
             self = LuaNavigationUI::class
         )
         fun navigateUp(
@@ -44,7 +44,7 @@ class LuaNavigationUI {
         @LuaFunction(
             manual = false,
             methodName = "navigateUpView",
-            arguments = [],
+            arguments = [LuaNavController::class, LGView::class],
             self = LuaNavigationUI::class
         )
         fun navigateUpView(
@@ -62,7 +62,7 @@ class LuaNavigationUI {
         @LuaFunction(
             manual = false,
             methodName = "setupActionBarWithNavController",
-            arguments = [],
+            arguments = [LuaForm::class, LuaNavController::class],
             self = LuaNavigationUI::class
         )
         fun setupActionBarWithNavController(
@@ -81,7 +81,7 @@ class LuaNavigationUI {
         @LuaFunction(
             manual = false,
             methodName = "setupActionBarWithNavControllerView",
-            arguments = [],
+            arguments = [LuaForm::class, LuaNavController::class, LGView::class],
             self = LuaNavigationUI::class
         )
         fun setupActionBarWithNavControllerView(
@@ -100,7 +100,7 @@ class LuaNavigationUI {
         @LuaFunction(
             manual = false,
             methodName = "setupActionBarWithNavControllerConfiguration",
-            arguments = [],
+            arguments = [LuaForm::class, LuaNavController::class, LuaAppBarConfiguration::class],
             self = LuaNavigationUI::class
         )
         fun setupActionBarWithNavControllerConfiguration(
@@ -119,7 +119,7 @@ class LuaNavigationUI {
         @LuaFunction(
             manual = false,
             methodName = "setupWithNavController",
-            arguments = [],
+            arguments = [LGToolbar::class, LuaNavController::class],
             self = LuaNavigationUI::class
         )
         fun setupWithNavController(
@@ -138,7 +138,7 @@ class LuaNavigationUI {
         @LuaFunction(
             manual = false,
             methodName = "setupWithNavControllerView",
-            arguments = [],
+            arguments = [LGToolbar::class, LuaNavController::class, LGView::class],
             self = LuaNavigationUI::class
         )
         fun setupWithNavControllerView(
@@ -158,7 +158,7 @@ class LuaNavigationUI {
         @LuaFunction(
             manual = false,
             methodName = "setupWithNavControllerConfiguration",
-            arguments = [],
+            arguments = [LGToolbar::class, LuaNavController::class, LuaAppBarConfiguration::class],
             self = LuaNavigationUI::class
         )
         fun setupWithNavControllerConfiguration(

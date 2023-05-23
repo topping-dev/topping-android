@@ -286,10 +286,11 @@ open class LuaForm : AppCompatActivity(), LuaLifecycleOwner, LuaInterface {
                 ui = extras.getSerializable("LUA_UI_RUED") as LuaRef?
             }
         } else {
-            luaId = savedInstanceState.getSerializable("LUA_ID_RUED") as LuaRef?
+            this.luaId = savedInstanceState.getString("LUA_ID_RUED")
             ui = savedInstanceState.getSerializable("LUA_UI_RUED") as LuaRef?
         }
-        this.luaId = if(luaId?.ref != View.NO_ID) resources.getResourceEntryName(luaId?.ref!!) else "LuaForm"
+        if(luaId != null)
+            this.luaId = if(luaId.ref != View.NO_ID) resources.getResourceEntryName(luaId.ref) else "LuaForm"
         luaContext = LuaContext.createLuaContext(this)
         if (ui == null || ui!!.ref == View.NO_ID) {
             LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_CREATE, luaContext)

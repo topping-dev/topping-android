@@ -30,7 +30,7 @@ public class LGViewGroup extends LGView implements LuaInterface
 	 * Gets view bindings
 	 * @return table
 	 */
-	@LuaFunction(manual = false, methodName = "getBindings", arguments = { })
+	@LuaFunction(manual = false, methodName = "getBindings")
 	public HashMap<String, LGView> getBindings()
 	{
 		return subviewMap;
