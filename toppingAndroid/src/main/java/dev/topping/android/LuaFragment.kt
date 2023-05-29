@@ -223,6 +223,11 @@ open class LuaFragment : Fragment, LuaInterface {
         return LuaNavController(findNavController())
     }
 
+    @LuaFunction(manual = false, methodName = "getLifecycleOwner")
+    fun getLifecycleOwner(): LuaLifecycleOwner {
+        return LuaLifecycleOwner(viewLifecycleOwner)
+    }
+
     /**
      * (Ignore)
      */

@@ -34,7 +34,7 @@ import java.util.*
  * User interface controller
  */
 @LuaClass(className = "LuaForm", isKotlin = true)
-open class LuaForm : AppCompatActivity(), LuaLifecycleOwner, LuaInterface {
+open class LuaForm : AppCompatActivity(), LuaInterface {
     protected var luaContext: LuaContext? = null
     protected var luaId: String? = "LuaForm"
     protected var ui: LuaRef? = null
@@ -203,6 +203,14 @@ open class LuaForm : AppCompatActivity(), LuaLifecycleOwner, LuaInterface {
     @LuaFunction(manual = false, methodName = "getFragmentManager")
     fun getFragmentManagerInner() : LuaFragmentManager {
         return LuaFragmentManager(supportFragmentManager)
+    }
+
+    /**
+     * Get Lifecycle Owner
+     */
+    @LuaFunction(manual = false, methodName = "getLifecycleOwner")
+    fun getLifecycleOwner(): LuaLifecycleOwner {
+        return LuaLifecycleOwner(this)
     }
 
     /**
@@ -448,13 +456,6 @@ open class LuaForm : AppCompatActivity(), LuaLifecycleOwner, LuaInterface {
         super.onSaveInstanceState(outState)
         outState.putString("LUA_ID_RUED", luaId)
         outState.putSerializable("LUA_UI_RUED", ui)
-    }
-
-    /**
-     * (Ignore)
-     */
-    override fun getLifecycleOwner(): LifecycleOwner {
-        return this
     }
 
     /**

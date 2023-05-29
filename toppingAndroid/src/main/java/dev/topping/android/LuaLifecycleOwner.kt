@@ -7,9 +7,13 @@ import dev.topping.android.backend.LuaClass
  * Lifecycle owner
  */
 @LuaClass(className = "LuaLifecycleOwner")
-interface LuaLifecycleOwner {
+open class LuaLifecycleOwner(owner: LifecycleOwner) {
+    private var lifecycleOwner: LifecycleOwner = owner
+
     /**
      * (Ignore)
      */
-    fun getLifecycleOwner(): LifecycleOwner
+    open fun getLifecycleOwner(): LifecycleOwner {
+        return lifecycleOwner
+    }
 }
