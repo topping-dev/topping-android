@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LGView
+import android.widget.LGViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -144,8 +145,11 @@ open class LuaFragment : Fragment, LuaInterface {
      */
     @SuppressLint("UseRequireInsteadOfGet")
     @LuaFunction(manual = false, methodName = "getViewById", arguments = [LuaRef::class])
-    fun getViewById(lId: LuaRef): LGView {
-        return view!!.getViewById(lId)
+    fun getViewById(lId: LuaRef): LGView? {
+        if(view is LGViewGroup)
+            return (view as LGViewGroup).getViewById(lId)
+        else
+            return null
     }
 
     /**

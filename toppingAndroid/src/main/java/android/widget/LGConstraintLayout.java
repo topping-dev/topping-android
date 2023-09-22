@@ -69,4 +69,39 @@ public class LGConstraintLayout extends LGViewGroup implements LuaInterface
 		if(view == null)
 			view = new ConstraintLayout(context, attrs);
 	}
+
+	@Override
+	public LGView generateLGViewForName(String name, LuaContext lc, AttributeSet atts) {
+		if(name.equals("androidx.constraintlayout.widget.Barrier")) {
+			return new LGConstraintBarrier(lc, attrs);
+		} else if(name.equals("androidx.constraintlayout.widget.Group")) {
+			return new LGConstraintGroup(lc, attrs);
+		} else if(name.equals("androidx.constraintlayout.widget.Guideline")) {
+			return new LGConstraintGuideline(lc, attrs);
+		} else if(name.equals("androidx.constraintlayout.widget.Placeholder")) {
+			return new LGConstraintPlaceholder(lc, attrs);
+		} else if(name.equals("androidx.constraintlayout.widget.ReactiveGuide")) {
+			return new LGConstraintReactiveGuide(lc, attrs);
+		} else if(name.equals("androidx.constraintlayout.widget.motion.widget.MotionLayout")) {
+			return new LGConstraintMotionLayout(lc, attrs);
+		} else if(name.equals("androidx.constraintlayout.widget.utils.ImageFilterButton")) {
+			return new LGConstraintImageFilterButton(lc, attrs);
+		} else if(name.equals("androidx.constraintlayout.widget.utils.ImageFilterView")) {
+			return new LGConstraintImageFilterView(lc, attrs);
+		} else if(name.equals("androidx.constraintlayout.widget.utils.MotionButton")) {
+			return new LGConstraintMotionButton(lc, attrs);
+		} /*else if(name.equals("androidx.constraintlayout.widget.utils.MotionLabel")) {
+        	return new LGConstraintMotionLabel(lc, attrs);
+		}*/
+		else if(name.equals("androidx.constraintlayout.helper.widget.CircularFlow")) {
+			return new LGConstraintCircularFlow(lc, attrs);
+		} else if(name.equals("androidx.constraintlayout.helper.widget.Flow")) {
+			return new LGConstraintFlow(lc, attrs);
+		} else if(name.equals("androidx.constraintlayout.helper.widget.Grid")) {
+			return new LGConstraintGrid(lc, attrs);
+		} else if(name.equals("androidx.constraintlayout.helper.widget.Layer")) {
+			return new LGConstraintLayer(lc, attrs);
+		}
+		return super.generateLGViewForName(name, lc, atts);
+	}
 }

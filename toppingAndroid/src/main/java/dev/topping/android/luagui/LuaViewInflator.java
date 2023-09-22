@@ -34,6 +34,7 @@ import android.widget.LGTextInputLayout;
 import android.widget.LGTextView;
 import android.widget.LGToolbar;
 import android.widget.LGView;
+import android.widget.LGViewGroup;
 import android.widget.LGViewPager;
 import android.widget.Toast;
 
@@ -181,8 +182,8 @@ public class LuaViewInflator implements LuaInterface
 				if(lgStack.size() > 0)
 				{
 					LGView vParent = lgStack.peek();
-					vParent.addSubview(v);
-					((ViewGroup)vParent.view).addView(v.view);
+					if(vParent instanceof LGViewGroup)
+						((LGViewGroup)vParent).addSubview(v);
 				}
 				else
 				{
@@ -392,6 +393,10 @@ public class LuaViewInflator implements LuaInterface
 
 			}
 		}
+		else if(parent != null && (lgresult = parent.generateLGViewForName(name, lc, atts)) != null)
+		{
+
+		}
 		else {
 			Toast.makeText(context , "Unhandled tag:"+name,
 					Toast.LENGTH_SHORT).show();
@@ -417,8 +422,6 @@ public class LuaViewInflator implements LuaInterface
 		{
 			lgresult.view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 		}
-
-		lgresult.onCreate();
 
 		return lgresult;
 	}

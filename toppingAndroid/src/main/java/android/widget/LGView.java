@@ -37,7 +37,6 @@ public class LGView implements LuaInterface, Serializable
 	public View view;
 	public LuaContext lc;
 	public String luaId = null;
-	protected ArrayList<LGView> subviews = new ArrayList<LGView>();
 	public String internalName = "";
 	public LGView parent;
 
@@ -143,43 +142,6 @@ public class LGView implements LuaInterface, Serializable
 	{
 	}
 
-
-	/**
-	 * (Ignore)
-	 */
-	public void onCreate()
-	{
-		for(LGView w : subviews)
-			w.onCreate();
-	}
-
-	/**
-	 * (Ignore)
-	 */
-	public void onResume()
-	{
-		for(LGView w : subviews)
-			w.onResume();
-	}
-
-	/**
-	 * (Ignore)
-	 */
-	public void onPause()
-	{
-		for(LGView w : subviews)
-			w.onPause();
-	}
-
-	/**
-	 * (Ignore)
-	 */
-	public void onDestroy()
-	{
-		for(LGView w : subviews)
-			w.onDestroy();
-	}
-
 	/**
 	 * (Ignore)
 	 */
@@ -194,33 +156,6 @@ public class LGView implements LuaInterface, Serializable
 		ViewGroup.LayoutParams lpsv = view.getLayoutParams();
 		Log.e("PrintDescription", last + toString() + " Width: " + lps.width + " Height: " + lps.height);
 		Log.e("PrintDescriptionView", last + view.toString() + " Width: " + lpsv.width + " Height: " + lpsv.height);
-		for(LGView w : subviews)
-		{
-			w.printDescription(last + "--");
-		}
-	}
-
-	/**
-	 * Get view by id
-	 * @param lId
-	 * @return LGView
-	 */
-	@LuaFunction(manual = false, methodName = "getViewById", arguments = { LuaRef.class })
-	public LGView getViewById(LuaRef lId)
-	{
-		String resourceName = view.getContext().getResources().getResourceEntryName(lId.getRef());
-		if(this.GetId() != null && this.GetId().compareTo(resourceName) == 0)
-			return this;
-		else
-		{
-			for(LGView w : subviews)
-			{
-				LGView wFound = w.getViewById(lId);
-				if(wFound != null)
-					return wFound;
-			}
-		}
-		return null;
 	}
 
 	/**
@@ -296,6 +231,13 @@ public class LGView implements LuaInterface, Serializable
 	/**
 	 * (Ignore)
 	 */
+	public LGView generateLGViewForName(String name, LuaContext lc, AttributeSet atts) {
+		return null;
+	}
+
+	/**
+	 * (Ignore)
+	 */
 	@Override
 	public String GetId()
 	{
@@ -349,14 +291,5 @@ public class LGView implements LuaInterface, Serializable
 			return;
 		if(loaded instanceof Boolean)
 			this.loaded = (Boolean) loaded;
-	}
-
-	/**
-	 * (Ignore)
-	 */
-	public void addSubview(LGView view)
-	{
-		view.parent = this;
-		this.subviews.add(view);
 	}
 }

@@ -119,8 +119,11 @@ open class LuaForm : AppCompatActivity(), LuaInterface {
      * @return LGView
      */
     @LuaFunction(manual = false, methodName = "getViewById", arguments = [LuaRef::class])
-    fun getViewById(lId: LuaRef): LGView {
-        return view!!.getViewById(lId)
+    fun getViewById(lId: LuaRef): LGView? {
+        if(view is LGViewGroup)
+            return (view as LGViewGroup).getViewById(lId)
+        else
+            return null
     }
 
     /**
@@ -355,9 +358,6 @@ open class LuaForm : AppCompatActivity(), LuaInterface {
                 null
             )
         }
-        if (view != null) {
-            view!!.onResume()
-        }
     }
 
     /**
@@ -371,9 +371,6 @@ open class LuaForm : AppCompatActivity(), LuaInterface {
         if (Defines.CheckPermission(this, Manifest.permission.NFC)) {
             if (mNfcAdapter != null) mNfcAdapter!!.disableForegroundDispatch(this)
         }
-        if (view != null) {
-            view!!.onPause()
-        }
     }
 
     /**
@@ -383,10 +380,6 @@ open class LuaForm : AppCompatActivity(), LuaInterface {
         super.onDestroy()
         LuaEvent.onUIEvent(this, LuaEvent.UI_EVENT_DESTROY, luaContext)
         kotlinInterface?.ltOnDestroy?.callIn()
-        //Move destroy event to subviews
-        if (view != null) {
-            view!!.onDestroy()
-        }
     }
 
     /**
